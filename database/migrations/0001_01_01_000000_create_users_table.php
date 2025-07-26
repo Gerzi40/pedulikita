@@ -18,6 +18,8 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
+            $table->enum('role', ['volunteer', 'organization', 'admin']);
+            $table->string('profile_picture_url')->default('profiles/default.png');
             $table->timestamps();
         });
 
