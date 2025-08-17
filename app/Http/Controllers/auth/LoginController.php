@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -19,6 +20,12 @@ class LoginController extends Controller
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
+
+        // dd($credentials);
+
+        // $user = User::where('email', '=', $credentials['email'])->first();
+
+        // dd($user);
  
         if (Auth::attempt($credentials, $request->remember)) {
             $request->session()->regenerate();

@@ -8,4 +8,11 @@
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+    --color1: #2170B8;
+    --hovercolor1: #1A5B9C;
+    --color2: #49516F;
+}
+
+input::-ms-reveal {
+    display: none;
 }
