@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Register')
+@section('title', 'Daftar')
 
 @section('content')
 <div class="min-h-screen flex items-center justify-center bg-gray-100">

@@ -1,6 +1,6 @@
 @extends($layout)
 
-@section('title', 'Error')
+@section('title', 'Kesalahan')
 
 @section('content')
 <div class="min-h-screen absolute top-0 right-0 bottom-0 left-0 flex items-center justify-center bg-white px-4">

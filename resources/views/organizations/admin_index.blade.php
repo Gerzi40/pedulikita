@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Admin Organizations Index')
+@section('title', 'Organisasi')
 
 @section('content')
     {{-- <div class="flex justify-center">
