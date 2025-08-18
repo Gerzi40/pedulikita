@@ -3,7 +3,7 @@
 @section('title', 'Admin Organizations Index')
 
 @section('content')
-    <div class="flex justify-center">
+    {{-- <div class="flex justify-center">
         <form action="{{ route('admin.organizations.index') }}" method="get" id="filterForm"
             class="flex flex-wrap gap-5 items-center p-5 bg-white shadow rounded-md justify-center my-5">
 
@@ -54,7 +54,7 @@
                 Filter
             </button>
         </form>
-    </div>
+    </div> --}}
 
     <div class="ml-5 mb-5 mt-5">
         <a href="{{ route('admin.organizations.create') }}"
