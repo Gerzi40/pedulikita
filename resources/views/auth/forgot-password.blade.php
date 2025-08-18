@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Forgot Password')
+@section('title', 'Atur Ulang Kata Sandi')
 
 @section('content')
 <div class="min-h-screen flex items-center justify-center bg-gray-100">
