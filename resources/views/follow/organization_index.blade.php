@@ -4,6 +4,8 @@
 
 @section('content')
 
-
+    @foreach ($volunteers as $volunteer)
+        <li>{{ $volunteer }}</li>
+    @endforeach
 
 @endsection
