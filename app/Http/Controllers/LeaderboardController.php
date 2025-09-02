@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Volunteer;
 use Illuminate\Http\Request;
 
 class LeaderboardController extends Controller
@@ -13,6 +14,7 @@ class LeaderboardController extends Controller
 
     public function organization_index()
     {
-        return view('leaderboard.organization_index');
+        $volunteers = Volunteer::get();
+        return view('leaderboard.organization_index', compact('volunteers'));
     }
 }
