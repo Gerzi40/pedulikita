@@ -138,10 +138,10 @@
                     </button>
                 </div>
 
-                <label class="block mb-2">Rating:</label>
+                <label class="block mb-2" id="rating">Rating:</label>
 
                 <!-- Star Rating Component -->
-                <div class="mb-4">
+                <div class="mb-4" id="rateSection">
                     <div class="flex gap-1 justify-center mb-2" id="modalStarRating">
                         <svg class="star w-8 h-8 cursor-pointer transition-all duration-200 hover:scale-110 fill-gray-300 stroke-gray-400"
                             data-rating="1" viewBox="0 0 24 24" stroke-width="1">
@@ -309,8 +309,12 @@
                     'bg-red-500'));
                 if (value === "1") {
                     btn.classList.add('bg-green-500', 'text-white');
+                    document.getElementById('rating').style.display = 'block';
+                    document.getElementById('rateSection').style.display = 'block';
                 } else {
                     btn.classList.add('bg-red-500', 'text-white');
+                    document.getElementById('rating').style.display = 'none';
+                    document.getElementById('rateSection').style.display = 'none';
                 }
             });
         });
