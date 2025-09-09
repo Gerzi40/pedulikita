@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Throwable;
@@ -22,7 +23,24 @@ class ParticipationController extends Controller
         return view('participation.organization_index', compact('event'));
     }
 
-    public function store(string $event_id) {}
+    public function store(string $event_id)
+    {
+        $event = Event::findOrFail($event_id);
+
+        $event_start_time = Carbon::parse("{$event->date} {$event->start_time}");
+        if (Carbon::now()->greaterThanOrEqualTo($event_start_time)) {
+            return redirect()->back()->with('error', 'Acara telah dimulai');
+        }
+
+        if ($event->available_slot <= $event->volunteers->count())
+        {
+            return redirect()->back()->with('error', 'Jumlah relawan acara sudah sesuai dengan slot tersedia.');
+        }
+        
+        $user = Auth::user();
+        $user->volunteer->events()->attach($event_id);
+        return redirect()->route('volunteer.participation.index');
+    }
 
     public function update(Request $request, string $event_id, string $volunteer_id)
     {
@@ -30,8 +48,7 @@ class ParticipationController extends Controller
 
         $event_end_time = Carbon::parse("{$event->date} {$event->end_time}");
         if (Carbon::now()->lessThanOrEqualTo($event_end_time)) {
-            // ubah jadi indo
-            return redirect()->back()->with('error', 'Penilaian relawan hanya dapat dilakukan setelah acara berakhir');
+            return redirect()->back()->with('error', 'Penilaian relawan hanya dapat dilakukan setelah acara berakhir.');
         }
 
         $validator = Validator::make($request->all(), [

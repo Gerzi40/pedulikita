@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -24,7 +25,32 @@ class EventController extends Controller
 
     public function volunteer_index(Request $request)
     {
-        return view('events.volunteer_index');
+        $user = Auth::user();
+
+        $provinces = Province::get();
+
+        $query = Event::query()
+            ->with('city')
+            ->where('state', '=', 'approved')
+            ->whereRaw('date + start_time > ?', [Carbon::now()])
+            ->leftJoin('event_volunteer', 'events.id', '=', 'event_volunteer.event_id')
+            ->select([
+                'events.id',
+                'events.name',
+                'events.city_id',
+                'events.date',
+                'events.start_time',
+                'events.image_url',
+                'events.available_slot',
+                DB::raw('COUNT(event_volunteer.volunteer_id) as volunteer_count')
+            ])
+            ->groupBy('events.id', 'events.name', 'events.city_id', 'events.date', 'events.start_time', 'events.image_url', 'events.available_slot')
+            ->havingRaw('COUNT(event_volunteer.volunteer_id) < events.available_slot')
+            ->whereNotIn('events.id', $user->volunteer->events()->pluck('id'));
+        
+        $events = $this->filter($query, $request);
+
+        return view('events.volunteer_index', compact('provinces', 'events'));
     }
 
     public function organization_index(Request $request)
@@ -188,7 +214,8 @@ class EventController extends Controller
 
     public function volunteer_show(string $id)
     {
-        return view('events.volunteer_show');
+        $event = Event::findOrFail($id);
+        return view('events.volunteer_show', compact('event'));
     }
 
     public function organization_show(string $id)
@@ -266,7 +293,8 @@ class EventController extends Controller
         return redirect()->route('organization.events.index');
     }
 
-    public function admin_destroy(string $id) {
+    public function admin_destroy(string $id)
+    {
         Event::where('id', $id)->delete();
         return redirect()->route('admin.events.index');
     }
