@@ -57,7 +57,29 @@ class EventController extends Controller
 
     public function admin_index(Request $request)
     {
-        return view('events.admin_index');
+        $provinces = Province::get();
+
+        $query = Event::query()
+            ->with('city')
+            ->leftJoin('event_volunteer', 'events.id', '=', 'event_volunteer.event_id')
+            ->select([
+                'events.id',
+                'events.name',
+                'events.city_id',
+                'events.date',
+                'events.start_time',
+                'events.image_url',
+                'events.available_slot',
+                'events.point',
+                'events.state',
+                'events.description',
+                DB::raw('COUNT(event_volunteer.volunteer_id) as volunteer_count')
+            ])
+            ->groupBy('events.id', 'events.name', 'events.city_id', 'events.date', 'events.start_time', 'events.image_url', 'events.available_slot', 'events.point', 'events.state', 'events.description');
+        
+        $events = $this->filter($query, $request);
+
+        return view('events.admin_index', compact('provinces', 'events'));
     }
 
     private function filter(Builder $query, Request $request)
@@ -177,7 +199,8 @@ class EventController extends Controller
 
     public function admin_show(string $id)
     {
-        return view('events.admin_show');
+        $event = Event::findOrFail($id);
+        return view('events.admin_show', compact('event'));
     }
 
     public function edit(string $id)
@@ -243,7 +266,10 @@ class EventController extends Controller
         return redirect()->route('organization.events.index');
     }
 
-    public function admin_destroy(string $id) {}
+    public function admin_destroy(string $id) {
+        Event::where('id', $id)->delete();
+        return redirect()->route('admin.events.index');
+    }
 
     public function approve(Request $request, string $id) {}
 
