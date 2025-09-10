@@ -6,15 +6,19 @@ use App\Models\City;
 use App\Models\Event;
 use App\Models\Province;
 use App\Models\User;
+use App\Notifications\EventCreated;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Throwable;
 
 class EventController extends Controller
 {
@@ -191,18 +195,16 @@ class EventController extends Controller
             'image_url' => $path,
         ]);
 
-        // Belom bisa kirim notif
+        try
+        {
+            $admins = User::where('role', '=', 'admin')->get();
 
-        // try
-        // {
-        //     $admins = User::where('role', '=', 'admin')->get();
-
-        //     Notification::send($admins, new EventCreated($user->name, $event->name, $event->id));
-        // }
-        // catch (Throwable $e)
-        // {
-        //     Log::error($e->getMessage());
-        // }
+            Notification::send($admins, new EventCreated($user->name, $event->name, $event->id));
+        }
+        catch (Throwable $e)
+        {
+            Log::error($e->getMessage());
+        }
 
         return redirect()->route('organization.events.show', ['id' => $event->id]);
     }
