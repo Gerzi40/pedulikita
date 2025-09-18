@@ -47,17 +47,6 @@
                     @enderror
                 </div>
 
-                <!-- Kota -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Kota <span class="text-red-500">*</span></label>
-                    <select name="city_id" id="city" class="w-full border rounded-md px-4 py-2 text-sm" required>
-                        <option value="" hidden>Please select one</option>
-                    </select>
-                    @error('city_id')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
-
                 <!-- Provinsi -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Provinsi <span class="text-red-500">*</span></label>
@@ -70,6 +59,17 @@
                         @endforeach
                     </select>
                     @error('province_id')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Kota -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Kota <span class="text-red-500">*</span></label>
+                    <select name="city_id" id="city" class="w-full border rounded-md px-4 py-2 text-sm" required>
+                        <option value="" hidden>Please select one</option>
+                    </select>
+                    @error('city_id')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
