@@ -78,8 +78,7 @@
             <h2 class="text-xl font-bold text-[var(--color1)] mb-4">Acara</h2>
             <div class="mb-5">
                 <a href="{{ route('organization.events.create') }}"
-                    class="px-4 py-2 bg-[var(--color1)] text-white text-sm rounded-md hover:bg-[var(--hovercolor1)] focus:outline-none focus:ring-2 focus:ring-[var(--hovercolor1)] focus:ring-opacity-50">Create
-                    Event</a>
+                    class="px-4 py-2 bg-[var(--color1)] text-white text-sm rounded-md hover:bg-[var(--hovercolor1)] focus:outline-none focus:ring-2 focus:ring-[var(--hovercolor1)] focus:ring-opacity-50">Buat Acara</a>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"> {{-- Menyesuaikan grid untuk responsif --}}
                 @foreach ($events as $event)
