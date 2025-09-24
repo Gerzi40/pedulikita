@@ -4,37 +4,65 @@
 
 @section('content')
 
-    {{-- <a href="{{ route('admin.organizations.edit', ['id' => $organization->id]) }}">Edit</a>
-
-    <form action="{{ route('admin.organizations.destroy', ['id' => $organization->id]) }}" method="post">
-        @csrf
-        @method('delete')
-        <button type="submit">Delete</button>
-    </form> --}}
-
     <div class="container mx-auto px-4 py-8">
-        <div class="flex items-center space-x-6 mb-8">
-            {{-- Bagian Logo dan Nama Organisasi --}}
-            <div class="flex-shrink-0">
-                {{-- Pastikan $organization->user->profile_picture_url mengarah ke gambar yang benar --}}
-                <img src="{{ Storage::disk('s3')->url($organization->user->profile_picture_url) }}" alt="Logo Organisasi"
-                    class="w-48 h-48 object-cover rounded-full border-2 border-gray-200">
-            </div>
-            <div>
-                <h1 class="text-3xl font-bold text-gray-800">{{ $organization->user->name }}</h1>
-                <div class="flex gap-5 mt-5">
-                    <a href="{{ route('admin.organizations.edit', ['id' => $organization->id]) }}"
-                        class="bg-[var(--color1)] hover:bg-[var(--hovercolor1)] cursor-pointer text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300">Edit</a>
 
-                    <form action="{{ route('admin.organizations.destroy', ['id' => $organization->id]) }}" method="post">
-                        @csrf
-                        @method('delete')
-                        <button type="submit"
-                            class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300">Delete</button>
-                    </form>
+        {{-- Gunakan x-data untuk menginisialisasi state modal --}}
+        <div x-data="{ showConfirmModal: false }">
+
+            <div class="flex items-center space-x-6 mb-8">
+                {{-- Bagian Logo dan Nama Organisasi --}}
+                <div class="flex-shrink-0">
+                    <img src="{{ Storage::disk('s3')->url($organization->user->profile_picture_url) }}" alt="Logo Organisasi"
+                        class="w-48 h-48 object-cover rounded-full border-2 border-gray-200">
+                </div>
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-800">{{ $organization->user->name }}</h1>
+                    <div class="flex gap-5 mt-5">
+                        <a href="{{ route('admin.organizations.edit', ['id' => $organization->id]) }}"
+                            class="bg-[var(--color1)] hover:bg-[var(--hovercolor1)] cursor-pointer text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300">Edit</a>
+
+                        {{-- Form untuk delete --}}
+                        <form x-ref="deleteForm" action="{{ route('admin.organizations.destroy', ['id' => $organization->id]) }}" method="post">
+                            @csrf
+                            @method('delete')
+
+                            {{-- Tombol ini sekarang memicu modal, bukan submit form langsung --}}
+                            <button type="button" @click="showConfirmModal = true"
+                                class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
+
+            {{-- Modal Konfirmasi Delete --}}
+            <div x-show="showConfirmModal" style="display: none;" x-transition:enter="ease-out duration-300"
+                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100"
+                x-transition:leave-end="opacity-0"
+                class="fixed inset-0 z-50 flex items-center justify-center bg-white/30">
+
+                <div @click.away="showConfirmModal = false" class="bg-white rounded-lg shadow-xl p-6 w-full max-w-md mx-4">
+                    <h3 class="text-xl font-bold mb-4 text-gray-800">Konfirmasi Penghapusan</h3>
+                    <p class="text-gray-600 mb-6">Apakah Anda yakin ingin menghapus organisasi ini? Tindakan ini tidak dapat dibatalkan.</p>
+                    <div class="flex justify-end gap-4">
+                        {{-- Tombol Batal --}}
+                        <button type="button" @click="showConfirmModal = false"
+                            class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition duration-300">
+                            Batal
+                        </button>
+                        {{-- Tombol Hapus (submit form) --}}
+                        <button type="button" @click="$refs.deleteForm.submit()"
+                            class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition duration-300">
+                            Ya, Hapus
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div> {{-- Penutup div x-data --}}
+
 
         {{-- Keterangan Organisasi --}}
         <div class="mb-8">
@@ -86,13 +114,14 @@
             </div>
         </div>
 
+        {{-- Daftar Acara --}}
         <div class="mt-10">
             <section class="py-10">
                 <div class="container mx-auto px-4">
                     <h2 class="text-xl font-bold text-[var(--color1)] mb-6">Acara dari {{ $organization->user->name }}</h2>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"> {{-- Menyesuaikan grid untuk responsif --}}
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         @foreach ($organization->events as $event)
-                            <div class="bg-white shadow-md rounded-lg overflow-hidden"> {{-- Menambahkan rounded-lg dan shadow-md --}}
+                            <div class="bg-white shadow-md rounded-lg overflow-hidden">
                                 <div class="relative w-full h-40">
                                     <img src="{{ Storage::disk('s3')->url($event->image_url) }}" alt="Acara"
                                         class="w-full h-full object-cover" />
@@ -117,12 +146,10 @@
                                 </div>
                                 <div class="p-4">
                                     <h3 class="font-semibold text-base text-[var(--color2)] mb-2">{{ $event->name }}</h3>
-                                    {{-- Mengubah ukuran font dan menambahkan mb-2 --}}
-
                                     {{-- Lokasi --}}
-                                    <div class="flex items-center text-gray-500 text-xs mb-1"> {{-- Menambahkan items-center dan mb-1 --}}
+                                    <div class="flex items-center text-gray-500 text-xs mb-1">
                                         <img src="{{ asset('assets/icons/Vector.png') }}"
-                                            class="mr-2 h-3 w-3 object-contain" alt="Lokasi"> {{-- Menyesuaikan ukuran icon --}}
+                                            class="mr-2 h-3 w-3 object-contain" alt="Lokasi">
                                         <p class="text-[var(--color2)]">{{ $event->city->name }},
                                             {{ $event->city->province->name }}</p>
                                     </div>
@@ -142,14 +169,12 @@
                                             class="mr-2 h-3 w-3 object-contain" alt="Slot">
                                         <p class="text-[var(--color2)]">Tersedia
                                             {{ $event->available_slot - $event->volunteers->count() }} slot</p>
-                                        {{-- Menambahkan teks "Tersedia ... slot" --}}
                                     </div>
 
                                     {{-- Tombol Lihat --}}
-                                    <div class="flex justify-end"> {{-- Menggunakan justify-end untuk memposisikan tombol di kanan --}}
+                                    <div class="flex justify-end">
                                         <a href="{{ route('admin.events.show', ['id' => $event->id]) }}"
                                             class="px-4 py-2 bg-[var(--color1)] text-white text-sm rounded-md hover:bg-[var(--hovercolor1)] focus:outline-none focus:ring-2 focus:ring-[var(--hovercolor1)] focus:ring-opacity-50">Lihat</a>
-                                        {{-- Mengubah button menjadi link a dan menambahkan styling Tailwind --}}
                                     </div>
                                 </div>
                             </div>
