@@ -102,7 +102,13 @@ class OrganizationController extends Controller
             'description' => ['required', 'string'],
             'founded_at' => ['required', Rule::date()->beforeOrEqual(today())],
             'instagram' => ['required', 'string'],
-            'phone' => ['required', 'digits_between:8,15']
+            'phone' => ['required', 'digits_between:8,15'],
+            'profile_picture'   => [
+                'required', // atau 'required' jika wajib diisi
+                'image',    // Memastikan file adalah gambar
+                'mimes:jpg,png,jpeg', // Hanya mengizinkan ekstensi ini
+                'max:2048', // Ukuran maksimal dalam kilobyte (2048 KB = 2MB)
+            ]
         ]);
 
         $path = Storage::disk('s3')->putFile('profiles/organizations', $request->file('profile_picture'));
