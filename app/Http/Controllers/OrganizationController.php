@@ -88,7 +88,7 @@ class OrganizationController extends Controller
     {
         $validated = $request->validate([
             'name' => ['required', 'string'],
-            'email' => ['required', 'lowercase', 'email', 'unique:users,email'],
+            'email' => ['required', 'lowercase', 'email', 'unique:users,email', 'regex:/^[\w\.\-]+@([\w\-]+\.)+[a-zA-Z]{2,}$/'],
             'password' => ['required', Password::min(8)->letters()->mixedCase()->numbers()->symbols()],
             'profile_picture' => ['required', 'image'],
             'organization_category_id' => ['required', 'exists:organization_categories,id'],
@@ -222,6 +222,7 @@ class OrganizationController extends Controller
     {
         $organization = Organization::findOrFail($id);
         $organization->delete();
+        $organization->user->delete();
         return redirect()->route('admin.organizations.index');
     }
 }
