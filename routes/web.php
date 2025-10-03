@@ -25,7 +25,7 @@ Route::middleware(['guest'])->group(function () {
     });
 });
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth','verified'])->group(function () {
     Route::middleware(['role:volunteer'])->group(function () {
         Route::controller(EventController::class)->group(function () {
             Route::get('/volunteer/events', 'volunteer_index')->name('volunteer.events.index');

@@ -4,6 +4,7 @@ use App\Http\Controllers\auth\ForgotPasswordController;
 use App\Http\Controllers\auth\LoginController;
 use App\Http\Controllers\auth\RegisterController;
 use App\Http\Controllers\auth\ResetPasswordController;
+use App\Http\Controllers\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['guest'])->group(function () {
@@ -29,5 +30,13 @@ Route::middleware(['guest'])->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
+    Route::middleware(['not.verified'])->group(function () {
+        Route::controller(VerifyEmailController::class)->group(function () {
+            Route::get('/email/verify', 'show')->name('verification.notice');
+            Route::get('/email/verify/{id}/{hash}', 'verify')->middleware('signed')->name('verification.verify');
+            Route::post('/email/verification-notification', 'send')->middleware('throttle:6,1')->name('verification.send');
+        });
+    });
+
     Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
 });
