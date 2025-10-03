@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Admin Organizations Create')
+@section('title', 'Daftar Organisasi')
 
 @section('content')
 
