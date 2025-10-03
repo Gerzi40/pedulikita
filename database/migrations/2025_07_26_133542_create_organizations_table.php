@@ -20,6 +20,7 @@ return new class extends Migration
             $table->date('founded_at');
             $table->string('instagram');
             $table->string('phone');
+            $table->enum('state', ['pending', 'approved', 'rejected'])->default('pending');
             $table->timestamps();
         });
     }

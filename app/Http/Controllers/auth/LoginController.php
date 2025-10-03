@@ -21,7 +21,16 @@ class LoginController extends Controller
             'password' => ['required'],
         ]);
  
-        if (Auth::attempt($credentials, $request->remember)) {
+        if (Auth::attemptWhen(
+            $credentials,
+            function (User $user) {
+                if ($user->organization) {
+                    return $user->organization->state == 'pending' || $user->organization->state == 'approved';
+                }
+                return true;
+            },
+            $request->remember
+        )) {
             $request->session()->regenerate();
             
             $user = Auth::user();

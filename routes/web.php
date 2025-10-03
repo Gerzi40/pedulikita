@@ -21,6 +21,8 @@ Route::middleware(['guest'])->group(function () {
     
     Route::controller(OrganizationController::class)->group(function () {
         Route::get('/organizations', 'guest_index')->name('guest.organizations.index');
+        Route::get('/organizations/create', 'create')->name('guest.organizations.create');
+        Route::post('/organizations', 'store')->name('guest.organizations.store');
         Route::get('/organizations/{id}', 'guest_show')->name('guest.organizations.show');
     });
 });
@@ -58,29 +60,36 @@ Route::middleware(['auth','verified'])->group(function () {
     });
 
     Route::middleware(['role:organization'])->group(function () {
-        Route::controller(EventController::class)->group(function () {
-            Route::get('/organization/events', 'organization_index')->name('organization.events.index');
-            Route::get('/organization/events/create', 'create')->name('organization.events.create');
-            Route::post('/organization/events', 'store')->name('organization.events.store');
-            Route::get('/organization/events/{id}', 'organization_show')->name('organization.events.show');
-            Route::get('/organization/events/{id}/edit', 'edit')->name('organization.events.edit');
-            Route::put('/organization/events/{id}', 'update')->name('organization.events.update');
-            Route::delete('/organization/events/{id}', 'organization_destroy')->name('organization.events.destroy');
+        Route::middleware(['organization.approved'])->group(function () {
+            Route::controller(EventController::class)->group(function () {
+                Route::get('/organization/events', 'organization_index')->name('organization.events.index');
+                Route::get('/organization/events/create', 'create')->name('organization.events.create');
+                Route::post('/organization/events', 'store')->name('organization.events.store');
+                Route::get('/organization/events/{id}', 'organization_show')->name('organization.events.show');
+                Route::get('/organization/events/{id}/edit', 'edit')->name('organization.events.edit');
+                Route::put('/organization/events/{id}', 'update')->name('organization.events.update');
+                Route::delete('/organization/events/{id}', 'organization_destroy')->name('organization.events.destroy');
+            });
+    
+            Route::controller(ParticipationController::class)->group(function () {
+                Route::get('/organization/events/{event_id}/volunteer', 'organization_index')->name('organization.participation.index');
+                Route::get('/organization/events/{event_id}/volunteer/edit', 'organization_edit')->name('organization.participation.edit');
+                Route::put('/organization/events/{event_id}/volunteer', 'update')->name('organization.participation.update');
+                Route::post('/organization/events/{event_id}/volunteer', 'submit')->name('organization.participation.submit');
+            });
+    
+            Route::controller(ProfileOrganizationController::class)->group(function () {
+                Route::get('/organization/profile', 'show')->name('organization.profile.show');
+                Route::get('/organization/profile/edit', 'edit')->name('organization.profile.edit');
+                Route::put('/organization/profile', 'update')->name('organization.profile.update');
+            });
+    
+            Route::get('/organization/leaderboard', [LeaderboardController::class, 'organization_index'])->name('organization.leaderboard.index');
+            Route::get('/organization/follower', [FollowController::class, 'organization_index'])->name('organization.follow.index');
         });
-
-        Route::controller(ParticipationController::class)->group(function () {
-            Route::get('/organization/events/{event_id}/volunteer', 'organization_index')->name('organization.participation.index');
-            Route::put('/organization/events/{event_id}/volunteer/{volunteer_id}', 'update')->name('organization.participation.update');
+        Route::middleware(['organization.not.approved'])->group(function () {
+            Route::get('/organization/waiting', [OrganizationController::class, 'waiting'])->name('organization.waiting');
         });
-
-        Route::controller(ProfileOrganizationController::class)->group(function () {
-            Route::get('/organization/profile', 'show')->name('organization.profile.show');
-            Route::get('/organization/profile/edit', 'edit')->name('organization.profile.edit');
-            Route::put('/organization/profile', 'update')->name('organization.profile.update');
-        });
-
-        Route::get('/organization/leaderboard', [LeaderboardController::class, 'organization_index'])->name('organization.leaderboard.index');
-        Route::get('/organization/follower', [FollowController::class, 'organization_index'])->name('organization.follow.index');
     });
 
     Route::middleware(['role:admin'])->group(function () {
@@ -94,12 +103,10 @@ Route::middleware(['auth','verified'])->group(function () {
 
         Route::controller(OrganizationController::class)->group(function () {
             Route::get('/admin/organizations', 'admin_index')->name('admin.organizations.index');
-            Route::get('/admin/organizations/create', 'create')->name('admin.organizations.create');
-            Route::post('/admin/organizations', 'store')->name('admin.organizations.store');
             Route::get('/admin/organizations/{id}', 'admin_show')->name('admin.organizations.show');
-            Route::get('/admin/organizations/{id}/edit', 'edit')->name('admin.organizations.edit');
-            Route::put('/admin/organizations/{id}', 'update')->name('admin.organizations.update');
             Route::delete('/admin/organizations/{id}', 'destroy')->name('admin.organizations.destroy');
+            Route::put('/admin/organizations/{id}/approve', 'approve')->name('admin.organizations.approve');
+            Route::put('/admin/organizations/{id}/reject', 'reject')->name('admin.organizations.reject');
         });
 
     });

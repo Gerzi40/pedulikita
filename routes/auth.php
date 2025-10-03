@@ -4,7 +4,7 @@ use App\Http\Controllers\auth\ForgotPasswordController;
 use App\Http\Controllers\auth\LoginController;
 use App\Http\Controllers\auth\RegisterController;
 use App\Http\Controllers\auth\ResetPasswordController;
-use App\Http\Controllers\VerifyEmailController;
+use App\Http\Controllers\auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['guest'])->group(function () {

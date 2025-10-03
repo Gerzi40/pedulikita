@@ -17,7 +17,8 @@ class Organization extends Model
         'description',
         'founded_at',
         'instagram',
-        'phone'
+        'phone',
+        'state'
     ];
 
     public function user(): BelongsTo

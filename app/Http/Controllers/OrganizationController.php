@@ -6,10 +6,17 @@ use App\Models\Organization;
 use App\Models\OrganizationCategory;
 use App\Models\Province;
 use App\Models\User;
+use App\Notifications\OrganizationApproved;
+use App\Notifications\OrganizationCreated;
+use App\Notifications\OrganizationRejected;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
@@ -42,7 +49,8 @@ class OrganizationController extends Controller
             'name' => ['nullable', 'string'],
             'organization_category_id' => ['nullable', 'exists:organization_categories,id'],
             'province_id' => ['nullable', 'exists:provinces,id'],
-            'city_id' => ['nullable', 'exists:cities,id']
+            'city_id' => ['nullable', 'exists:cities,id'],
+            'state' => ['nullable', Rule::in(['pending', 'approved', 'rejected'])]
         ]);
 
         $query->join('cities', 'organizations.city_id', '=', 'cities.id')
@@ -53,6 +61,7 @@ class OrganizationController extends Controller
                 'users.name',
                 'users.profile_picture_url',
                 'organizations.founded_at',
+                'organizations.state',
                 'organizations.description',
                 'users.email',
                 'organizations.phone',
@@ -73,6 +82,10 @@ class OrganizationController extends Controller
                 $query->where('cities.province_id', '=', $validated['province_id']);
             }
         }
+        if (!empty($validated['state']))
+        {   
+            $query->where('organizations.state', '=', $validated['state']);
+        }
 
         return $query->paginate(12)->appends(request()->query());
     }
@@ -90,7 +103,7 @@ class OrganizationController extends Controller
             'name' => ['required', 'string'],
             'email' => ['required', 'lowercase', 'email', 'unique:users,email', 'regex:/^[\w\.\-]+@([\w\-]+\.)+[a-zA-Z]{2,}$/'],
             'password' => ['required', Password::min(8)->letters()->mixedCase()->numbers()->symbols()],
-            'profile_picture' => ['required', 'image'],
+            'profile_picture' => ['required', 'image', 'mimes:jpg,png,jpeg', 'max:2048'],
             'organization_category_id' => ['required', 'exists:organization_categories,id'],
             'province_id' => ['required', 'exists:provinces,id'],
             'city_id' => [
@@ -102,13 +115,7 @@ class OrganizationController extends Controller
             'description' => ['required', 'string'],
             'founded_at' => ['required', Rule::date()->beforeOrEqual(today())],
             'instagram' => ['required', 'string'],
-            'phone' => ['required', 'digits_between:8,15'],
-            'profile_picture'   => [
-                'required', // atau 'required' jika wajib diisi
-                'image',    // Memastikan file adalah gambar
-                'mimes:jpg,png,jpeg', // Hanya mengizinkan ekstensi ini
-                'max:2048', // Ukuran maksimal dalam kilobyte (2048 KB = 2MB)
-            ]
+            'phone' => ['required', 'digits_between:8,15']
         ]);
 
         $path = Storage::disk('s3')->putFile('profiles/organizations', $request->file('profile_picture'));
@@ -130,13 +137,28 @@ class OrganizationController extends Controller
             ]);
 
             DB::commit();
-
-            return redirect()->route('admin.organizations.show', ['id' => $organization->id]);
         } catch (Throwable $e) {
             DB::rollBack();
 
             throw $e;
         }
+
+        try
+        {
+            $admins = User::where('role', '=', 'admin')->get();
+
+            Notification::send($admins, new OrganizationCreated($user->name));
+        }
+        catch (Throwable $e)
+        {
+            Log::error($e->getMessage());
+        }
+
+        event(new Registered($user));
+
+        Auth::login($user);
+        
+        return redirect()->route('organization.events.index');
     }
 
     public function guest_show(string $id)
@@ -155,74 +177,52 @@ class OrganizationController extends Controller
         return view('organizations.admin_show', compact('organization'));
     }
 
-    public function edit(string $id)
-    {
-        $organization = Organization::findOrFail($id);
-        $organization_categories = OrganizationCategory::get();
-        $provinces = Province::get();
-        return view('organizations.edit', compact('organization', 'organization_categories', 'provinces'));
-    }
-
-    public function update(Request $request, string $id)
-    {
-        $organization = Organization::findOrFail($id);
-        $user = $organization->user;
-
-        $validated = $request->validate([
-            'name' => ['required', 'string'],
-            'email' => ['required', 'lowercase', 'email', Rule::unique('users')->ignore($user->id)],
-            'password' => ['nullable', Password::min(8)->letters()->mixedCase()->numbers()->symbols()],
-            'profile_picture' => ['nullable', 'image'],
-            'organization_category_id' => ['required', 'exists:organization_categories,id'],
-            'province_id' => ['required', 'exists:provinces,id'],
-            'city_id' => [
-                'required',
-                Rule::exists('cities', 'id')->where(function ($query) use ($request) {
-                    $query->where('province_id', $request->province_id);
-                })
-            ],
-            'description' => ['required', 'string'],
-            'founded_at' => ['required', Rule::date()->beforeOrEqual(today())],
-            'instagram' => ['required', 'string'],
-            'phone' => ['required', 'digits_between:8,15']
-        ]);
-
-        if (!empty($validated['profile_picture'])) {
-            $path = Storage::disk('s3')->putFile('profiles/organizations', $request->file('profile_picture'));
-            if (!$path) {
-                abort(500);
-            }
-        }
-
-        DB::beginTransaction();
-
-        try {
-            $user->organization->update(Arr::only($validated, ['organization_category_id', 'province_id', 'city_id', 'description', 'founded_at', 'instagram', 'phone']));
-
-            $userData = Arr::only($validated, ['name', 'email']);
-            if (!empty($validated['password'])) {
-                $userData['password'] = $validated['password'];
-            }
-            if (!empty($validated['profile_picture'])) {
-                $userData['profile_picture_url'] = $path;
-            }
-            $user->update($userData);
-
-            DB::commit();
-
-            return redirect()->route('admin.organizations.show', ['id' => $user->organization->id]);
-        } catch (Throwable $e) {
-            DB::rollBack();
-
-            throw $e;
-        }
-    }
-
     public function destroy(string $id)
     {
         $organization = Organization::findOrFail($id);
         $organization->delete();
         $organization->user->delete();
         return redirect()->route('admin.organizations.index');
+    }
+
+    public function approve(string $id)
+    {
+        $organization = Organization::findOrFail($id);
+        $organization->state = 'approved';
+        $organization->save();
+
+        try
+        {
+            $organization->user->notify(new OrganizationApproved());
+        }
+        catch (Throwable $e)
+        {
+            Log::error($e->getMessage());
+        }
+
+        return back();
+    }
+
+    public function reject(string $id)
+    {
+        $organization = Organization::findOrFail($id);
+        $organization->state = 'rejected';
+        $organization->save();
+
+        try
+        {
+            $organization->user->notify(new OrganizationRejected());
+        }
+        catch (Throwable $e)
+        {
+            Log::error($e->getMessage());
+        }
+
+        return back();
+    }
+
+    public function waiting()
+    {
+        return view('organizations.waiting');
     }
 }

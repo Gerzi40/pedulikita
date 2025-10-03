@@ -18,8 +18,23 @@
                 <div>
                     <h1 class="text-3xl font-bold text-gray-800">{{ $organization->user->name }}</h1>
                     <div class="flex gap-5 mt-5">
-                        <a href="{{ route('admin.organizations.edit', ['id' => $organization->id]) }}"
-                            class="bg-[var(--color1)] hover:bg-[var(--hovercolor1)] cursor-pointer text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300">Edit</a>
+                        @if ($organization->state === 'pending')
+                            <form action="{{ route('admin.organizations.approve', ['id' => $organization->id]) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <button type="submit" class="px-6 py-2 bg-[var(--color1)] text-white font-semibold rounded-md shadow border border-transparent hover:bg-white hover:text-[var(--color1)] hover:border-[var(--color1)] transition duration-300">
+                                    Approve
+                                </button>
+                            </form>
+
+                            <form action="{{ route('admin.organizations.reject', ['id' => $organization->id]) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <button type="submit" class="px-6 py-2 bg-[var(--color1)] text-white font-semibold rounded-md shadow border border-transparent hover:bg-white hover:text-[var(--color1)] hover:border-[var(--color1)] transition duration-300">
+                                    Reject
+                                </button>
+                            </form>
+                        @endif
 
                         {{-- Form untuk delete --}}
                         <form x-ref="deleteForm" action="{{ route('admin.organizations.destroy', ['id' => $organization->id]) }}" method="post">

@@ -24,6 +24,8 @@
 
             {{-- Tombol Daftar & Masuk --}}
             <div class="hidden md:flex items-center space-x-4">
+                <a href="{{ route('guest.organizations.create') }}"
+                    class="px-6 py-2 border text-[var(--color1)] border-[var(--color1)]  rounded-md hover:bg-[var(--color1)] hover:text-white transition duration-300 font-medium">Daftar Organisasi</a>
                 <a href="{{ route('register') }}"
                     class="px-6 py-2 border text-[var(--color1)] border-[var(--color1)]  rounded-md hover:bg-[var(--color1)] hover:text-white transition duration-300 font-medium">Daftar</a>
                 <a href="{{ route('login') }}"
