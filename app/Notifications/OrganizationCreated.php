@@ -12,13 +12,15 @@ class OrganizationCreated extends Notification
     use Queueable;
 
     public string $organization_name;
+    public string $organization_id;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct(string $organization_name)
+    public function __construct(string $organization_name, int $organization_id)
     {
         $this->organization_name = $organization_name;
+        $this->organization_id = $organization_id;
     }
 
     /**
@@ -35,7 +37,9 @@ class OrganizationCreated extends Notification
     {
         return [
             'title' => "Pengajuan organisasi baru",
-            'content' => "Organisasi bernana {$this->organization_name} telah dibuat dan sedang menunggu persetujuan."
+            'content' => "Organisasi bernana {$this->organization_name} telah dibuat dan sedang menunggu persetujuan.",
+            'route' => 'admin.organizations.show',
+            'id' => $this->organization_id
         ];
     }
 }

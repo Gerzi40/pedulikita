@@ -13,14 +13,16 @@ class EventRejected extends Notification
 
     public string $event_name;
     public string $reason;
+    public string $event_id;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct(string $event_name, string $reason)
+    public function __construct(string $event_name, string $reason, string $event_id)
     {
         $this->event_name = $event_name;
         $this->reason = $reason;
+        $this->event_id = $event_id;
     }
 
     /**
@@ -39,7 +41,9 @@ class EventRejected extends Notification
             'title' => "Acara Anda tidak disetujui",
             'content' => "Mohon maaf, acara {$this->event_name} yang Anda ajukan tidak disetujui oleh admin.
                 Alasan: {$this->reason}
-                Silakan perbaiki dan ajukan kembali jika diperlukan."
+                Silakan perbaiki dan ajukan kembali jika diperlukan.",
+            'route' => 'organization.events.show',
+            'id' => $this->event_id
         ];
     }
 }

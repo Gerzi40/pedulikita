@@ -40,6 +40,7 @@ class EventCreated extends Notification
         return [
             'title' => "Pengajuan acara baru",
             'content' => "Organisasi {$this->organization_name} telah mengajukan acara {$this->event_name} dan menunggu persetujuan.",
+            'route' => 'admin.events.show',
             'id' => $this->event_id
         ];
     }

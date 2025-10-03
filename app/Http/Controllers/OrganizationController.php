@@ -147,7 +147,7 @@ class OrganizationController extends Controller
         {
             $admins = User::where('role', '=', 'admin')->get();
 
-            Notification::send($admins, new OrganizationCreated($user->name));
+            Notification::send($admins, new OrganizationCreated($user->name, $organization->id));
         }
         catch (Throwable $e)
         {

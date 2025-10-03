@@ -13,14 +13,16 @@ class EventApproved extends Notification
 
     public string $event_name;
     public string $event_point;
+    public string $event_id;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct(string $event_name, string $event_point)
+    public function __construct(string $event_name, string $event_point, string $event_id)
     {
         $this->event_name = $event_name;
         $this->event_point = $event_point;
+        $this->event_id = $event_id;
     }
 
     /**
@@ -37,7 +39,9 @@ class EventApproved extends Notification
     {
         return [
             'title' => "Acara Anda disetujui",
-            'content' => "Acara {$this->event_name} yang Anda ajukan telah disetujui dan Anda mendapatkan {$this->event_point} poin. Terima kasih atas kontribusi Anda!"
+            'content' => "Acara {$this->event_name} yang Anda ajukan telah disetujui dan Anda mendapatkan {$this->event_point} poin. Terima kasih atas kontribusi Anda!",
+            'route' => 'organization.events.show',
+            'id' => $this->event_id
         ];
     }
 }

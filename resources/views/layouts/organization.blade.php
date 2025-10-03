@@ -44,7 +44,7 @@
                         </div>
                         <ul class="divide-y">
                             @forelse (Auth::user()->notifications as $notification)
-                                <a href="{{ route('organization.events.show', ['id' => $notification->data['id']]) }}">
+                                <a href="{{ route($notification->data['route'], ['id' => $notification->data['id']]) }}">
                                     <li class="px-4 py-3 hover:bg-gray-100">
                                         <p class="text-sm font-medium text-gray-800">{{ $notification->data['title'] }}</p>
                                         <p class="text-xs font-normal text-gray-800">{{ $notification->data['content'] }}

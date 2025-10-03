@@ -1,54 +1,18 @@
 @extends('layouts.app')
 
 @section('navbar')
-    {{-- <nav class="d-flex gap-4">
-        <a href="{{ route('admin.events.index') }}">Events</a>
-        <a href="{{ route('admin.organizations.index') }}">Organizations</a>
-        <form action="{{ route('logout') }}" method="post">
-            @csrf
-            <button type="submit">Logout</button>
-        </form>
-
-        <div>
-            Notification
-            @foreach (Auth::user()->notifications as $notification)
-                <li>{{ $notification->data['title'] }}</li>
-            @endforeach
-        </div>
-    </nav> --}}
-
-
-    {{-- <nav class="d-flex gap-4">
-        <a href="{{ route('organization.events.index') }}">Events</a>
-        <a href="{{ route('organization.leaderboard.index') }}">Leaderboard</a>
-        <a href="{{ route('organization.profile.index') }}">Profile</a>
-        <form action="{{ route('logout') }}" method="post">
-            @csrf
-            <button type="submit">Logout</button>
-        </form>
-
-        <div>
-            Notification
-            @foreach (Auth::user()->notifications as $notification)
-                <li>{{ $notification->data['title'] }}</li>
-            @endforeach
-        </div>
-    </nav> --}}
 
     <header class=" text-white shadow-md sticky top-0 bg-white/70 backdrop-blur-md z-100">
         <div class="container mx-auto px-4 h-20 flex items-center justify-between">
             {{-- Logo --}}
-            <a href="{{ route('guest.index') }}" class="flex-shrink-0"> {{-- Menambahkan flex-shrink-0 agar logo tidak mengecil --}}
-                {{-- Mengubah warna logo menjadi putih atau disesuaikan dengan logo di gambar --}}
-                {{-- Jika logo aslinya berwarna biru, Anda mungkin perlu versi putihnya atau menggunakan CSS filter --}}
+            <a href="{{ route('guest.index') }}" class="flex-shrink-0">
                 <img src="{{ asset('assets/logo/pedulikita.png') }}" class="h-8" alt="Peduli Kita Logo" />
-                {{-- Mengubah tinggi logo menjadi h-8 --}}
             </a>
 
             {{-- Navigasi Utama --}}
-            <nav class="hidden md:flex items-center space-x-8"> {{-- Menggunakan md:flex untuk menampilkan di desktop, items-center untuk rata tengah vertikal, dan space-x-8 untuk jarak antar link --}}
+            <nav class="hidden md:flex items-center space-x-8">
                 <a href="{{ route('admin.events.index') }}"
-                    class="text-[var(--color1)] hover:text-gray-300 text-base font-medium">Acara</a> {{-- Mengubah text-sm menjadi text-base, warna teks putih, dan font-medium --}}
+                    class="text-[var(--color1)] hover:text-gray-300 text-base font-medium">Acara</a>
                 <a href="{{ route('admin.organizations.index') }}"
                     class="text-[var(--color1)] hover:text-gray-300 text-base font-medium">Organisasi</a>
             </nav>
@@ -80,7 +44,7 @@
                         </div>
                         <ul class="divide-y">
                             @forelse (Auth::user()->notifications as $notification)
-                                <a href="{{ route('admin.events.show', ['id' => $notification->data['id']]) }}">
+                                <a href="{{ route($notification->data['route'], ['id' => $notification->data['id']]) }}">
                                     <li class="px-4 py-3 hover:bg-gray-100">
                                         <p class="text-sm font-medium text-gray-800">{{ $notification->data['title'] }}</p>
                                         <p class="text-xs font-normal text-gray-800">{{ $notification->data['content'] }}
@@ -116,12 +80,6 @@
                             <p class="text-sm text-gray-500">{{ Auth::user()->email }}</p>
                         </div>
                         <ul class="py-2">
-                            <li>
-                                <a href="#"
-                                    class="flex items-center px-4 py-2 hover:bg-gray-100 text-gray-700 text-sm">
-                                    ⚙️ My Profile
-                                </a>
-                            </li>
                             <li>
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
