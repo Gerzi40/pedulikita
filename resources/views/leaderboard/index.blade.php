@@ -18,7 +18,7 @@
                     </div>
                 </div>
                 <h3 class="font-semibold text-sm text-gray-800">{{ $volunteers[1]->user->name }}</h3>
-                <p class="text-xs text-gray-500">{{ $volunteers[1]->points ?? '0' }} poin</p>
+                <p class="text-xs text-gray-500">{{ number_format($volunteers[1]->point_total ?? 0, 0) }} poin</p>
             </div>
         @endif
 
@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <h3 class="font-semibold text-base text-gray-800">{{ $volunteers[0]->user->name }}</h3>
-                <p class="text-sm text-gray-500">{{ $volunteers[0]->points ?? '0' }} poin</p>
+                <p class="text-sm text-gray-500">{{ number_format($volunteers[0]->point_total ?? 0, 0) }} poin</p>
             </div>
         @endif
 
@@ -53,7 +53,7 @@
                     </div>
                 </div>
                 <h3 class="font-semibold text-sm text-gray-800">{{ $volunteers[2]->user->name }}</h3>
-                <p class="text-xs text-gray-500">{{ $volunteers[2]->points ?? '0' }} poin</p>
+                <p class="text-xs text-gray-500">{{ number_format($volunteers[2]->point_total ?? 0, 0) }} poin</p>
             </div>
         @endif
     </div>
@@ -62,7 +62,7 @@
     <div class="bg-gray-50 rounded-lg p-4">
         <div class="flex justify-between items-center mb-4">
             <h2 class="text-lg font-semibold text-gray-800">Peringkat selanjutnya</h2>
-            <a href="#" class="text-sm text-blue-600 hover:text-blue-800 flex items-center">
+            <a href="#" class="text-sm text-[var(--color1)] hover:text-[var(--hovercolor1)] flex items-center">
                 Lihat Semua
                 <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
@@ -104,9 +104,9 @@
                         </div>
                     </div>
 
-                    {{-- Points --}}
+                    {{-- point_total --}}
                     <div class="text-right">
-                        <p class="text-xl font-bold text-gray-800">{{ $volunteer->points ?? 0}}</p>
+                        <p class="text-xl font-bold text-gray-800">{{ number_format($volunteer->point_total ?? 0, 0) }}</p>
                         <p class="text-sm text-gray-500">poin</p>
                     </div>
                 </div>

@@ -14,7 +14,7 @@ class LeaderboardController extends Controller
 
     public function organization_index()
     {
-        $volunteers = Volunteer::get();
+        $volunteers = Volunteer::orderBy('point_total', 'desc')->get();
         return view('leaderboard.organization_index', compact('volunteers'));
     }
 }
