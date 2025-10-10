@@ -44,6 +44,10 @@ return Application::configure(basePath: dirname(__DIR__))
                 return route('admin.events.index');
             }
         });
+
+        $middleware->trustProxies(
+            at: '*',
+        );
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         
