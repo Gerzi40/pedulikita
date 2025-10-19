@@ -20,6 +20,7 @@ return new class extends Migration
             $table->rememberToken();
             $table->enum('role', ['volunteer', 'organization', 'admin']);
             $table->string('profile_picture_url')->default('profiles/default.png');
+            $table->softDeletes();
             $table->timestamps();
         });
 

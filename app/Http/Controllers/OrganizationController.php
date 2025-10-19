@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Event;
 use App\Models\Organization;
 use App\Models\OrganizationCategory;
 use App\Models\Province;
@@ -180,8 +181,26 @@ class OrganizationController extends Controller
     public function destroy(string $id)
     {
         $organization = Organization::findOrFail($id);
-        $organization->delete();
-        $organization->user->delete();
+
+        try
+        {
+            $organization->delete();
+            $organization->user->delete();
+            $organization->volunteers()->detach();
+            
+            Event::where('organization_id', '=', $organization->id)
+                ->where('state', '!=', 'finished')
+                ->delete();
+
+            DB::commit();
+        }
+        catch (Throwable $e)
+        {
+            DB::rollBack();
+            
+            throw $e;
+        }
+
         return redirect()->route('admin.organizations.index');
     }
 

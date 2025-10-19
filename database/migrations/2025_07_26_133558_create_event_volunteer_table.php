@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('event_volunteer', function (Blueprint $table) {
-            $table->foreignId('event_id')->constrained();
+            $table->foreignId('event_id')->constrained()->onDelete('cascade');
             $table->foreignId('volunteer_id')->constrained();
             $table->boolean('is_present')->nullable();
             $table->unsignedTinyInteger('rating')->nullable();

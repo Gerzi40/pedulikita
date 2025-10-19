@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('instagram');
             $table->string('phone');
             $table->enum('state', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
