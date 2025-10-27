@@ -66,15 +66,15 @@
                         <div>
                             @if ($event->state == 'approved')
                                 <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-green-600 text-white">
-                                    Disetujui
+                                    {{ $event->state }}
                                 </span>
                             @elseif ($event->state == 'rejected')
                                 <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-red-600 text-white">
-                                    Ditolak
+                                    {{ $event->state }}
                                 </span>
                             @else
                                 <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-[var(--color1)] text-white">
-                                    {{ ucfirst($event->state) }}
+                                    {{ $event->state }}
                                 </span>
                             @endif
                         </div>
