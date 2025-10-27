@@ -63,7 +63,7 @@
                             <span>{{ \Carbon\Carbon::parse($event->start_time)->format('H:i') }} –
                                 {{ \Carbon\Carbon::parse($event->end_time)->format('H:i') }} WIB</span>
                         </div>
-                        {{-- <div>
+                        <div>
                             @if ($event->state == 'approved')
                                 <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-green-600 text-white">
                                     Disetujui
@@ -77,7 +77,7 @@
                                     {{ ucfirst($event->state) }}
                                 </span>
                             @endif
-                        </div> --}}
+                        </div>
                     </div>
                 </div>
 
