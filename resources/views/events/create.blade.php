@@ -19,6 +19,23 @@
                 @enderror
             </div>
 
+            <!-- Kategori Acara -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Kategori <span class="text-red-500">*</span></label>
+                <select name="event_category_id" class="w-full border rounded-md px-4 py-2 text-sm" required>
+                        <option value="" hidden>Please select one</option>
+                        @foreach ($event_categories as $event_category)
+                            <option value="{{ $event_category->id }}"
+                                {{ old('event_category_id') == $event_category->id ? 'selected' : '' }}>
+                                {{ $event_category->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                @error('event_category_id')
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
             <!-- Slot tersedia -->
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Slot tersedia <span class="text-red-500">*</span></label>

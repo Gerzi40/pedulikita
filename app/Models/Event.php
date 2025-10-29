@@ -10,6 +10,7 @@ class Event extends Model
 {
     protected $fillable = [
         'organization_id',
+        'event_category_id',
         'name',
         'date',
         'start_time',
@@ -28,6 +29,11 @@ class Event extends Model
     public function organization(): BelongsTo
     {
         return $this->belongsTo(Organization::class);
+    }
+
+    public function event_category(): BelongsTo
+    {
+        return $this->belongsTo(EventCategory::class);
     }
 
     public function city(): BelongsTo

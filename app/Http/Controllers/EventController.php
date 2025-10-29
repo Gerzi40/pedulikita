@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\City;
 use App\Models\Event;
+use App\Models\EventCategory;
 use App\Models\Province;
 use App\Models\User;
+use App\Notifications\EventApproved;
 use App\Notifications\EventCreated;
+use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -31,6 +34,7 @@ class EventController extends Controller
     {
         $user = Auth::user();
 
+        $event_categories = EventCategory::get();
         $provinces = Province::get();
 
         $query = Event::query()
@@ -41,6 +45,7 @@ class EventController extends Controller
             ->select([
                 'events.id',
                 'events.name',
+                'events.event_category_id',
                 'events.city_id',
                 'events.date',
                 'events.start_time',
@@ -48,19 +53,20 @@ class EventController extends Controller
                 'events.available_slot',
                 DB::raw('COUNT(event_volunteer.volunteer_id) as volunteer_count')
             ])
-            ->groupBy('events.id', 'events.name', 'events.city_id', 'events.date', 'events.start_time', 'events.image_url', 'events.available_slot')
+            ->groupBy('events.id', 'events.name', 'events.event_category_id', 'events.city_id', 'events.date', 'events.start_time', 'events.image_url', 'events.available_slot')
             ->havingRaw('COUNT(event_volunteer.volunteer_id) < events.available_slot')
             ->whereNotIn('events.id', $user->volunteer->events()->pluck('id'));
         
         $events = $this->filter($query, $request);
 
-        return view('events.volunteer_index', compact('provinces', 'events'));
+        return view('events.volunteer_index', compact('event_categories', 'provinces', 'events'));
     }
 
     public function organization_index(Request $request)
     {
         $user = Auth::user();
 
+        $event_categories = EventCategory::get();
         $provinces = Province::get();
 
         $query = Event::query()
@@ -69,6 +75,7 @@ class EventController extends Controller
             ->select([
                 'events.id',
                 'events.name',
+                'events.event_category_id',
                 'events.city_id',
                 'events.date',
                 'events.start_time',
@@ -77,16 +84,51 @@ class EventController extends Controller
                 'events.available_slot',
                 DB::raw('COUNT(event_volunteer.volunteer_id) as volunteer_count')
             ])
-            ->groupBy('events.id', 'events.name', 'events.city_id', 'events.date', 'events.start_time', 'events.image_url', 'events.available_slot')
+            ->groupBy('events.id', 'events.name', 'events.event_category_id', 'events.city_id', 'events.date', 'events.start_time', 'events.image_url', 'events.available_slot')
             ->where('events.organization_id', '=', $user->organization->id);
-
+        
         $events = $this->filter($query, $request);
 
-        return view('events.organization_index', compact('provinces', 'events'));
+        // [
+        //     {
+        //         'id': 1,
+        //         'name': 'Name1',
+        //         'events_count': 1
+        //     },
+        //     ...
+        // ]
+        $event_counts = EventCategory::withCount('events')->orderBy('id')->get();
+
+        // [
+        //     {
+        //         'month_num': '01',
+        //         'month_name': 'Jan',
+        //         'name': 'Name1',
+        //         'events_count': 1
+        //     },
+        //     ...
+        // ]
+        $event_counts_by_month = DB::table('events')
+            ->selectRaw("
+                TO_CHAR(events.date, 'MM') AS month_num,
+                TO_CHAR(events.date, 'Mon') AS month_name,
+                event_categories.name as name,
+                COUNT(events.id) as events_count
+            ")
+            ->join('event_categories', 'events.event_category_id', '=', 'event_categories.id')
+            ->where('events.date', '>=', Carbon::now()->subMonths(5)->startOfMonth())
+            ->where('events.date', '<=', Carbon::now()->endOfMonth())
+            ->groupBy('month_num', 'month_name', 'event_categories.id')
+            ->orderBy('event_categories.id')
+            ->orderBy('month_num')
+            ->get();
+
+        return view('events.organization_index', compact('event_categories', 'provinces', 'events', 'event_counts', 'event_counts_by_month'));
     }
 
     public function admin_index(Request $request)
     {
+        $event_categories = EventCategory::get();
         $provinces = Province::get();
 
         $query = Event::query()
@@ -95,6 +137,7 @@ class EventController extends Controller
             ->select([
                 'events.id',
                 'events.name',
+                'events.event_category_id',
                 'events.city_id',
                 'events.date',
                 'events.start_time',
@@ -105,17 +148,18 @@ class EventController extends Controller
                 'events.description',
                 DB::raw('COUNT(event_volunteer.volunteer_id) as volunteer_count')
             ])
-            ->groupBy('events.id', 'events.name', 'events.city_id', 'events.date', 'events.start_time', 'events.image_url', 'events.available_slot', 'events.point', 'events.state', 'events.description');
+            ->groupBy('events.id', 'events.name', 'events.event_category_id', 'events.city_id', 'events.date', 'events.start_time', 'events.image_url', 'events.available_slot', 'events.point', 'events.state', 'events.description');
         
         $events = $this->filter($query, $request);
 
-        return view('events.admin_index', compact('provinces', 'events'));
+        return view('events.admin_index', compact('event_categories', 'provinces', 'events'));
     }
 
     private function filter(Builder $query, Request $request)
     {
         $validated = $request->validate([
             'name' => ['nullable', 'string'],
+            'event_category_id' => ['nullable', 'exists:event_categories,id'],
             'date' => ['nullable', 'date'],
             'province_id' => ['nullable', 'exists:provinces,id'],
             'city_id' => ['nullable', 'exists:cities,id'],
@@ -126,6 +170,9 @@ class EventController extends Controller
 
         if (!empty($validated['name'])) {
             $query->where('events.name', 'ilike', '%' . $validated['name'] . '%');
+        }
+        if (!empty($validated['event_category_id'])) {
+            $query->where('events.event_category_id', '=', $validated['event_category_id']);
         }
         if (!empty($validated['date'])) {
             $query->where('events.date', '>=', $validated['date']);
@@ -148,13 +195,15 @@ class EventController extends Controller
 
     public function create()
     {
-        return view('events.create');
+        $event_categories = EventCategory::get();
+        return view('events.create', compact('event_categories'));
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
             'name' => ['required', 'string'],
+            'event_category_id' => ['required', 'exists:event_categories,id'],
             'available_slot' => ['required', 'integer'],
             'date' => ['required', Rule::date()->after(today()->addDays(7))],
             'start_time' => ['required', 'date_format:H:i'],
@@ -179,6 +228,7 @@ class EventController extends Controller
         $event = Event::create([
             ...Arr::only($validated, [
                 'name',
+                'event_category_id',
                 'available_slot',
                 'date',
                 'start_time',
@@ -235,7 +285,8 @@ class EventController extends Controller
     public function edit(string $id)
     {
         $event = Event::findOrFail($id);
-        return view('events.edit', compact('event'));
+        $event_categories = EventCategory::get();
+        return view('events.edit', compact('event', 'event_categories'));
     }
 
     public function update(Request $request, string $id)
@@ -243,6 +294,7 @@ class EventController extends Controller
         $event = Event::findOrFail($id);
 
         $validator = Validator::make($request->all(), [
+            'event_category_id' => ['required', 'exists:event_categories,id'],
             'available_slot' => ['required', 'integer'],
             'date' => ['required', Rule::date()->after(today()->addDays(7))],
             'start_time' => ['required', 'date_format:H:i'],
@@ -265,7 +317,7 @@ class EventController extends Controller
 
         $validated = $validator->validate();
 
-        $eventData = Arr::only($validated, ['available_slot', 'date', 'start_time', 'end_time', 'description']);
+        $eventData = Arr::only($validated, ['event_category_id', 'available_slot', 'date', 'start_time', 'end_time', 'description']);
 
         if ($event->location != $validated['location']) {
             $city = City::where('name', '=', $validated['city'])->firstOrFail();
