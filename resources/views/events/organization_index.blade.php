@@ -82,7 +82,7 @@
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"> {{-- Menyesuaikan grid untuk responsif --}}
                 @foreach ($events as $event)
-                    <div class="bg-white shadow-md rounded-lg overflow-hidden"> {{-- Menambahkan rounded-lg dan shadow-md --}}
+                    <div class="bg-white shadow-md rounded-lg overflow-hidden flex flex-col h-full"> {{-- Make card a column flex so we can push the button to bottom --}}
                         <div class="relative w-full h-40">
                             <img src="{{ Storage::disk('s3')->url($event->image_url) }}" alt="Acara"
                                 class="w-full h-full object-cover" />
@@ -105,7 +105,7 @@
                                 </div>
                             @endif
                         </div>
-                        <div class="p-4">
+                        <div class="p-4 flex flex-col flex-1">
                             <h3 class="font-semibold text-base text-[var(--color2)] mb-2">{{ $event->name }}</h3>
                             {{-- Mengubah ukuran font dan menambahkan mb-2 --}}
 
@@ -136,7 +136,7 @@
                             </div>
 
                             {{-- Tombol Lihat --}}
-                            <div class="flex justify-end"> {{-- Menggunakan justify-end untuk memposisikan tombol di kanan --}}
+                            <div class="mt-auto flex justify-end"> {{-- mt-auto pushes this to the bottom of the card content --}}
                                 <a href="{{ route('organization.events.show', ['id' => $event->id]) }}"
                                     class="px-4 py-2 bg-[var(--color1)] text-white text-sm rounded-md hover:bg-[var(--hovercolor1)] focus:outline-none focus:ring-2 focus:ring-[var(--hovercolor1)] focus:ring-opacity-50">Lihat</a>
                                 {{-- Mengubah button menjadi link a dan menambahkan styling Tailwind --}}

@@ -16,7 +16,17 @@ class EnsureOrganizationIsNotApproved
      */
     public function handle(Request $request, Closure $next)
     {
-        if ($request->user()->organization->state == 'approved')
+        if (!$request->user()->organization)
+        {
+            Auth::logout();
+ 
+            $request->session()->invalidate();
+        
+            $request->session()->regenerateToken();
+        
+            return redirect()->route('guest.index');
+        }
+        else if ($request->user()->organization->state == 'approved')
         {
             return redirect()->route('organization.events.index');
         }

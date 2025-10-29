@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class EnsureOrganizationIsApproved
@@ -15,7 +16,17 @@ class EnsureOrganizationIsApproved
      */
     public function handle(Request $request, Closure $next)
     {
-        if ($request->user()->organization->state == 'pending')
+        if (!$request->user()->organization)
+        {
+            Auth::logout();
+ 
+            $request->session()->invalidate();
+        
+            $request->session()->regenerateToken();
+        
+            return redirect()->route('guest.index');
+        }
+        else if ($request->user()->organization->state == 'pending')
         {
             return redirect()->route('organization.waiting');
         }

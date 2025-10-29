@@ -63,6 +63,21 @@
                             <span>{{ \Carbon\Carbon::parse($event->start_time)->format('H:i') }} –
                                 {{ \Carbon\Carbon::parse($event->end_time)->format('H:i') }} WIB</span>
                         </div>
+                        <div>
+                            @if ($event->state == 'approved')
+                                <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-green-600 text-white">
+                                    {{ $event->state }}
+                                </span>
+                            @elseif ($event->state == 'rejected')
+                                <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-red-600 text-white">
+                                    {{ $event->state }}
+                                </span>
+                            @else
+                                <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-[var(--color1)] text-white">
+                                    {{ $event->state }}
+                                </span>
+                            @endif
+                        </div>
                     </div>
                 </div>
 
