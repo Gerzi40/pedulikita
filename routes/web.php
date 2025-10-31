@@ -108,8 +108,10 @@ Route::middleware(['auth','verified'])->group(function () {
             Route::put('/admin/organizations/{id}/approve', 'approve')->name('admin.organizations.approve');
             Route::put('/admin/organizations/{id}/reject', 'reject')->name('admin.organizations.reject');
         });
-
     });
+
+    Route::get('/leaderboard/yearly', [LeaderboardController::class, 'yearly_leaderboard']);
+    Route::get('/leaderboard/monthly', [LeaderboardController::class, 'monthly_leaderboard']);
 });
 
 Route::get('/provinces/{id}/cities', [ProvinceController::class, 'cities']);
