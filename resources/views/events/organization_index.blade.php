@@ -4,6 +4,18 @@
 
 @section('content')
 
+    <section class="container mx-auto mt-10">
+        <h1 class="text-5xl font-bold text-center mb-5">Data Acara</h1>
+        <div class="flex justify-evenly">
+            <div class="w-100">
+                <canvas id="chart1"></canvas>
+            </div>
+            <div class="w-100">
+                <canvas id="chart2"></canvas>
+            </div>
+        </div>
+    </section>
+
     <form action="{{ route('organization.events.index') }}" method="get" id="filterForm"
         class="flex flex-wrap gap-3 items-center p-5 bg-white shadow rounded-md justify-center mx-40 my-5">
 
@@ -14,6 +26,19 @@
             <button type="submit" class="text-blue-500">
                 <img src="{{ asset('assets/icons/search.png') }}" alt="Cari" class="w-5 h-5">
             </button>
+        </div>
+
+        <!-- Kategori Dropdown -->
+        <div class="flex items-center gap-2 rounded-md px-3 py-2 bg-gray-200 w-full md:w-auto">
+            <img src="{{ asset('assets/icons/category.png') }}" alt="Kategori" class="w-5 h-5">
+            <select name="event_category_id" class="bg-transparent outline-none">
+                <option value="">Kategori</option>
+                @foreach ($event_categories as $event_category)
+                    <option value="{{ $event_category->id }}" @selected(request('event_category_id') == $event_category->id)>
+                        {{ $event_category->name }}
+                    </option>
+                @endforeach
+            </select>
         </div>
 
         <!-- Date Picker -->
@@ -52,7 +77,7 @@
                 <option value="">Status</option>
                 <option value="pending" @selected(request('state') == 'pending')>Pending</option>
                 <option value="approved" @selected(request('state') == 'approved')>Approved</option>
-                <option value="rejected" @selected(request('state') == 'rejected')>Rejected</option>
+                <option value="finished" @selected(request('state') == 'finished')>Finished</option>
             </select>
         </div>
 
@@ -82,7 +107,7 @@
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"> {{-- Menyesuaikan grid untuk responsif --}}
                 @foreach ($events as $event)
-                    <div class="bg-white shadow-md rounded-lg overflow-hidden flex flex-col h-full"> {{-- Make card a column flex so we can push the button to bottom --}}
+                    <div class="bg-white shadow-md rounded-lg overflow-hidden"> {{-- Menambahkan rounded-lg dan shadow-md --}}
                         <div class="relative w-full h-40">
                             <img src="{{ Storage::disk('s3')->url($event->image_url) }}" alt="Acara"
                                 class="w-full h-full object-cover" />
@@ -93,11 +118,6 @@
                                     class="absolute top-2 right-2 bg-green-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
                                     {{ $event->state }}
                                 </div>
-                            @elseif ($event->state == 'rejected')
-                                <div
-                                    class="absolute top-2 right-2 bg-red-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
-                                    {{ $event->state }}
-                                </div>
                             @else
                                 <div
                                     class="absolute top-2 right-2 bg-[var(--color1)] text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
@@ -105,9 +125,14 @@
                                 </div>
                             @endif
                         </div>
-                        <div class="p-4 flex flex-col flex-1">
+                        <div class="p-4">
                             <h3 class="font-semibold text-base text-[var(--color2)] mb-2">{{ $event->name }}</h3>
-                            {{-- Mengubah ukuran font dan menambahkan mb-2 --}}
+
+                            {{-- Kategori --}}
+                            <div class="flex items-center text-gray-500 text-xs mb-1">
+                                <img src="{{ asset('assets/icons/category.png') }}" class="mr-2 h-3 w-3 object-contain" alt="">
+                                <p class="text-[var(--color2)]">{{ $event->event_category->name }}</p>
+                            </div>
 
                             {{-- Lokasi --}}
                             <div class="flex items-center text-gray-500 text-xs mb-1"> {{-- Menambahkan items-center dan mb-1 --}}
@@ -136,7 +161,7 @@
                             </div>
 
                             {{-- Tombol Lihat --}}
-                            <div class="mt-auto flex justify-end"> {{-- mt-auto pushes this to the bottom of the card content --}}
+                            <div class="flex justify-end"> {{-- Menggunakan justify-end untuk memposisikan tombol di kanan --}}
                                 <a href="{{ route('organization.events.show', ['id' => $event->id]) }}"
                                     class="px-4 py-2 bg-[var(--color1)] text-white text-sm rounded-md hover:bg-[var(--hovercolor1)] focus:outline-none focus:ring-2 focus:ring-[var(--hovercolor1)] focus:ring-opacity-50">Lihat</a>
                                 {{-- Mengubah button menjadi link a dan menambahkan styling Tailwind --}}
@@ -149,6 +174,102 @@
     </section>
 
     {{ $events->links() }}
+
+    <script>
+        const chart1 = document.getElementById('chart1');
+
+        const eventCounts = {{ Js::from($event_counts) }};
+        const names = eventCounts.map(eventCategory => eventCategory.name);
+        const eventsCount = eventCounts.map(eventCategory => eventCategory.events_count);
+        
+        new Chart(chart1, {
+            type: 'bar',
+            data: {
+                labels: names,
+                datasets: [{
+                    label: 'Jumlah Acara',
+                    data: eventsCount,
+                    backgroundColor: [
+                        '#36A2EB', '#FF6384', '#4BC0C0', '#FF9F40', '#9966FF', '#FFCD56', '#C9CBCF'
+                    ]
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        ticks: {
+                            stepSize: 2
+                        },
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                },
+                indexAxis: 'y',
+            }
+        });
+
+        const chart2 = document.getElementById('chart2');
+
+        const months = [];
+        const now = new Date();
+        for (let i = 5; i >= 0; i--) {
+            const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
+            const month = date.toLocaleString('en-US', { month: 'short' });
+            months.push(month);
+        }
+        const eventCountsByMonth = {{ Js::from($event_counts_by_month) }};
+        let datasets = []
+        let index = 0;
+        for (let i=0; i<names.length; i++) {
+            let data = [];
+            for (let j=0; j<months.length; j++) {
+                const item = eventCountsByMonth[index];
+                if (item.month_name == months[j]) {
+                    data.push(item.events_count);
+                    index++;
+                } else {
+                    data.push(0);
+                }
+            }
+            datasets.push({
+                label: names[i],
+                data: data,
+                fill: true
+            })
+        }
+
+        new Chart(chart2, {
+            type: 'line',
+            data: {
+                labels: months,
+                datasets: datasets
+            },
+            options: {
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            stepSize: 2
+                        },
+                        grid: {
+                            display: false
+                        },
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
 
     <script>
         const selectedCity = "{{ request('city_id') }}";

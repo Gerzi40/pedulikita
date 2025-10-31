@@ -4,31 +4,6 @@
 
 @section('content')
 
-    {{-- <a href="{{ route('organization.participation.index', ['event_id' => $event->id]) }}">Event Volunteer</a>
-    <a href="{{ route('organization.events.edit', ['id' => $event->id]) }}">Edit</a>
-
-    <form action="{{ route('organization.events.destroy', ['id' => $event->id]) }}" method="post">
-        @csrf
-        @method('delete')
-        <button type="submit">Delete</button>
-    </form> --}}
-
-    {{-- <img src="{{ Storage::disk('s3')->url($event->image_url) }}" style="max-height: 200px;"/>
-
-    {{ $event }}
-
-    <p>Location: {{ $event->location }}</p>
-
-    <iframe
-        width="100%"
-        height="400"
-        frameborder="0"
-        style="border:0"
-        src="https://maps.google.com/maps?q={{ $event->latitude }},{{ $event->longitude }}&hl=id&z=15&output=embed"
-        allowfullscreen>
-    </iframe> --}}
-
-    {{-- Event Info --}}
     <section class="max-w-6xl mx-auto mt-10 px-4">
         <div class="grid md:grid-cols-2 gap-10 items-center">
             {{-- Gambar --}}
@@ -42,6 +17,10 @@
                 <div>
                     <h3 class="text-lg font-bold text-gray-700 mb-2">Informasi</h3>
                     <div class="space-y-3 text-sm text-gray-600">
+                        <div class="flex items-center gap-2">
+                            <img src="{{ asset('assets/icons/category.png') }}" class="w-5 h-5" alt="">
+                            <span>{{ $event->event_category->name }}</span>
+                        </div>
                         <div class="flex items-center gap-2">
                             <img src="{{ asset('assets/icons/people.png') }}" class="w-5 h-5" alt="">
                             <span>{{ $event->volunteers->count() }} Relawan berpartisipasi</span>
@@ -63,27 +42,12 @@
                             <span>{{ \Carbon\Carbon::parse($event->start_time)->format('H:i') }} –
                                 {{ \Carbon\Carbon::parse($event->end_time)->format('H:i') }} WIB</span>
                         </div>
-                        <div>
-                            @if ($event->state == 'approved')
-                                <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-green-600 text-white">
-                                    {{ $event->state }}
-                                </span>
-                            @elseif ($event->state == 'rejected')
-                                <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-red-600 text-white">
-                                    {{ $event->state }}
-                                </span>
-                            @else
-                                <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-[var(--color1)] text-white">
-                                    {{ $event->state }}
-                                </span>
-                            @endif
-                        </div>
                     </div>
                 </div>
 
                 <div class="flex items-center gap-4 mt-4">
                     <!-- Tombol Hapus -->
-                    @if($event->state == 'pending' || $event->state == 'rejected')
+                    @if($event->state == 'pending')
                         <form action="{{ route('organization.events.destroy', ['id' => $event->id]) }}" method="post">
                             @csrf
                             @method('delete')
@@ -108,7 +72,7 @@
                         </a>
                     @endif
 
-                    @if ($event->state == 'approved')
+                    @if ($event->state == 'approved' || $event->state == 'finished')
                         <a href="{{ route('organization.participation.index', ['event_id' => $event->id]) }}"
                             class="group inline-flex px-6 py-2 bg-[var(--color1)] text-white font-semibold rounded-md shadow 
                                 border border-[var(--color1)]
