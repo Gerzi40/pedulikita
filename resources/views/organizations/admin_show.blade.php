@@ -78,7 +78,6 @@
 
         </div> {{-- Penutup div x-data --}}
 
-
         {{-- Keterangan Organisasi --}}
         <div class="mb-8">
             <h2 class="text-2xl font-bold text-gray-800 mb-4">Keterangan Organisasi</h2>
@@ -147,11 +146,6 @@
                                             class="absolute top-2 right-2 bg-green-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
                                             {{ $event->state }}
                                         </div>
-                                    @elseif ($event->state == 'rejected')
-                                        <div
-                                            class="absolute top-2 right-2 bg-red-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
-                                            {{ $event->state }}
-                                        </div>
                                     @else
                                         <div
                                             class="absolute top-2 right-2 bg-[var(--color1)] text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
@@ -161,6 +155,13 @@
                                 </div>
                                 <div class="p-4">
                                     <h3 class="font-semibold text-base text-[var(--color2)] mb-2">{{ $event->name }}</h3>
+                                    
+                                    {{-- Kategori --}}
+                                    <div class="flex items-center text-gray-500 text-xs mb-1">
+                                        <img src="{{ asset('assets/icons/category.png') }}" class="mr-2 h-3 w-3 object-contain" alt="">
+                                        <p class="text-[var(--color2)]">{{ $event->event_category->name }}</p>
+                                    </div>
+
                                     {{-- Lokasi --}}
                                     <div class="flex items-center text-gray-500 text-xs mb-1">
                                         <img src="{{ asset('assets/icons/Vector.png') }}"

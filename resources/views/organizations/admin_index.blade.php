@@ -3,60 +3,62 @@
 @section('title', 'Organisasi')
 
 @section('content')
-    {{-- <div class="flex justify-center">
-        <form action="{{ route('admin.organizations.index') }}" method="get" id="filterForm"
-            class="flex flex-wrap gap-5 items-center p-5 bg-white shadow rounded-md justify-center my-5">
+    <div class="flex justify-center">
+        <form action="{{ route('admin.organizations.index') }}" method="get" id="filterForm"
+            class="flex flex-wrap gap-5 items-center p-5 bg-white shadow rounded-md justify-center my-5">
 
-                        <div class="flex items-center rounded-md px-3 py-2 w-full md:w-auto bg-gray-200">
-                <input type="text" name="name" placeholder="Masukkan nama organisasi"
-                    class="outline-none w-full bg-transparent" value="{{ request('name') }}">
-                <button type="submit" class="text-blue-500">🔍</button>
-            </div>
+            <div class="flex items-center rounded-md px-3 py-2 w-full md:w-auto bg-gray-200">
+                <input type="text" name="name" placeholder="Masukkan nama organisasi"
+                    class="outline-none w-full bg-transparent" value="{{ request('name') }}">
+                <button type="submit" class="text-blue-500">🔍</button>
+            </div>
 
-                        <div class="flex items-center gap-2 rounded-md px-3 py-2 bg-gray-200 w-full md:w-auto">
-                🏷️
-                <select name="organization_category_id" class="bg-transparent outline-none">
-                    <option value="">Kategori Organisasi</option>
-                    @foreach ($organization_categories as $organization_category)
-                        <option value="{{ $organization_category->id }}" @selected(request('organization_category_id') == $organization_category->id)>
-                            {{ $organization_category->name }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
+            <div class="flex items-center gap-2 rounded-md px-3 py-2 bg-gray-200 w-full md:w-auto">
+                🏷️
+                <select name="organization_category_id" class="bg-transparent outline-none">
+                    <option value="">Kategori Organisasi</option>
+                    @foreach ($organization_categories as $organization_category)
+                        <option value="{{ $organization_category->id }}" @selected(request('organization_category_id') == $organization_category->id)>
+                            {{ $organization_category->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
 
-                        <div class="flex items-center gap-2 rounded-md px-3 py-2 bg-gray-200 w-full md:w-auto">
-                🏙️
-                <select name="province_id" id="province" class="bg-transparent outline-none">
-                    <option value="">Provinsi</option>
-                    @foreach ($provinces as $province)
-                        <option value="{{ $province->id }}" @selected(request('province_id') == $province->id)>
-                            {{ $province->name }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
+            <div class="flex items-center gap-2 rounded-md px-3 py-2 bg-gray-200 w-full md:w-auto">
+                🏙️
+                <select name="province_id" id="province" class="bg-transparent outline-none">
+                    <option value="">Provinsi</option>
+                    @foreach ($provinces as $province)
+                        <option value="{{ $province->id }}" @selected(request('province_id') == $province->id)>
+                            {{ $province->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
 
-                        <div class="flex items-center gap-2 rounded-md px-3 py-2 bg-gray-200 w-full md:w-auto">
-                🌆
-                <select name="city_id" id="city" class="bg-transparent outline-none">
-                    <option value="">Kota</option>
-                                    </select>
-            </div>
+            <div class="flex items-center gap-2 rounded-md px-3 py-2 bg-gray-200 w-full md:w-auto">
+                🌆
+                <select name="city_id" id="city" class="bg-transparent outline-none">
+                    <option value="">Kota</option>
+                </select>
+            </div>
 
-                        <button type="submit" class="bg-[var(--color1)] text-white px-5 py-2 rounded-md hover:bg-[var(--hovercolor1)]">
-                Filter
-            </button>
-        </form>
-    </div> --}}
+            <div class="flex items-center gap-2 rounded-md px-3 py-2 bg-gray-200 w-full md:w-auto">
+                <img src="{{ asset('assets/icons/status.png') }}" alt="Status" class="w-5 h-5">
+                <select name="state" class="bg-transparent outline-none">
+                    <option value="">Status</option>
+                    <option value="pending" @selected(request('state') == 'pending')>Pending</option>
+                    <option value="approved" @selected(request('state') == 'approved')>Approved</option>
+                    <option value="rejected" @selected(request('state') == 'rejected')>Rejected</option>
+                </select>
+            </div>
 
-    {{-- @foreach ($organizations as $organization)
-        <li>
-            <a href="{{ route('admin.organizations.show', ['id' => $organization->id]) }}">
-                {{ $organization }}
-            </a>
-        </li>
-    @endforeach --}}
+            <button type="submit" class="bg-[var(--color1)] text-white px-5 py-2 rounded-md hover:bg-[var(--hovercolor1)] cursor-pointer">
+                Filter
+            </button>
+        </form>
+    </div>
 
     <div x-data="{ showConfirmModal: false, formToSubmit: null }"
         class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
@@ -313,7 +315,7 @@
                 </div>
             </div>
         </div>
-
+        
     </div>
 
     {{ $organizations->links() }}
