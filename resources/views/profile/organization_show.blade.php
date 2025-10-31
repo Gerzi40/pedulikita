@@ -40,7 +40,12 @@
                             class="w-full h-40 object-cover" />
                         <div class="p-4">
                             <h3 class="font-semibold text-base text-[var(--color2)] mb-2">{{ $event->name }}</h3>
-                            {{-- Mengubah ukuran font dan menambahkan mb-2 --}}
+
+                            {{-- Kategori --}}
+                            <div class="flex items-center text-gray-500 text-xs mb-1">
+                                <img src="{{ asset('assets/icons/category.png') }}" class="mr-2 h-3 w-3 object-contain" alt="">
+                                <p class="text-[var(--color2)]">{{ $event->event_category->name }}</p>
+                            </div>
 
                             {{-- Lokasi --}}
                             <div class="flex items-center text-gray-500 text-xs mb-1"> {{-- Menambahkan items-center dan mb-1 --}}
