@@ -163,7 +163,7 @@ class EventController extends Controller
             'date' => ['nullable', 'date'],
             'province_id' => ['nullable', 'exists:provinces,id'],
             'city_id' => ['nullable', 'exists:cities,id'],
-            'state' => ['nullable', Rule::in(['pending', 'approved', 'rejected'])],
+            'state' => ['nullable', Rule::in(['pending', 'approved', 'finished'])],
         ]);
 
         $query->join('cities', 'events.city_id', '=', 'cities.id');
@@ -355,5 +355,4 @@ class EventController extends Controller
 
     public function approve(Request $request, string $id) {}
 
-    public function reject(Request $request, string $id) {}
 }
