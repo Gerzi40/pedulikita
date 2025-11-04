@@ -15,6 +15,8 @@
                     class="text-[var(--color1)] hover:text-gray-300 text-base font-medium">Acara</a>
                 <a href="{{ route('organization.leaderboard.index') }}"
                     class="text-[var(--color1)] hover:text-gray-300 text-base font-medium">Leaderboard</a>
+                <a href="{{ route('organization.news.index') }}"
+                    class="text-[var(--color1)] hover:text-gray-300 text-base font-medium">Berita</a>
             </nav>
 
             <div class="flex items-center gap-3">

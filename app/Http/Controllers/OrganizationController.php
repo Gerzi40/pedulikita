@@ -116,7 +116,67 @@ class OrganizationController extends Controller
             'description' => ['required', 'string'],
             'founded_at' => ['required', Rule::date()->beforeOrEqual(today())],
             'instagram' => ['required', 'string'],
-            'phone' => ['required', 'digits_between:8,15']
+            'phone' => ['required', 'digits_between:8,15', 'starts_with:08']
+        ],
+        // Custom messages (Bahasa Indonesia)
+        [
+            'name.required' => 'Nama organisasi wajib diisi.',
+            'name.string' => 'Nama organisasi harus berupa teks.',
+
+            'email.required' => 'Alamat email wajib diisi.',
+            'email.email' => 'Alamat email harus berupa alamat email yang valid.',
+            'email.unique' => 'Alamat email sudah terdaftar.',
+            'email.regex' => 'Alamat email tidak valid.',
+            'email.lowercase' => 'Alamat email harus huruf kecil.',
+
+            'password.required' => 'Password wajib diisi.',
+            'password.min' => 'Password harus minimal :min karakter.',
+            'password.letters' => 'Password harus mengandung huruf.',
+            'password.mixed' => 'Password harus mengandung huruf besar dan kecil.',
+            'password.numeric' => 'Password harus mengandung angka.',
+            'password.symbols' => 'Password harus mengandung simbol.',
+
+            'profile_picture.required' => 'Gambar profil wajib diunggah.',
+            'profile_picture.image' => 'File harus berupa gambar.',
+            'profile_picture.mimes' => 'Format gambar harus JPG atau PNG.',
+            'profile_picture.max' => 'Ukuran gambar maksimal :max kilobyte.',
+
+            'organization_category_id.required' => 'Jenis organisasi wajib dipilih.',
+            'organization_category_id.exists' => 'Jenis organisasi yang dipilih tidak valid.',
+
+            'province_id.required' => 'Provinsi wajib dipilih.',
+            'province_id.exists' => 'Provinsi yang dipilih tidak valid.',
+
+            'city_id.required' => 'Kota wajib dipilih.',
+            'city_id.exists' => 'Kota yang dipilih tidak valid atau tidak sesuai provinsi.',
+
+            'description.required' => 'Keterangan organisasi wajib diisi.',
+            'description.string' => 'Keterangan organisasi harus berupa teks.',
+
+            'founded_at.required' => 'Tanggal didaftarkan wajib diisi.',
+            'founded_at.date' => 'Tanggal didaftarkan harus berupa tanggal yang valid.',
+            'founded_at.before_or_equal' => 'Tanggal didaftarkan tidak boleh lebih dari hari ini.',
+
+            'instagram.required' => 'Akun Instagram wajib diisi.',
+            'instagram.string' => 'Akun Instagram harus berupa teks.',
+
+            'phone.required' => 'Nomor telepon wajib diisi.',
+            'phone.digits_between' => 'Nomor telepon harus memiliki panjang antara :min sampai :max digit.',
+            'phone.starts_with' => 'Nomor telepon harus diawali dengan 08.'
+        ],
+        // Custom attribute names (lebih ramah)
+        [
+            'name' => 'nama organisasi',
+            'email' => 'alamat email',
+            'password' => 'password',
+            'profile_picture' => 'gambar profil',
+            'organization_category_id' => 'jenis organisasi',
+            'province_id' => 'provinsi',
+            'city_id' => 'kota',
+            'description' => 'keterangan',
+            'founded_at' => 'tanggal didaftarkan',
+            'instagram' => 'akun instagram',
+            'phone' => 'nomor telepon'
         ]);
 
         $path = Storage::disk('s3')->putFile('profiles/organizations', $request->file('profile_picture'));

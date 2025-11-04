@@ -5,6 +5,7 @@ use App\Http\Controllers\FollowController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LeaderboardController;
 use App\Http\Controllers\OrganizationController;
+use App\Http\Controllers\NewsController;
 use App\Http\Controllers\ParticipationController;
 use App\Http\Controllers\profile\OrganizationController as ProfileOrganizationController;
 use App\Http\Controllers\profile\VolunteerController as ProfileVolunteerController;
@@ -13,12 +14,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['guest'])->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('guest.index');
-    
+
     Route::controller(EventController::class)->group(function () {
         Route::get('/events', 'guest_index')->name('guest.events.index');
         Route::get('/events/{id}', 'guest_show')->name('guest.events.show');
     });
-    
+
     Route::controller(OrganizationController::class)->group(function () {
         Route::get('/organizations', 'guest_index')->name('guest.organizations.index');
         Route::get('/organizations/create', 'create')->name('guest.organizations.create');
@@ -27,7 +28,7 @@ Route::middleware(['guest'])->group(function () {
     });
 });
 
-Route::middleware(['auth','verified'])->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::middleware(['role:volunteer'])->group(function () {
         Route::controller(EventController::class)->group(function () {
             Route::get('/volunteer/events', 'volunteer_index')->name('volunteer.events.index');
@@ -44,16 +45,21 @@ Route::middleware(['auth','verified'])->group(function () {
             Route::get('/volunteer/profile/edit', 'edit')->name('volunteer.profile.edit');
             Route::put('/volunteer/profile', 'update')->name('volunteer.profile.update');
         });
-        
+
         Route::controller(FollowController::class)->group(function () {
             Route::get('/volunteer/following', 'volunteer_index')->name('volunteer.follow.index');
             Route::post('/volunteer/follow/{organization_id}', 'store')->name('volunteer.follow.store');
             Route::delete('volunteer/follow/{organization_id}', 'destroy')->name('volunteer.follow.destroy');
         });
-        
+
         Route::controller(ParticipationController::class)->group(function () {
             Route::get('/volunteer/activity', 'volunteer_index')->name('volunteer.participation.index');
             Route::post('/volunteer/events/{event_id}', 'store')->name('volunteer.participation.store');
+        });
+
+        Route::controller(NewsController::class)->group(function () {
+            Route::get('/volunteer/news', 'volunteer_index')->name('volunteer.news.index');
+            Route::get('/volunteer/news/{news_id}', 'volunteer_show')->name('volunteer.news.show');
         });
 
         Route::get('/volunteer/leaderboard', [LeaderboardController::class, 'volunteer_index'])->name('volunteer.leaderboard.index');
@@ -70,20 +76,27 @@ Route::middleware(['auth','verified'])->group(function () {
                 Route::put('/organization/events/{id}', 'update')->name('organization.events.update');
                 Route::delete('/organization/events/{id}', 'organization_destroy')->name('organization.events.destroy');
             });
-    
+
+            Route::controller(NewsController::class)->group(function () {
+                Route::get('/organization/news', 'organization_index')->name('organization.news.index');
+                Route::get('/organization/news/create/{event_id}', 'create')->name('organization.news.create');
+                Route::post('/organization/news', 'store')->name('organization.news.store');
+                // Route::get('/organization/news/{id}', 'organization_show')->name('organization.news.show');
+            });
+
             Route::controller(ParticipationController::class)->group(function () {
                 Route::get('/organization/events/{event_id}/volunteer', 'organization_index')->name('organization.participation.index');
                 Route::get('/organization/events/{event_id}/volunteer/edit', 'organization_edit')->name('organization.participation.edit');
                 Route::put('/organization/events/{event_id}/volunteer/{volunteer_id}', 'update')->name('organization.participation.update');
                 Route::post('/organization/events/{event_id}/volunteer', 'submit')->name('organization.participation.submit');
             });
-    
+
             Route::controller(ProfileOrganizationController::class)->group(function () {
                 Route::get('/organization/profile', 'show')->name('organization.profile.show');
                 Route::get('/organization/profile/edit', 'edit')->name('organization.profile.edit');
                 Route::put('/organization/profile', 'update')->name('organization.profile.update');
             });
-    
+
             Route::get('/organization/leaderboard', [LeaderboardController::class, 'organization_index'])->name('organization.leaderboard.index');
             Route::get('/organization/follower', [FollowController::class, 'organization_index'])->name('organization.follow.index');
         });
@@ -116,4 +129,4 @@ Route::middleware(['auth','verified'])->group(function () {
 
 Route::get('/provinces/{id}/cities', [ProvinceController::class, 'cities']);
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

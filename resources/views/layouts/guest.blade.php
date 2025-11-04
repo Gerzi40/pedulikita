@@ -17,9 +17,6 @@
                     class="text-[var(--color1)] hover:text-gray-300 text-base font-medium">Acara</a> {{-- Mengubah text-sm menjadi text-base, warna teks putih, dan font-medium --}}
                 <a href="{{ route('guest.organizations.index') }}"
                     class="text-[var(--color1)] hover:text-gray-300 text-base font-medium">Organisasi</a>
-                {{-- Sama seperti di atas --}}
-                <a href="#" class="text-[var(--color1)] hover:text-gray-300 text-base font-medium">Aktivitas</a>
-                {{-- Menambahkan link "Aktifitas" --}}
             </nav>
 
             {{-- Tombol Daftar & Masuk --}}
