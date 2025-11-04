@@ -33,6 +33,9 @@ class NewsController extends Controller
             // ensure we only pick events belonging to this organization
             ->where('events.organization_id', '=', $user->organization->id)->get();
 
+        // nanti pake ini
+        // $events = $user->organization->events()->where('status', 'finished')->get();
+
         return view('news.organization_index', compact('events'));
     }
 
