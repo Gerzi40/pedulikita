@@ -210,6 +210,11 @@
                         }
                     }
                 },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
                 indexAxis: 'y',
             }
         });
