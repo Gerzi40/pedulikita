@@ -81,6 +81,7 @@
                 <option value="pending" @selected(request('state') == 'pending')>Pending</option>
                 <option value="approved" @selected(request('state') == 'approved')>Approved</option>
                 <option value="finished" @selected(request('state') == 'finished')>Finished</option>
+                <option value="reviewed" @selected(request('state') == 'reviewed')>Reviewed</option>
             </select>
         </div>
 
