@@ -249,7 +249,7 @@ class OrganizationController extends Controller
             $organization->volunteers()->detach();
             
             Event::where('organization_id', '=', $organization->id)
-                ->where('state', '!=', 'finished')
+                ->whereNotIn('state', ['finished', 'reviewed'])
                 ->delete();
 
             DB::commit();
