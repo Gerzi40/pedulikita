@@ -200,7 +200,7 @@ class EventController extends Controller
             'date' => ['nullable', 'date'],
             'province_id' => ['nullable', 'exists:provinces,id'],
             'city_id' => ['nullable', 'exists:cities,id'],
-            'state' => ['nullable', Rule::in(['pending', 'approved', 'finished'])],
+            'state' => ['nullable', Rule::in(['pending', 'approved', 'finished', 'reviewed'])],
         ]);
 
         $query->join('cities', 'events.city_id', '=', 'cities.id');
