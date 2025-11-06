@@ -353,6 +353,26 @@ class EventController extends Controller
         return redirect()->route('admin.events.index');
     }
 
-    public function approve(Request $request, string $id) {}
+    public function approve(Request $request, string $id) {
+        $validated = $request->validate([
+            'point' => ['required', 'integer', 'between:1,10']
+        ]);
+
+        $event = Event::findOrFail($id);
+        $event->state = 'approved';
+        $event->point = $validated['point'];
+        $event->save();
+
+        try
+        {
+            $event->organization->user->notify(new EventApproved($event->name, $validated['point'], $event->id));
+        }
+        catch (Throwable $e)
+        {
+            Log::error($e->getMessage());
+        }
+
+        return back();
+    }
 
 }
