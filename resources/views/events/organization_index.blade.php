@@ -13,6 +13,9 @@
             <div class="w-100">
                 <canvas id="chart2"></canvas>
             </div>
+            <div class="w-100">
+                <canvas id="chart3"></canvas>
+            </div>
         </div>
     </section>
 
@@ -187,7 +190,6 @@
             data: {
                 labels: names,
                 datasets: [{
-                    label: 'Jumlah Acara',
                     data: eventsCount,
                     backgroundColor: [
                         '#36A2EB', '#FF6384', '#4BC0C0', '#FF9F40', '#9966FF', '#FFCD56', '#C9CBCF'
@@ -213,6 +215,10 @@
                 plugins: {
                     legend: {
                         display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'Jumlah Acara'
                     }
                 },
                 indexAxis: 'y',
@@ -272,6 +278,52 @@
                         beginAtZero: true
                     }
                 }
+            }
+        });
+
+        const chart3 = document.getElementById('chart3');
+
+        const volunteerCounts = {{ Js::from($volunteer_counts) }};
+        const eventCategoryNames = volunteerCounts.map(eventCategory => eventCategory.name);
+        const volunteersCount = volunteerCounts.map(eventCategory => eventCategory.volunteers_count);
+
+        new Chart(chart3, {
+            type: 'bar',
+            data: {
+                labels: eventCategoryNames,
+                datasets: [{
+                    data: volunteersCount,
+                    backgroundColor: [
+                        '#36A2EB', '#FF6384', '#4BC0C0', '#FF9F40', '#9966FF', '#FFCD56', '#C9CBCF'
+                    ]
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        ticks: {
+                            stepSize: 2
+                        },
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'Jumlah Relawan'
+                    }
+                },
+                indexAxis: 'y',
             }
         });
     </script>

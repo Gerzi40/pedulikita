@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
@@ -92,18 +93,20 @@ class EventController extends Controller
         // [
         //     {
         //         'id': 1,
-        //         'name': 'Name1',
+        //         'name': 'Category1',
         //         'events_count': 1
         //     },
         //     ...
         // ]
-        $event_counts = EventCategory::withCount('events')->orderBy('id')->get();
+        $event_counts = Cache::remember('event_counts', Carbon::now()->addHours(1), function () {
+            return EventCategory::withCount('events')->orderBy('id')->get();
+        });
 
         // [
         //     {
         //         'month_num': '01',
         //         'month_name': 'Jan',
-        //         'name': 'Name1',
+        //         'name': 'Category1',
         //         'events_count': 1
         //     },
         //     ...
@@ -123,7 +126,41 @@ class EventController extends Controller
             ->orderBy('month_num')
             ->get();
 
-        return view('events.organization_index', compact('event_categories', 'provinces', 'events', 'event_counts', 'event_counts_by_month'));
+        $event_counts_by_month = Cache::remember('by_month_event_counts', Carbon::now()->addHours(1), function () {
+            return DB::table('events')
+                ->selectRaw("
+                    TO_CHAR(events.date, 'MM') AS month_num,
+                    TO_CHAR(events.date, 'Mon') AS month_name,
+                    event_categories.name as name,
+                    COUNT(events.id) as events_count
+                ")
+                ->join('event_categories', 'events.event_category_id', '=', 'event_categories.id')
+                ->where('events.date', '>=', Carbon::now()->subMonths(5)->startOfMonth())
+                ->where('events.date', '<=', Carbon::now()->endOfMonth())
+                ->groupBy('month_num', 'month_name', 'event_categories.id')
+                ->orderBy('event_categories.id')
+                ->orderBy('month_num')
+                ->get();
+        });
+
+        // [
+        //     {
+        //         'name': 'Category1',
+        //         'volunteers_count': 1
+        //     },
+        //     ...
+        // ]
+        $volunteer_counts = Cache::remember('volunteer_counts', Carbon::now()->addHours(1), function () {
+            return DB::table('event_categories')
+                ->selectRaw('event_categories.name, COUNT(event_volunteer.volunteer_id) AS volunteers_count')
+                ->join('events', 'event_categories.id', '=', 'events.event_category_id')
+                ->join('event_volunteer', 'events.id', '=', 'event_volunteer.event_id')
+                ->groupBy('event_categories.id')
+                ->orderBy('event_categories.id')
+                ->get();
+        });
+
+        return view('events.organization_index', compact('event_categories', 'provinces', 'events', 'event_counts', 'event_counts_by_month', 'volunteer_counts'));
     }
 
     public function admin_index(Request $request)
