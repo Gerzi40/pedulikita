@@ -87,7 +87,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::controller(ParticipationController::class)->group(function () {
                 Route::get('/organization/events/{event_id}/volunteer', 'organization_index')->name('organization.participation.index');
                 Route::get('/organization/events/{event_id}/volunteer/edit', 'organization_edit')->name('organization.participation.edit');
-                Route::put('/organization/events/{event_id}/volunteer/{volunteer_id}', 'update')->name('organization.participation.update');
+                Route::put('/organization/events/{event_id}/volunteer', 'update')->name('organization.participation.update');
                 Route::post('/organization/events/{event_id}/volunteer', 'submit')->name('organization.participation.submit');
             });
 
