@@ -27,12 +27,20 @@ class OrganizationController extends Controller
 {
     public function guest_index(Request $request)
     {
-        return view('organizations.guest_index');
+        $query = Organization::query()->where('organizations.state', '=', 'approved');;
+        $organizations = $this->filter($query, $request);
+        $organization_categories = OrganizationCategory::get();
+        $provinces = Province::get();
+        return view('organizations.guest_index', compact('organizations', 'organization_categories', 'provinces'));
     }
 
     public function volunteer_index(Request $request)
     {
-        return view('organizations.volunteer_index');
+        $query = Organization::query()->where('organizations.state', '=', 'approved');;
+        $organizations = $this->filter($query, $request);
+        $organization_categories = OrganizationCategory::get();
+        $provinces = Province::get();
+        return view('organizations.volunteer_index', compact('organizations', 'organization_categories', 'provinces'));
     }
 
     public function admin_index(Request $request)
@@ -224,12 +232,14 @@ class OrganizationController extends Controller
 
     public function guest_show(string $id)
     {
-        return view('organizations.guest_show');
+        $organization = Organization::findOrFail($id);
+        return view('organizations.guest_show', compact('organization'));
     }
 
     public function volunteer_show(string $id)
     {
-        return view('organizations.volunteer_show');
+        $organization = Organization::findOrFail($id);
+        return view('organizations.volunteer_show', compact('organization'));
     }
 
     public function admin_show(string $id)
