@@ -28,7 +28,31 @@ class EventController extends Controller
 {
     public function guest_index(Request $request)
     {
-        return view('events.guest_index');
+        $event_categories = EventCategory::get();
+        $provinces = Province::get();
+
+        $query = Event::query()
+            ->with('city')
+            ->where('state', '=', 'approved')
+            ->whereRaw('date + start_time > ?', [Carbon::now()])
+            ->leftJoin('event_volunteer', 'events.id', '=', 'event_volunteer.event_id')
+            ->select([
+                'events.id',
+                'events.name',
+                'events.event_category_id',
+                'events.city_id',
+                'events.date',
+                'events.start_time',
+                'events.image_url',
+                'events.available_slot',
+                DB::raw('COUNT(event_volunteer.volunteer_id) as volunteer_count')
+            ])
+            ->groupBy('events.id', 'events.name', 'events.event_category_id', 'events.city_id', 'events.date', 'events.start_time', 'events.image_url', 'events.available_slot')
+            ->havingRaw('COUNT(event_volunteer.volunteer_id) < events.available_slot');
+        
+        $events = $this->filter($query, $request);
+
+        return view('events.guest_index', compact('event_categories', 'provinces', 'events'));
     }
 
     public function volunteer_index(Request $request)
@@ -298,7 +322,8 @@ class EventController extends Controller
 
     public function guest_show(string $id)
     {
-        return view('events.guest_show');
+        $event = Event::findOrFail($id);
+        return view('events.guest_show', compact('event'));
     }
 
     public function volunteer_show(string $id)
