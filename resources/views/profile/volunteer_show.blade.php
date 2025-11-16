@@ -6,7 +6,7 @@
 
     <div class="container mx-auto">
         <div class="flex justify-end my-5 pe-7">
-            <a href="{{ route('volunteer.profile.edit') }}" class="text-gray-500 cursor-pointer">Ubah Password?</a>
+            <a href="{{ route('volunteer.profile.edit') }}" class="text-gray-500 cursor-pointer hover:underline transition-all duration-200">Ubah Profil</a>
         </div>
     </div>
 

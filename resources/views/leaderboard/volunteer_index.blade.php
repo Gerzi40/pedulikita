@@ -4,6 +4,6 @@
 
 @section('content')
 
-
+    @include('leaderboard.index')
 
 @endsection
