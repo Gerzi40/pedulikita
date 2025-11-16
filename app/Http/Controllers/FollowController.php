@@ -10,7 +10,8 @@ class FollowController extends Controller
 {
     public function volunteer_index()
     {
-        return view('follow.volunteer_index');
+        $organizations = Auth::user()->volunteer->organizations;
+        return view('follow.volunteer_index', compact('organizations'));
     }
 
     public function organization_index()
