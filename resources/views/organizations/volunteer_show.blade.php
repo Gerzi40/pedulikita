@@ -15,7 +15,7 @@
             <div>
                 <h1 class="text-3xl font-bold text-gray-800">{{ $organization->user->name }}</h1>
                 {{-- Tombol Follow/Unfollow --}}
-                @if ($organization->volunteers->contains('id', Auth::user()->id))
+                @if ($organization->volunteers->contains('user_id', Auth::user()->id))
                     <form action="{{ route('volunteer.follow.destroy', ['organization_id' => $organization->id]) }}"
                         method="post" class="mt-3">
                         @csrf
