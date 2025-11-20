@@ -38,9 +38,9 @@ class OrganizationController extends Controller
         $user = Auth::user();
 
         $validated = $request->validate([
-            'name' => ['required', 'string'],
-            'email' => ['required', 'lowercase', 'email', Rule::unique('users')->ignore($user->id)],
-            'password' => ['nullable', Password::min(8)->letters()->mixedCase()->numbers()->symbols()],
+            'name' => ['required', 'string', 'max:100'],
+            // 'email' => ['required', 'lowercase', 'email', Rule::unique('users')->ignore($user->id)],
+            // 'password' => ['nullable', Password::min(8)->letters()->mixedCase()->numbers()->symbols()],
             'profile_picture' => ['nullable', 'image'],
             'organization_category_id' => ['required', 'exists:organization_categories,id'],
             'province_id' => ['required', 'exists:provinces,id'],
@@ -50,7 +50,7 @@ class OrganizationController extends Controller
                     $query->where('province_id', $request->province_id);
                 })
             ],
-            'description' => ['required', 'string'],
+            'description' => ['required', 'string'], 'max:1000',
             'founded_at' => ['required', Rule::date()->beforeOrEqual(today())],
             'instagram' => ['required', 'string'],
             'phone' => ['required', 'digits_between:8,15']

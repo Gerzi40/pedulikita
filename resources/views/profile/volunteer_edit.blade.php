@@ -217,22 +217,24 @@
                 <!-- Email -->
                 <div>
                     <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                    <input type="email" name="email" id="email" value="{{ old('email', $user->email) }}" required
-                        class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800" />
+                    <input type="email" name="email" id="email" value="{{ old('email', $user->email) }}"
+                        disabled
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-800
+         disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed" />
                     @error('email')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <!-- Password (pakai x-input-password untuk show/hide) -->
-                <div>
+                {{-- <div>
                     <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Kata Sandi</label>
                     <x-input-password name="password" id="password" placeholder="Kosongkan jika tidak ingin mengganti"
                         class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800" />
                     @error('password')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror
-                </div>
+                </div> --}}
 
                 <!-- Gender -->
                 <div>

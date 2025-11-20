@@ -13,7 +13,7 @@
     
     <div class="container mx-auto">
         <div class="flex justify-end my-5 pe-7">
-            <a href="{{ route('organization.profile.edit') }}" class="text-gray-500 cursor-pointer">Ubah data profil?</a>
+            <a href="{{ route('organization.profile.edit') }}" class="text-gray-500 cursor-pointer hover:underline transition-all duration-200">Ubah data profil?</a>
         </div>
     </div>
 

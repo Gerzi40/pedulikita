@@ -207,10 +207,9 @@
                     @enderror
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Email <span
-                            class="text-red-500">*</span></label>
-                    <input type="email" name="email" class="w-full border rounded-md px-4 py-2 text-sm"
-                        value="{{ old('email', $user->email) }}" required />
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                    <input type="email" name="email" class="w-full border rounded-md px-4 py-2 text-sm disabled:bg-gray-200 disabled:text-gray-500 disabled:cursor-not-allowed"
+                        value="{{ old('email', $user->email) }}" disabled />
                     @error('email')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
@@ -218,7 +217,7 @@
             </div>
 
             <!-- Password -->
-            <div>
+            {{-- <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Password (kosongkan jika tidak ingin
                     mengubah)</label>
                 <input type="password" name="password" class="w-full border rounded-md px-4 py-2 text-sm"
@@ -226,7 +225,7 @@
                 @error('password')
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
-            </div>
+            </div> --}}
 
             <!-- Deskripsi -->
             <div>

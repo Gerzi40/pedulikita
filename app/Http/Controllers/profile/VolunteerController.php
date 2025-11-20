@@ -32,9 +32,9 @@ class VolunteerController extends Controller
         $user = Auth::user();
 
         $validated = $request->validate([
-            'name' => ['required', 'string'],
-            'email' => ['required', 'lowercase', 'email', Rule::unique('users')->ignore($user->id)],
-            'password' => ['nullable', Password::min(8)->letters()->mixedCase()->numbers()->symbols()],
+            'name' => ['required', 'string', 'max:100'],
+            // 'email' => ['required', 'lowercase', 'email', Rule::unique('users')->ignore($user->id)],
+            // 'password' => ['nullable', Password::min(8)->letters()->mixedCase()->numbers()->symbols()],
             'gender' => ['required', Rule::in(['male', 'female'])],
             'date_of_birth' => ['required', Rule::date()->beforeOrEqual(today())],
             'profile_picture' => ['nullable', 'image']
