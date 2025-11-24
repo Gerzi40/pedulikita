@@ -17,12 +17,11 @@
             <h1 class="text-5xl md:text-7xl font-extrabold mb-4 leading-tight">Peduli Kita</h1>
             <p class="text-base md:text-lg mb-8">Dengan uluran tangan Anda, dapat menggapai kebaikan ke seluruh dunia.</p>
             <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-                <button
-                    class="bg-[var(--color1)] hover:bg-[var(--hovercolor1)] text-white font-bold py-3 px-8 rounded-full transition duration-300 ease-in-out shadow-lg">Gabung
-                    Sekarang!</button>
-                <button
+                <a href="{{ route('register') }}" class="bg-[var(--color1)] hover:bg-[var(--hovercolor1)] text-white font-bold py-3 px-8 rounded-full transition duration-300 ease-in-out shadow-lg">
+                    Gabung Sekarang!</a>
+                {{-- <button
                     class="border-2 border-white hover:border-gray-300 text-white font-bold py-3 px-8 rounded-full transition duration-300 ease-in-out">Lihat
-                    Lanjut</button>
+                    Lanjut</button> --}}
             </div>
         </div>
     </section>
