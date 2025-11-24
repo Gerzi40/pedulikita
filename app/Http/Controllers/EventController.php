@@ -9,6 +9,7 @@ use App\Models\Province;
 use App\Models\User;
 use App\Notifications\EventApproved;
 use App\Notifications\EventCreated;
+use App\Notifications\NewEvent;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -428,6 +429,9 @@ class EventController extends Controller
         try
         {
             $event->organization->user->notify(new EventApproved($event->name, $validated['point'], $event->id));
+
+            $users = $event->organization->volunteers->pluck('user');
+            Notification::send($users, new NewEvent($event->organization->user->name, $event->id));
         }
         catch (Throwable $e)
         {

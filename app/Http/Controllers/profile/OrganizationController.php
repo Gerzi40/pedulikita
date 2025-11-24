@@ -50,7 +50,7 @@ class OrganizationController extends Controller
                     $query->where('province_id', $request->province_id);
                 })
             ],
-            'description' => ['required', 'string'], 'max:1000',
+            'description' => ['required', 'string', 'max:1000'],
             'founded_at' => ['required', Rule::date()->beforeOrEqual(today())],
             'instagram' => ['required', 'string'],
             'phone' => ['required', 'digits_between:8,15']
