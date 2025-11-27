@@ -39,7 +39,7 @@ class ParticipationController extends Controller
         }
         
         $user = Auth::user();
-        $user->volunteer->events()->attach($event_id);
+        $user->volunteer->events()->syncWithoutDetaching($event_id);
         return redirect()->route('volunteer.participation.index');
     }
 
