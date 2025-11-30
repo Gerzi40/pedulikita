@@ -20,94 +20,195 @@
     </section>
 
     <form action="{{ route('organization.events.index') }}" method="get" id="filterForm"
-        class="flex flex-wrap gap-3 items-center p-5 bg-white shadow rounded-md justify-center mx-40 my-5">
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4 
+       items-center p-6 bg-white shadow-md rounded-xl mx-auto my-6 max-w-[90%]">
 
         <!-- Search Bar -->
-        <div class="flex items-center rounded-md px-3 py-2 w-full md:w-auto bg-gray-200">
-            <input type="text" name="name" placeholder="Masukkan nama acara" class="outline-none w-full"
-                value="{{ request('name') }}">
-            <button type="submit" class="text-blue-500">
-                <img src="{{ asset('assets/icons/search.png') }}" alt="Cari" class="w-5 h-5">
-            </button>
-        </div>
-
-        <!-- Kategori Dropdown -->
-        <div class="flex items-center gap-2 rounded-md px-3 py-2 bg-gray-200 w-full md:w-auto">
-            <img src="{{ asset('assets/icons/category.png') }}" alt="Kategori" class="w-5 h-5">
-            <select name="event_category_id" class="bg-transparent outline-none">
-                <option value="">Kategori</option>
-                @foreach ($event_categories as $event_category)
-                    <option value="{{ $event_category->id }}" @selected(request('event_category_id') == $event_category->id)>
-                        {{ $event_category->name }}
-                    </option>
-                @endforeach
-            </select>
+        <div
+            class="col-span-2 flex items-center gap-2 px-4 py-2 bg-gray-100 border border-gray-200 rounded-lg w-full md:w-auto focus-within:ring-2 focus-within:ring-[var(--color1)] transition-all">
+            <img src="{{ asset('assets/icons/search.png') }}" alt="Cari" class="w-5 h-5 flex-shrink-0">
+            <input type="text" name="name" placeholder="Masukkan nama acara"
+                class="bg-transparent outline-none w-full text-gray-700 placeholder-gray-400" value="{{ request('name') }}">
+            {{-- <button type="submit" class="text-blue-500 flex-shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+            </button> --}}
         </div>
 
         <!-- Date Picker -->
-        <div class="flex items-center gap-2 rounded-md px-3 py-2 bg-gray-200 cursor-pointer w-full md:w-auto">
-            <img src="{{ asset('assets/icons/calendar.png') }}" alt="Tanggal" class="w-5 h-5">
-            <input type="date" name="date" class="bg-transparent outline-none font-normal"
-                value="{{ request('date', \Carbon\Carbon::now()->format('Y-m-d')) }}">
+        <div class="datepicker-container">
+            <img src="{{ asset('assets/icons/calendar.png') }}" alt="Tanggal" class="w-5 h-5 flex-shrink-0">
+            <input type="text" class="date-input" name="date" placeholder="Pilih Tanggal"
+                value="{{ request('date') }}" />
+
+            <div class="datepicker" hidden>
+                <!-- .datepicker-header -->
+                <div class="datepicker-header">
+                    <button class="prev" type="button">Prev</button>
+
+                    <div>
+                        <select class="month-input">
+                            <option>January</option>
+                            <option>February</option>
+                            <option>March</option>
+                            <option>April</option>
+                            <option>May</option>
+                            <option>June</option>
+                            <option>July</option>
+                            <option>August</option>
+                            <option>September</option>
+                            <option>October</option>
+                            <option>November</option>
+                            <option>December</option>
+                        </select>
+                        <input type="number" class="year-input" min="1900" max="2100" />
+                    </div>
+
+                    <button class="next" type="button">Next</button>
+                </div>
+                <!-- /.datepicker-header -->
+
+                <!-- .days -->
+                <div class="days">
+                    <span>Sun</span>
+                    <span>Mon</span>
+                    <span>Tue</span>
+                    <span>Wed</span>
+                    <span>Thu</span>
+                    <span>Fri</span>
+                    <span>Sat</span>
+                </div>
+                <!-- /.days -->
+
+                <!-- .dates -->
+                <div class="dates"></div>
+                <!-- /.dates -->
+
+                <!-- .datepicker-footer -->
+                <div class="datepicker-footer">
+                    <button class="cancel" type="button">Cancel</button>
+                    <button class="apply" type="button">Apply</button>
+                </div>
+                <!-- /.datepicker-footer -->
+            </div>
+        </div>
+
+        <!-- Kategori Dropdown -->
+        <div class="custom-dropdown category-dropdown">
+
+            <div class="dropdown-trigger">
+                <img src="{{ asset('assets/icons/category.png') }}" class="w-5 h-5">
+
+                <span class="dropdown-label">
+                    {{ optional($event_categories->firstWhere('id', request('event_category_id')))->name ?? 'Semua Kategori' }}
+                </span>
+
+                <svg class="arrow" width="16" height="16" viewBox="0 0 24 24">
+                    <path d="M19 9l-7 7-7-7" stroke="#6b7280" stroke-width="2" fill="none" />
+                </svg>
+            </div>
+
+            <input type="hidden" name="event_category_id" id="categoryInput" value="{{ request('event_category_id') }}">
+
+            <div class="dropdown-panel hidden">
+                <button type="button" data-value="">Semua Kategori</button>
+
+                @foreach ($event_categories as $cat)
+                    <button type="button" data-value="{{ $cat->id }}"
+                        class="{{ request('event_category_id') == $cat->id ? 'active' : '' }}">
+                        {{ $cat->name }}
+                    </button>
+                @endforeach
+            </div>
+
         </div>
 
         <!-- Province Dropdown -->
-        <div class="flex items-center gap-2 rounded-md px-3 py-2 bg-gray-200 w-full md:w-auto">
-            <img src="{{ asset('assets/icons/province.png') }}" alt="Provinsi" class="w-5 h-5">
-            <select name="province_id" id="province" class="bg-transparent outline-none">
-                <option value="">Provinsi</option>
+        {{-- <div
+            class="flex items-center gap-2 px-4 py-2 bg-gray-100 border border-gray-200 rounded-lg w-full md:w-auto focus-within:ring-2 focus-within:ring-[var(--color1)] transition-all">
+            <img src="{{ asset('assets/icons/province.png') }}" alt="Provinsi" class="w-5 h-5 flex-shrink-0">
+            <select name="province_id" id="province"
+                class="bg-transparent outline-none text-gray-700 cursor-pointer appearance-none pr-8 bg-no-repeat bg-right">
+                <option value="">Semua Provinsi</option>
                 @foreach ($provinces as $province)
                     <option value="{{ $province->id }}" @selected(request('province_id') == $province->id)>
                         {{ $province->name }}
                     </option>
                 @endforeach
             </select>
+        </div> --}}
+        <div class="custom-dropdown province-dropdown">
+
+            <div class="dropdown-trigger" tabindex="0">
+                <img src="{{ asset('assets/icons/province.png') }}" class="w-5 h-5">
+
+                <span class="dropdown-label">
+                    {{ optional($provinces->firstWhere('id', request('province_id')))->name ?? 'Semua Provinsi' }}
+                </span>
+
+                <svg class="arrow" width="16" height="16" viewBox="0 0 24 24">
+                    <path d="M19 9l-7 7-7-7" stroke="#6b7280" stroke-width="2" fill="none" />
+                </svg>
+            </div>
+
+            <input type="hidden" name="province_id" id="provinceInput" value="{{ request('province_id') }}">
+
+            <div class="dropdown-panel hidden">
+
+                <button type="button" data-value="">Semua Provinsi</button>
+
+                @foreach ($provinces as $prov)
+                    <button type="button" data-value="{{ $prov->id }}"
+                        class="{{ request('province_id') == $prov->id ? 'active' : '' }}">
+                        {{ $prov->name }}
+                    </button>
+                @endforeach
+
+            </div>
+
         </div>
 
         <!-- City Dropdown -->
-        <div class="flex items-center gap-2 rounded-md px-3 py-2 bg-gray-200 w-full md:w-auto">
-            <img src="{{ asset('assets/icons/city.png') }}" alt="Kota" class="w-5 h-5">
-            <select name="city_id" id="city" class="bg-transparent outline-none">
-                <option value="">Kota</option>
-                <!-- Data kota dimuat via JS tergantung provinsi -->
-            </select>
+        <!-- CITY DROPDOWN (CUSTOM) -->
+        <div class="custom-dropdown city-dropdown">
+
+            <div class="dropdown-trigger" tabindex="0">
+                <img src="{{ asset('assets/icons/city.png') }}" class="w-5 h-5">
+
+                <span class="dropdown-label">
+                    {{ optional($cities ?? collect())->firstWhere('id', request('city_id'))->name ?? 'Semua Kota' }}
+                </span>
+
+                <svg class="arrow" width="16" height="16" viewBox="0 0 24 24">
+                    <path d="M19 9l-7 7-7-7" stroke="#6b7280" stroke-width="2" fill="none" />
+                </svg>
+            </div>
+
+            <input type="hidden" name="city_id" id="cityInput" value="{{ request('city_id') }}">
+
+            <div class="dropdown-panel hidden" id="cityDropdownPanel">
+                <button type="button" data-value="">Semua Kota</button>
+                <!-- Cities will be injected here by AJAX -->
+            </div>
+
         </div>
 
-        <!-- Status Filter -->
-        <div class="flex items-center gap-2 rounded-md px-3 py-2 bg-gray-200 w-full md:w-auto">
-            <img src="{{ asset('assets/icons/status.png') }}" alt="Status" class="w-5 h-5">
-            <select name="state" class="bg-transparent outline-none">
-                <option value="">Status</option>
-                <option value="pending" @selected(request('state') == 'pending')>Pending</option>
-                <option value="approved" @selected(request('state') == 'approved')>Approved</option>
-                <option value="finished" @selected(request('state') == 'finished')>Finished</option>
-                <option value="reviewed" @selected(request('state') == 'reviewed')>Reviewed</option>
-            </select>
-        </div>
 
         <!-- Filter Button -->
-        <button type="submit" class="bg-[var(--color1)] text-white px-5 py-2 rounded-md hover:bg-[var(--hovercolor1)] cursor-pointer">
+        <button type="submit"
+            class="bg-[var(--color1)] text-white px-6 py-2.5 rounded-lg font-medium shadow hover:shadow-md transition-all hover:bg-[var(--hovercolor1)] active:scale-95">
             Cari
         </button>
     </form>
-
-    {{-- @foreach ($events as $event)
-        <li>
-            <a href="{{ route('organization.events.show', ['id' => $event->id]) }}">
-                <img src="{{ Storage::disk('s3')->url($event->image_url) }}" style="max-height: 200px;"/>
-                <p>{{ $event->name }}</p>
-                <p>{{ $event->city }}, {{ $event->province }}</p>
-            </a>
-        </li>
-    @endforeach --}}
-
 
     <section class="py-10">
         <div class="container mx-auto px-4">
             <h2 class="text-xl font-bold text-[var(--color1)] mb-4">Acara</h2>
             <div class="mb-5">
                 <a href="{{ route('organization.events.create') }}"
-                    class="px-4 py-2 bg-[var(--color1)] text-white text-sm rounded-md hover:bg-[var(--hovercolor1)] focus:outline-none focus:ring-2 focus:ring-[var(--hovercolor1)] focus:ring-opacity-50">Buat Acara</a>
+                    class="px-4 py-2 bg-[var(--color1)] text-white text-sm rounded-md hover:bg-[var(--hovercolor1)] focus:outline-none focus:ring-2 focus:ring-[var(--hovercolor1)] focus:ring-opacity-50">Buat
+                    Acara</a>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"> {{-- Menyesuaikan grid untuk responsif --}}
                 @foreach ($events as $event)
@@ -134,7 +235,8 @@
 
                             {{-- Kategori --}}
                             <div class="flex items-center text-gray-500 text-xs mb-1">
-                                <img src="{{ asset('assets/icons/category.png') }}" class="mr-2 h-3 w-3 object-contain" alt="">
+                                <img src="{{ asset('assets/icons/category.png') }}" class="mr-2 h-3 w-3 object-contain"
+                                    alt="">
                                 <p class="text-[var(--color2)]">{{ $event->event_category->name }}</p>
                             </div>
 
@@ -142,7 +244,8 @@
                             <div class="flex items-center text-gray-500 text-xs mb-1"> {{-- Menambahkan items-center dan mb-1 --}}
                                 <img src="{{ asset('assets/icons/Vector.png') }}" class="mr-2 h-3 w-3 object-contain"
                                     alt="Lokasi"> {{-- Menyesuaikan ukuran icon --}}
-                                <p class="text-[var(--color2)]">{{ $event->city->name }}, {{ $event->city->province->name }}
+                                <p class="text-[var(--color2)]">{{ $event->city->name }},
+                                    {{ $event->city->province->name }}
                                 </p>
                             </div>
 
@@ -185,7 +288,7 @@
         const eventCounts = {{ Js::from($event_counts) }};
         const names = eventCounts.map(eventCategory => eventCategory.name);
         const eventsCount = eventCounts.map(eventCategory => eventCategory.events_count);
-        
+
         new Chart(chart1, {
             type: 'bar',
             data: {
@@ -232,15 +335,17 @@
         const now = new Date();
         for (let i = 5; i >= 0; i--) {
             const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
-            const month = date.toLocaleString('en-US', { month: 'short' });
+            const month = date.toLocaleString('en-US', {
+                month: 'short'
+            });
             months.push(month);
         }
         const eventCountsByMonth = {{ Js::from($event_counts_by_month) }};
         let datasets = []
         let index = 0;
-        for (let i=0; i<names.length; i++) {
+        for (let i = 0; i < names.length; i++) {
             let data = [];
-            for (let j=0; j<months.length; j++) {
+            for (let j = 0; j < months.length; j++) {
                 const item = eventCountsByMonth[index];
                 if (item.month_name == months[j]) {
                     data.push(item.events_count);

@@ -89,13 +89,13 @@
                     class="px-6 py-2 bg-[var(--color1)] text-white rounded-md border border-[var(--color1)] hover:bg-transparent hover:text-[var(--color1)] hover:shadow-md hover:scale-[1.03] transition duration-300 font-medium">
                     + Ikuti
                 </a> --}}
-                @if ($event->organization->volunteers->contains('id', Auth::user()->id))
+                @if ($event->organization->volunteers->contains('user_id', Auth::user()->id))
                     <form action="{{ route('volunteer.follow.destroy', ['organization_id' => $event->organization_id]) }}"
                         method="post" class="">
                         @csrf
                         @method('delete')
                         <button type="submit"
-                            class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300">
+                            class="bg-red-500 hover:bg-red-600 text-white font-semibold cursor-pointer py-2 px-6 rounded-lg shadow-md transition duration-300">
                             Behenti Mengikuti
                         </button>
                     </form>
