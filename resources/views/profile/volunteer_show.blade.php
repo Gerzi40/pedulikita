@@ -35,7 +35,7 @@
                         <img src="{{ asset('assets/logo/pedulikita.png') }}" alt="Logo" class="w-32">
                     </div>
                     <div class="ml-5">
-                        <h1 class="text-2xl font-bold ml-1">{{ $user->name }}</h1>
+                        <h1 class="text-2xl font-bold">{{ $user->name }}</h1>
                         <h2 class="text-sm">Joined</h2>
                         <h3 class="text-lg font-semibold">{{ $user->created_at->format('m/y') }}</h3>
                     </div>
@@ -47,11 +47,7 @@
                     <div class="flex flex-col items-center p-6 bg-white rounded-2xl shadow-md w-48">
                         <div class="w-14 h-14 flex items-center justify-center bg-[var(--color1)] rounded-lg mb-4">
                             <!-- Icon Wallet -->
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-2m0-4h3m-3 0v4m0-4V9z" />
-                            </svg>
+                            <img src="{{ asset('assets/icons/medals.png') }}" alt="Organisasi" class="w-8 h-8 flex-shrink-0">
                         </div>
                         <h3 class="text-lg font-semibold">Poin</h3>
                         <p class="text-gray-400 text-sm mb-3 text-center min-h-[40px]">Akumulasi Poin</p>
@@ -63,11 +59,7 @@
                     <div class="flex flex-col items-center p-6 bg-white rounded-2xl shadow-md w-48">
                         <div class="w-14 h-14 flex items-center justify-center bg-[var(--color1)] rounded-lg mb-4">
                             <!-- Icon Event -->
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="currentColor"
-                                viewBox="0 0 24 24">
-                                <path
-                                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
-                            </svg>
+                            <img src="{{ asset('assets/icons/event.png') }}" alt="Event" class="w-8 h-8 flex-shrink-0">
                         </div>
                         <h3 class="text-lg font-semibold">Acara</h3>
                         <p class="text-gray-400 text-sm mb-3 text-center min-h-[40px]">Jumlah Acara Diikuti</p>
@@ -78,11 +70,7 @@
                     <a href="{{ route('volunteer.follow.index') }}" class="flex flex-col items-center p-6 bg-white rounded-2xl shadow-md w-48">
                         <div class="w-14 h-14 flex items-center justify-center bg-[var(--color1)] rounded-lg mb-4">
                             <!-- Icon Event -->
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="currentColor"
-                                viewBox="0 0 24 24">
-                                <path
-                                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
-                            </svg>
+                            <img src="{{ asset('assets/icons/organizations.png') }}" alt="Organisasi" class="w-8 h-8 flex-shrink-0">
                         </div>
                         <h3 class="text-lg font-semibold">Organisasi</h3>
                         <p class="text-gray-400 text-sm mb-3 text-center min-h-[40px]">Jumlah Organisasi Diikuti</p>

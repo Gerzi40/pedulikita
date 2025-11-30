@@ -5,63 +5,109 @@
 @section('content')
     <div class="flex justify-center">
         <form action="{{ route('admin.organizations.index') }}" method="get" id="filterForm"
-            class="flex flex-wrap gap-5 items-center p-5 bg-white shadow rounded-md justify-center my-5">
+            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 
+       items-center p-6 bg-white shadow-md rounded-xl mx-auto my-6 max-w-[70%]">
 
-            <div class="flex items-center rounded-md px-3 py-2 w-full md:w-auto bg-gray-200">
+            <!-- Search Bar -->
+            <div
+                class="col-span-2 flex items-center gap-2 px-4 py-2 bg-gray-100 border border-gray-200 rounded-lg w-full md:w-auto focus-within:ring-2 focus-within:ring-[var(--color1)] transition-all">
+                <img src="{{ asset('assets/icons/search.png') }}" alt="Cari" class="w-5 h-5 flex-shrink-0">
                 <input type="text" name="name" placeholder="Masukkan nama organisasi"
-                    class="outline-none w-full bg-transparent" value="{{ request('name') }}">
-                <button type="submit" class="text-blue-500">🔍</button>
+                    class="bg-transparent outline-none w-full text-gray-700 placeholder-gray-400"
+                    value="{{ request('name') }}">
             </div>
 
-            <div class="flex items-center gap-2 rounded-md px-3 py-2 bg-gray-200 w-full md:w-auto">
-                🏷️
-                <select name="organization_category_id" class="bg-transparent outline-none">
-                    <option value="">Kategori Organisasi</option>
-                    @foreach ($organization_categories as $organization_category)
-                        <option value="{{ $organization_category->id }}" @selected(request('organization_category_id') == $organization_category->id)>
-                            {{ $organization_category->name }}
-                        </option>
+            <!-- Kategori Dropdown -->
+            <div class="custom-dropdown category-dropdown">
+
+                <div class="dropdown-trigger">
+                    <img src="{{ asset('assets/icons/category.png') }}" class="w-5 h-5">
+                    <span class="dropdown-label">
+                        {{ optional($organization_categories->firstWhere('id', request('organization_category_id')))->name ?? 'Kategori Organisasi' }}
+                    </span>
+                    <svg class="arrow" width="16" height="16" viewBox="0 0 24 24">
+                        <path d="M19 9l-7 7-7-7" stroke="#6b7280" stroke-width="2" fill="none" />
+                    </svg>
+                </div>
+
+                <input type="hidden" id="categoryInput" name="organization_category_id"
+                    value="{{ request('organization_category_id') }}">
+
+                <div class="dropdown-panel hidden">
+                    <button type="button" data-value="">Kategori Organisasi</button>
+
+                    @foreach ($organization_categories as $cat)
+                        <button type="button" data-value="{{ $cat->id }}"
+                            class="{{ request('organization_category_id') == $cat->id ? 'active' : '' }}">
+                            {{ $cat->name }}
+                        </button>
                     @endforeach
-                </select>
+
+                </div>
             </div>
 
-            <div class="flex items-center gap-2 rounded-md px-3 py-2 bg-gray-200 w-full md:w-auto">
-                🏙️
-                <select name="province_id" id="province" class="bg-transparent outline-none">
-                    <option value="">Provinsi</option>
-                    @foreach ($provinces as $province)
-                        <option value="{{ $province->id }}" @selected(request('province_id') == $province->id)>
-                            {{ $province->name }}
-                        </option>
+
+            <!-- Province Dropdown -->
+            <div class="custom-dropdown province-dropdown">
+
+                <div class="dropdown-trigger">
+                    <img src="{{ asset('assets/icons/province.png') }}" class="w-5 h-5">
+                    <span class="dropdown-label">
+                        {{ optional($provinces->firstWhere('id', request('province_id')))->name ?? 'Semua Provinsi' }}
+                    </span>
+                    <svg class="arrow" width="16" height="16" viewBox="0 0 24 24">
+                        <path d="M19 9l-7 7-7-7" stroke="#6b7280" stroke-width="2" fill="none" />
+                    </svg>
+                </div>
+
+                <input type="hidden" id="provinceInput" name="province_id" value="{{ request('province_id') }}">
+
+                <div class="dropdown-panel hidden">
+                    <button type="button" data-value="">Semua Provinsi</button>
+
+                    @foreach ($provinces as $prov)
+                        <button type="button" data-value="{{ $prov->id }}"
+                            class="{{ request('province_id') == $prov->id ? 'active' : '' }}">
+                            {{ $prov->name }}
+                        </button>
                     @endforeach
-                </select>
+
+                </div>
+
             </div>
 
-            <div class="flex items-center gap-2 rounded-md px-3 py-2 bg-gray-200 w-full md:w-auto">
-                🌆
-                <select name="city_id" id="city" class="bg-transparent outline-none">
-                    <option value="">Kota</option>
-                </select>
+            <!-- City Dropdown -->
+            <div class="custom-dropdown city-dropdown">
+
+                <div class="dropdown-trigger">
+                    <img src="{{ asset('assets/icons/city.png') }}" class="w-5 h-5">
+                    <span class="dropdown-label">
+                        {{ optional($cities ?? collect())->firstWhere('id', request('city_id'))->name ?? 'Semua Kota' }}
+                    </span>
+                    <svg class="arrow" width="16" height="16" viewBox="0 0 24 24">
+                        <path d="M19 9l-7 7-7-7" stroke="#6b7280" stroke-width="2" fill="none" />
+                    </svg>
+                </div>
+
+                <input type="hidden" id="cityInput" name="city_id" value="{{ request('city_id') }}">
+
+                <div class="dropdown-panel hidden" id="cityDropdownPanel">
+                    <button type="button" data-value="">Semua Kota</button>
+                </div>
+
             </div>
 
-            <div class="flex items-center gap-2 rounded-md px-3 py-2 bg-gray-200 w-full md:w-auto">
-                <img src="{{ asset('assets/icons/status.png') }}" alt="Status" class="w-5 h-5">
-                <select name="state" class="bg-transparent outline-none">
-                    <option value="">Status</option>
-                    <option value="pending" @selected(request('state') == 'pending')>Pending</option>
-                    <option value="approved" @selected(request('state') == 'approved')>Approved</option>
-                    <option value="rejected" @selected(request('state') == 'rejected')>Rejected</option>
-                </select>
-            </div>
 
-            <button type="submit" class="bg-[var(--color1)] text-white px-5 py-2 rounded-md hover:bg-[var(--hovercolor1)] cursor-pointer">
-                Filter
+
+            <!-- Filter Button -->
+            <button type="submit"
+                class="bg-[var(--color1)] text-white px-6 py-2.5 rounded-lg font-medium shadow hover:shadow-md transition-all hover:bg-[var(--hovercolor1)] active:scale-95">
+                Cari
             </button>
         </form>
     </div>
 
-    <div x-data="{ showConfirmModal: false, formToSubmit: null }"
-        class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+    <div x-data="{ showConfirmModal: false, formToSubmit: null }" class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
         <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
             <h3 class="text-lg font-semibold text-gray-900">Organizations Management</h3>
             <p class="text-sm text-gray-600 mt-1">Manage and monitor volunteer organizations</p>
@@ -297,8 +343,7 @@
         <div x-show="showConfirmModal" style="display: none;" x-transition:enter="ease-out duration-300"
             x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
             x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100"
-            x-transition:leave-end="opacity-0"
-            class="fixed inset-0 z-50 flex items-center justify-center bg-white/30">
+            x-transition:leave-end="opacity-0" class="fixed inset-0 z-50 flex items-center justify-center bg-white/30">
             <div @click.away="showConfirmModal = false" class="bg-white rounded-lg shadow-xl p-6 w-full max-w-md mx-4">
                 <h3 class="text-xl font-bold mb-4 text-gray-800">Konfirmasi Penghapusan</h3>
                 <p class="text-gray-600 mb-6">Apakah Anda yakin ingin menghapus organisasi ini? Tindakan ini tidak
@@ -315,50 +360,183 @@
                 </div>
             </div>
         </div>
-        
+
     </div>
 
     {{ $organizations->links() }}
 
     <script>
-        const selectedCity = "{{ request('city_id') }}";
+        document.addEventListener("DOMContentLoaded", () => {
 
-        $(document).ready(function() {
-            $('#province').on('change', function() {
-                const provinceId = $(this).val();
+            // =========================================================================
+            // GLOBAL DROPDOWN HANDLER
+            // =========================================================================
 
-                if (provinceId) {
-                    $.get(`/provinces/${provinceId}/cities`, function(data) {
-                        let options = '<option></option>';
-                        data.forEach(city => {
-                            options +=
-                                `<option value="${city.id}" ${selectedCity == city.id ? 'selected' : ''}>${city.name}</option>`;
-                        });
-                        $('#city').html(options);
-                    });
-                } else {
-                    $('#city').html('<option></option>');
-                }
+            function closeAllDropdowns() {
+                document.querySelectorAll(".custom-dropdown").forEach(dd => {
+                    dd.classList.remove("open");
+                    dd.querySelector(".dropdown-panel")?.classList.add("hidden");
+                });
+            }
+
+            // close all when click outside
+            document.addEventListener("click", () => {
+                closeAllDropdowns();
             });
 
-            if ($('#province').val()) {
-                $('#province').trigger('change');
-            }
-        });
-    </script>
+            // =========================================================================
+            // GENERIC DROPDOWN TOGGLE & SELECT
+            // =========================================================================
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('filterForm');
-            if (!form) return;
+            document.querySelectorAll(".custom-dropdown").forEach(dropdown => {
 
-            form.addEventListener('submit', function() {
-                form.querySelectorAll('input[name], select[name]').forEach(el => {
-                    if (!el.value || el.value.trim() === '') {
-                        el.removeAttribute('name');
+                const trigger = dropdown.querySelector(".dropdown-trigger");
+                const panel = dropdown.querySelector(".dropdown-panel");
+                const input = dropdown.querySelector("input[type='hidden']");
+                const label = dropdown.querySelector(".dropdown-label");
+
+                if (!trigger || !panel || !input || !label) return;
+
+                // --- toggle dropdown ---
+                trigger.addEventListener("click", (e) => {
+                    e.stopPropagation();
+
+                    const isOpen = dropdown.classList.contains("open");
+
+                    closeAllDropdowns();
+
+                    if (!isOpen) {
+                        dropdown.classList.add("open");
+                        panel.classList.remove("hidden");
                     }
                 });
+
+                // --- option select ---
+                panel.addEventListener("click", (e) => {
+                    const btn = e.target.closest("button");
+                    if (!btn) return;
+
+                    e.stopPropagation();
+
+                    const value = btn.dataset.value ?? "";
+                    const text = btn.textContent.trim();
+
+                    // set hidden input
+                    input.value = value;
+                    label.textContent = text;
+
+                    // active class
+                    panel.querySelectorAll("button").forEach(b => {
+                        b.classList.remove("active");
+                    });
+                    btn.classList.add("active");
+
+                    dropdown.classList.remove("open");
+                    panel.classList.add("hidden");
+                });
+
             });
+
+
+            // =========================================================================
+            // PROVINCE → CITY LOADER
+            // =========================================================================
+
+            const provinceInput = document.getElementById("provinceInput");
+            const cityInput = document.getElementById("cityInput");
+            const cityLabel = document.querySelector(".city-dropdown .dropdown-label");
+            const cityPanel = document.getElementById("cityDropdownPanel");
+
+            if (provinceInput && cityInput && cityPanel) {
+
+                async function loadCities(provinceId) {
+
+                    cityPanel.innerHTML = `<button type="button">Loading...</button>`;
+
+                    // reset city
+                    if (!provinceId) {
+                        cityPanel.innerHTML =
+                            `<button type="button" data-value="">Semua Kota</button>`;
+
+                        cityInput.value = "";
+                        cityLabel.textContent = "Semua Kota";
+
+                        return;
+                    }
+
+                    try {
+
+                        const res = await fetch(`/provinces/${provinceId}/cities`);
+                        const data = await res.json();
+
+                        const currentCity = cityInput.value;
+
+                        let html = `<button type="button" data-value="">Semua Kota</button>`;
+
+                        data.forEach(city => {
+                            html += `
+                        <button type="button"
+                            data-value="${city.id}"
+                            class="${currentCity == city.id ? 'active' : ''}">
+                            ${city.name}
+                        </button>
+                    `;
+                        });
+
+                        cityPanel.innerHTML = html;
+
+                        // sync label on reload
+                        if (currentCity) {
+                            const activeBtn =
+                                cityPanel.querySelector(`button[data-value="${currentCity}"]`);
+                            if (activeBtn) {
+                                cityLabel.textContent = activeBtn.textContent.trim();
+                            }
+                        }
+
+                    } catch (err) {
+                        console.error("Load cities error:", err);
+                        cityPanel.innerHTML =
+                            `<button type="button" data-value="">Gagal load kota</button>`;
+                    }
+                }
+
+                // when province changes
+                provinceInput.addEventListener("change", (e) => {
+                    loadCities(e.target.value);
+                });
+
+                // auto load on page load if province is selected
+                if (provinceInput.value) {
+                    loadCities(provinceInput.value);
+                }
+
+                // change event triggered when select province via dropdown
+                document
+                    .querySelector(".province-dropdown .dropdown-panel")
+                    ?.addEventListener("click", () => {
+                        provinceInput.dispatchEvent(new Event("change"));
+                    });
+            }
+
+            // =========================================================================
+            // FORM SUBMIT HANDLER
+            // =========================================================================
+
+            const form = document.getElementById("filterForm");
+
+            if (form) {
+                form.addEventListener("submit", () => {
+                    form
+                        .querySelectorAll("input[name], select[name]")
+                        .forEach(el => {
+                            if (!el.value || el.value.trim() === "") {
+                                el.removeAttribute("name");
+                            }
+                        });
+                });
+            }
+
         });
     </script>
 
