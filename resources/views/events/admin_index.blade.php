@@ -160,7 +160,6 @@
 
         </div>
 
-
         <!-- Filter Button -->
         <button type="submit"
             class="bg-[var(--color1)] text-white px-6 py-2.5 rounded-lg font-medium shadow hover:shadow-md transition-all hover:bg-[var(--hovercolor1)] active:scale-95">
@@ -168,23 +167,7 @@
         </button>
     </form>
 
-
-
-    {{-- @foreach ($events as $event)
-        <li>
-            <a href="{{ route('admin.events.show', ['id' => $event->id]) }}">
-                {{ $event }}
-            </a>
-        </li>
-    @endforeach --}}
-
     <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-        <!-- Table Header -->
-        <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
-            <h3 class="text-lg font-semibold text-gray-900">Events Management</h3>
-            <p class="text-sm text-gray-600 mt-1">Manage and monitor volunteer events</p>
-        </div>
-
         <!-- Table Container with horizontal scroll -->
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
@@ -194,23 +177,23 @@
                         </th>
                         <th
                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[200px]">
-                            Event Details</th>
+                            Nama</th>
                         <th
                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[250px]">
-                            Description</th>
+                            Deskripsi</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[150px]">
                             Kategori</th>
                         <th
                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[150px]">
-                            Location</th>
+                            Lokasi</th>
                         <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider w-20">
-                            Points</th>
+                            Poin</th>
                         <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider w-24">
-                            Slots</th>
+                            Slot</th>
                         <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider w-32">
                             Status</th>
                         <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider w-28">
-                            Actions</th>
+                            Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
@@ -293,7 +276,7 @@
                             <td class="px-6 py-4 text-center">
                                 <div class="flex flex-col items-center space-y-1">
                                     <span class="text-sm font-semibold text-gray-900">{{ $event->available_slot }}</span>
-                                    <span class="text-xs text-gray-500">volunteers</span>
+                                    <span class="text-xs text-gray-500">relawan</span>
                                 </div>
                             </td>
 
@@ -307,7 +290,7 @@
                                                 d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                                 clip-rule="evenodd"></path>
                                         </svg>
-                                        Approved
+                                        Disetujui
                                     </span>
                                 @elseif($event->state == 'pending')
                                     <span
@@ -317,12 +300,15 @@
                                                 d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
                                                 clip-rule="evenodd"></path>
                                         </svg>
-                                        Pending
+                                        Diproses
                                     </span>
-                                @else
-                                    <span
-                                        class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 border border-gray-200">
-                                        {{ $event->state }}
+                                @elseif($event->state == 'finished')
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 border border-gray-200">
+                                        Selesai
+                                    </span>
+                                @elseif($event->state == 'reviewed')
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 border border-gray-200">
+                                        Diulas
                                     </span>
                                 @endif
                             </td>
@@ -374,8 +360,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                 </svg>
-                <h3 class="mt-2 text-sm font-medium text-gray-900">No events found</h3>
-                <p class="mt-1 text-sm text-gray-500">Get started by creating a new event.</p>
+                <h3 class="mt-2 text-sm font-medium text-gray-900">Tidak terdapat acara</h3>
             </div>
         @endif
 
@@ -386,47 +371,5 @@
             </div>
         @endif
     </div>
-
-    {{-- <script>
-        const selectedCity = "{{ request('city_id') }}";
-
-        $(document).ready(function() {
-            $('#province').on('change', function() {
-                const provinceId = $(this).val();
-
-                if (provinceId) {
-                    $.get(`/provinces/${provinceId}/cities`, function(data) {
-                        let options = '<option></option>';
-                        data.forEach(city => {
-                            options +=
-                                `<option value="${city.id}" ${selectedCity == city.id ? 'selected' : ''}>${city.name}</option>`;
-                        });
-                        $('#city').html(options);
-                    });
-                } else {
-                    $('#city').html('<option></option>');
-                }
-            });
-
-            if ($('#province').val()) {
-                $('#province').trigger('change');
-            }
-        });
-    </script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('filterForm');
-            if (!form) return;
-
-            form.addEventListener('submit', function() {
-                form.querySelectorAll('input[name], select[name]').forEach(el => {
-                    if (!el.value || el.value.trim() === '') {
-                        el.removeAttribute('name');
-                    }
-                });
-            });
-        });
-    </script> --}}
 
 @endsection

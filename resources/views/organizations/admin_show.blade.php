@@ -23,7 +23,7 @@
                                 @csrf
                                 @method('PUT')
                                 <button type="submit" class="px-6 py-2 bg-[var(--color1)] text-white font-semibold rounded-md shadow border border-transparent hover:bg-white hover:text-[var(--color1)] hover:border-[var(--color1)] transition duration-300">
-                                    Approve
+                                    Setujui
                                 </button>
                             </form>
 
@@ -31,7 +31,7 @@
                                 @csrf
                                 @method('PUT')
                                 <button type="submit" class="px-6 py-2 bg-[var(--color1)] text-white font-semibold rounded-md shadow border border-transparent hover:bg-white hover:text-[var(--color1)] hover:border-[var(--color1)] transition duration-300">
-                                    Reject
+                                    Tolak
                                 </button>
                             </form>
                         @endif
@@ -44,7 +44,7 @@
                             {{-- Tombol ini sekarang memicu modal, bukan submit form langsung --}}
                             <button type="button" @click="showConfirmModal = true"
                                 class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300">
-                                Delete
+                                Hapus
                             </button>
                         </form>
                     </div>
@@ -94,9 +94,9 @@
                     <p class="flex items-center"><i class="fas fa-users mr-2 text-gray-500"></i>
                         {{ count($organization->volunteers) }} Pengikut</p>
                     <p class="flex items-center"><i class="fas fa-hand-holding-heart mr-2 text-gray-500"></i>
-                        {{ $organization->events->where('date', '<', now())->count() }} Event terlaksana</p>
+                        {{ $organization->events->where('date', '<', now())->count() }} Acara terlaksana</p>
                     <p class="flex items-center"><i class="fas fa-calendar-alt mr-2 text-gray-500"></i>
-                        {{ count($organization->events) ?? 2 }} Event tersedia</p>
+                        {{ count($organization->events) ?? 2 }} Acara tersedia</p>
                 </div>
             </div>
 
@@ -144,12 +144,19 @@
                                     @if ($event->state == 'approved')
                                         <div
                                             class="absolute top-2 right-2 bg-green-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
-                                            {{ $event->state }}
+                                            Disetujui
                                         </div>
-                                    @else
-                                        <div
-                                            class="absolute top-2 right-2 bg-[var(--color1)] text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
-                                            {{ $event->state }}
+                                    @elseif($event->state == 'pending')
+                                        <div class="absolute top-2 right-2 bg-[var(--color1)] text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
+                                            Diproses
+                                        </div>
+                                    @elseif($event->state == 'finished')
+                                        <div class="absolute top-2 right-2 bg-[var(--color1)] text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
+                                            Selesai
+                                        </div>
+                                    @elseif($event->state == 'reviewed')
+                                        <div class="absolute top-2 right-2 bg-[var(--color1)] text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
+                                            Diulas
                                         </div>
                                     @endif
                                 </div>

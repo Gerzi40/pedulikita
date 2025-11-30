@@ -97,8 +97,6 @@
 
             </div>
 
-
-
             <!-- Filter Button -->
             <button type="submit"
                 class="bg-[var(--color1)] text-white px-6 py-2.5 rounded-lg font-medium shadow hover:shadow-md transition-all hover:bg-[var(--hovercolor1)] active:scale-95">
@@ -108,11 +106,6 @@
     </div>
 
     <div x-data="{ showConfirmModal: false, formToSubmit: null }" class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-        <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
-            <h3 class="text-lg font-semibold text-gray-900">Organizations Management</h3>
-            <p class="text-sm text-gray-600 mt-1">Manage and monitor volunteer organizations</p>
-        </div>
-
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
@@ -121,24 +114,24 @@
                         </th>
                         <th
                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[200px]">
-                            Organization Details</th>
+                            Nama</th>
                         <th
                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[250px]">
-                            Description</th>
+                            Deskripsi</th>
                         <th
                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[150px]">
-                            Location</th>
+                            Lokasi</th>
                         <th
                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[180px]">
                             Email</th>
                         <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider w-32">
-                            Phone</th>
+                            Telepon</th>
                         <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider w-32">
-                            Founded</th>
+                            Berdiri</th>
                         <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider w-32">
                             Status</th>
                         <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider w-28">
-                            Actions</th>
+                            Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
@@ -260,7 +253,7 @@
                                                 d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                                 clip-rule="evenodd"></path>
                                         </svg>
-                                        Approved
+                                        Disetujui
                                     </span>
                                 @elseif($organization->state == 'pending')
                                     <span
@@ -270,7 +263,7 @@
                                                 d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
                                                 clip-rule="evenodd"></path>
                                         </svg>
-                                        Pending
+                                        Diproses
                                     </span>
                                 @elseif($organization->state == 'rejected')
                                     <span
@@ -280,7 +273,7 @@
                                                 d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
                                                 clip-rule="evenodd"></path>
                                         </svg>
-                                        Rejected
+                                        Ditolak
                                     </span>
                                 @endif
                             </td>
@@ -329,8 +322,7 @@
                         d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
                     </path>
                 </svg>
-                <h3 class="mt-2 text-sm font-medium text-gray-900">No organizations found</h3>
-                <p class="mt-1 text-sm text-gray-500">Get started by adding a new organization.</p>
+                <h3 class="mt-2 text-sm font-medium text-gray-900">Tidak terdapat organisasi</h3>
             </div>
         @endif
 

@@ -60,7 +60,7 @@
                                 class="px-6 py-2 bg-[var(--color1)] text-white font-semibold rounded-md shadow 
                        border border-transparent hover:bg-white hover:text-[var(--color1)] hover:border-[var(--color1)] 
                        transition duration-300">
-                                Approve
+                                Setujui
                             </button>
                         </form>
 
@@ -76,7 +76,7 @@
                                     class="px-6 py-2 bg-red-700 text-white font-semibold rounded-md shadow 
                         border border-transparent hover:bg-white hover:text-red-600 hover:border-red-600 
                         transition duration-300">
-                                    Delete
+                                    Hapus
                                 </button>
                     </form>
                 @endif
