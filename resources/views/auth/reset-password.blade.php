@@ -11,8 +11,8 @@
         
         <!-- Deskripsi -->
         <p class="text-gray-600 text-sm mb-6">
-            Confirm your email, make your new password.<br>
-            Remember to store your password wisely.
+            Konfirmasi email Anda, buat kata sandi baru Anda.<br/>
+            Ingat untuk menyimpan kata sandi Anda dengan bijak.
         </p>
 
         <!-- Pesan token error -->

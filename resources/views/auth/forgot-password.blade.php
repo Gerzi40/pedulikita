@@ -11,8 +11,8 @@
         
         <!-- Deskripsi -->
         <p class="text-gray-600 text-sm mb-6">
-            Enter your email for the verification process,<br>
-            we will reset password link to your email.
+            Masukkan email Anda untuk proses verifikasi,<br/>
+            kami akan mengirimkan tautan pengaturan ulang kata sandi ke email Anda.
         </p>
 
         <div class="font-medium text-sm text-green-600">{{ session('status') }}</div>
