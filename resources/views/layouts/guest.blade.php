@@ -26,7 +26,7 @@
                 <a href="{{ route('register') }}"
                     class="px-6 py-2 border text-[var(--color1)] border-[var(--color1)]  rounded-md hover:bg-[var(--color1)] hover:text-white transition duration-300 font-medium">Daftar</a>
                 <a href="{{ route('login') }}"
-                    class="px-6 py-2 bg-[var(--color1)] text-white rounded-md border border-[var(--color1)] hover:bg-white hover:text-[var(--color1)]  transition duration-300 font-medium">Masuk</a>
+                    class="px-6 py-2 border text-[var(--color1)] border-[var(--color1)]  rounded-md hover:bg-[var(--color1)] hover:text-white transition duration-300 font-medium">Masuk</a>
             </div>
 
             {{-- Tombol Hamburger untuk Mobile (jika diperlukan, tidak terlihat di gambar ini) --}}

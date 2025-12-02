@@ -119,8 +119,11 @@
             <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-6">
                 @foreach ($organizations as $org)
                     <div class="bg-white shadow-md rounded-lg overflow-hidden">
-                        <img src="{{ Storage::disk('s3')->url($org->profile_picture_url) }}" alt="Acara"
-                            class="w-full h-40 object-cover" />
+                        <div class="relative overflow-hidden h-48">
+                            <img src="{{ Storage::disk('s3')->url($org->profile_picture_url) }}" alt="Organisasi"
+                                class="w-full h-full object-cover object-center
+                                transition-transform duration-300 hover:scale-105" />
+                        </div>
                         <div class="p-4">
                             <h3 class="font-bold text-2xl text-[var(--color2)] ">{{ $org->name }}</h3>
 

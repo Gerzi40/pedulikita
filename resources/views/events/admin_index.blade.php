@@ -360,7 +360,7 @@
 
                             <!-- Actions -->
                             <td class="px-6 py-4">
-                                <div class="flex items-center justify-start space-x-2">
+                                <div class="flex items-center {{ $event->state == 'pending' ? 'justify-start space-x-2' : 'justify-center' }}">
                                     <a href="{{ route('admin.events.show', ['id' => $event->id]) }}"
                                         class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors duration-150 group"
                                         title="View Event">

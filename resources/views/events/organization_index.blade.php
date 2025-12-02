@@ -230,14 +230,16 @@
     <section class="py-10">
         <div class="container mx-auto px-4">
             <h2 class="text-xl font-bold text-[var(--color1)] mb-4">Acara</h2>
+            @if ($events)
             <div class="mb-5">
                 <a href="{{ route('organization.events.create') }}"
                     class="px-4 py-2 bg-[var(--color1)] text-white text-sm rounded-md hover:bg-[var(--hovercolor1)] focus:outline-none focus:ring-2 focus:ring-[var(--hovercolor1)] focus:ring-opacity-50">Buat
                     Acara</a>
             </div>
+            @endif
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"> {{-- Menyesuaikan grid untuk responsif --}}
-                @foreach ($events as $event)
-                    <div class="bg-white shadow-md rounded-lg overflow-hidden"> {{-- Menambahkan rounded-lg dan shadow-md --}}
+                @forelse ($events as $event)
+                    <div class="bg-white shadow-md rounded-lg overflow-hidden">
                         <div class="relative w-full h-40">
                             <img src="{{ Storage::disk('s3')->url($event->image_url) }}" alt="Acara"
                                 class="w-full h-full object-cover" />
@@ -246,7 +248,22 @@
                             @if ($event->state == 'approved')
                                 <div
                                     class="absolute top-2 right-2 bg-green-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
-                                    {{ $event->state }}
+                                    Disetujui
+                                </div>
+                            @elseif($event->state == 'pending')
+                                <div
+                                    class="absolute top-2 right-2 bg-[var(--color1)] text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
+                                    Diproses
+                                </div>
+                            @elseif($event->state == 'finished')
+                                <div
+                                    class="absolute top-2 right-2 bg-[var(--color1)] text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
+                                    Selesai
+                                </div>
+                            @elseif($event->state == 'reviewed')
+                                <div
+                                    class="absolute top-2 right-2 bg-[var(--color1)] text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
+                                    Diulas
                                 </div>
                             @else
                                 <div
@@ -255,52 +272,76 @@
                                 </div>
                             @endif
                         </div>
+
                         <div class="p-4">
                             <h3 class="font-semibold text-base text-[var(--color2)] mb-2">{{ $event->name }}</h3>
 
                             {{-- Kategori --}}
-                            <div class="flex items-center text-gray-500 text-xs mb-1">
-                                <img src="{{ asset('assets/icons/category.png') }}" class="mr-2 h-3 w-3 object-contain"
-                                    alt="">
+                            <div class="flex items-center text-xs mb-1">
+                                <img src="{{ asset('assets/icons/category.png') }}" class="mr-2 h-3 w-3" alt="">
                                 <p class="text-[var(--color2)]">{{ $event->event_category->name }}</p>
                             </div>
 
                             {{-- Lokasi --}}
-                            <div class="flex items-center text-gray-500 text-xs mb-1"> {{-- Menambahkan items-center dan mb-1 --}}
-                                <img src="{{ asset('assets/icons/Vector.png') }}" class="mr-2 h-3 w-3 object-contain"
-                                    alt="Lokasi"> {{-- Menyesuaikan ukuran icon --}}
-                                <p class="text-[var(--color2)]">{{ $event->city->name }},
-                                    {{ $event->city->province->name }}
+                            <div class="flex items-center text-xs mb-1">
+                                <img src="{{ asset('assets/icons/Vector.png') }}" class="mr-2 h-3 w-3" alt="">
+                                <p class="text-[var(--color2)]">
+                                    {{ $event->city->name }}, {{ $event->city->province->name }}
                                 </p>
                             </div>
 
-                            {{-- Tanggal & Waktu --}}
-                            <div class="flex items-center text-gray-500 text-xs mb-1">
-                                <img src="{{ asset('assets/icons/Clock.png') }}" class="mr-2 h-3 w-3 object-contain"
-                                    alt="Waktu">
+                            {{-- Tanggal --}}
+                            <div class="flex items-center text-xs mb-1">
+                                <img src="{{ asset('assets/icons/Clock.png') }}" class="mr-2 h-3 w-3" alt="">
                                 <p class="text-[var(--color2)]">
                                     {{ \Carbon\Carbon::parse($event->date)->locale('id')->isoFormat('dddd, D MMMM YYYY') }}
-                                    • {{ \Carbon\Carbon::parse($event->start_time)->format('H:i') }} WIB</p>
+                                    • {{ \Carbon\Carbon::parse($event->start_time)->format('H:i') }} WIB
+                                </p>
                             </div>
 
-                            {{-- Slot Tersedia --}}
-                            <div class="flex items-center text-gray-500 text-xs mb-4">
-                                <img src="{{ asset('assets/icons/Crowd.png') }}" class="mr-2 h-3 w-3 object-contain"
-                                    alt="Slot">
-                                <p class="text-[var(--color2)]">Tersedia
-                                    {{ $event->available_slot - $event->volunteer_count }} slot</p>
-                                {{-- Menambahkan teks "Tersedia ... slot" --}}
+                            {{-- Slot --}}
+                            <div class="flex items-center text-xs mb-4">
+                                <img src="{{ asset('assets/icons/Crowd.png') }}" class="mr-2 h-3 w-3" alt="">
+                                <p class="text-[var(--color2)]">
+                                    Tersedia {{ $event->available_slot - $event->volunteer_count }} slot
+                                </p>
                             </div>
 
-                            {{-- Tombol Lihat --}}
-                            <div class="flex justify-end"> {{-- Menggunakan justify-end untuk memposisikan tombol di kanan --}}
+                            {{-- Tombol --}}
+                            <div class="flex justify-end">
                                 <a href="{{ route('organization.events.show', ['id' => $event->id]) }}"
-                                    class="px-4 py-2 bg-[var(--color1)] text-white text-sm rounded-md hover:bg-[var(--hovercolor1)] focus:outline-none focus:ring-2 focus:ring-[var(--hovercolor1)] focus:ring-opacity-50">Lihat</a>
-                                {{-- Mengubah button menjadi link a dan menambahkan styling Tailwind --}}
+                                    class="px-4 py-2 bg-[var(--color1)] text-white text-sm rounded-md hover:bg-[var(--hovercolor1)] transition">
+                                    Lihat
+                                </a>
                             </div>
                         </div>
                     </div>
-                @endforeach
+
+                @empty
+                    {{-- EMPTY STATE --}}
+                    <div class="col-span-full">
+                        <div class="flex flex-col items-center justify-center py-16 bg-white rounded-xl shadow-sm">
+
+                            <img src="{{ asset('assets/icons/calendar.png') }}" class="w-20 h-20 opacity-50 mb-4"
+                                alt="Belum Ada Acara">
+
+                            <h3 class="text-lg font-semibold text-[var(--color2)] mb-1">
+                                Belum Ada Acara
+                            </h3>
+
+                            <p class="text-sm text-gray-400 text-center max-w-sm mb-6">
+                                Kamu belum membuat acara apapun. Yuk buat acara pertamamu sekarang!
+                            </p>
+
+                            <a href="{{ route('organization.events.create') }}"
+                                class="px-5 py-2 bg-[var(--color1)] text-white text-sm rounded-md
+                       hover:bg-[var(--hovercolor1)] transition">
+                                + Buat Acara
+                            </a>
+
+                        </div>
+                    </div>
+                @endforelse
             </div>
         </div>
     </section>
