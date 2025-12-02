@@ -372,7 +372,7 @@
             let data = [];
             for (let j = 0; j < months.length; j++) {
                 const item = eventCountsByMonth[index];
-                if (item.month_name == months[j]) {
+                if (item && item.month_name == months[j]) {
                     data.push(item.events_count);
                     index++;
                 } else {
