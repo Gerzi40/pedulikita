@@ -20,7 +20,7 @@
     </section>
 
     <form action="{{ route('organization.events.index') }}" method="get" id="filterForm"
-        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4 
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 
        items-center p-6 bg-white shadow-md rounded-xl mx-auto my-6 max-w-[90%]">
 
         <!-- Search Bar -->
@@ -42,7 +42,7 @@
             <input type="text" class="date-input" name="date" placeholder="Pilih Tanggal"
                 value="{{ request('date') }}" />
 
-            <div class="datepicker" hidden>
+            <div class="datepicker z-1" hidden>
                 <!-- .datepicker-header -->
                 <div class="datepicker-header">
                     <button class="prev" type="button">Prev</button>
@@ -94,6 +94,44 @@
             </div>
         </div>
 
+        <div class="custom-dropdown status-dropdown">
+
+            <div class="dropdown-trigger">
+                <img src="{{ asset('assets/icons/status.png') }}" class="w-5 h-5">
+
+                <span class="dropdown-label">
+                    {{ ucfirst(request('state')) ?: 'Status' }}
+                </span>
+
+                <svg class="arrow" width="16" height="16" viewBox="0 0 24 24">
+                    <path d="M19 9l-7 7-7-7" stroke="#6b7280" stroke-width="2" fill="none" />
+                </svg>
+            </div>
+
+            <input type="hidden" id="stateInput" name="state" value="{{ request('state') }}">
+
+            <div class="dropdown-panel z-1 hidden">
+                <button type="button" data-value="">Status</button>
+
+                <button type="button" data-value="pending" class="{{ request('state') == 'pending' ? 'active' : '' }}">
+                    Diproses
+                </button>
+
+                <button type="button" data-value="approved" class="{{ request('state') == 'approved' ? 'active' : '' }}">
+                    Disetujui
+                </button>
+
+                <button type="button" data-value="finished" class="{{ request('state') == 'finished' ? 'active' : '' }}">
+                    Selesai
+                </button>
+
+                <button type="button" data-value="reviewed" class="{{ request('state') == 'reviewed' ? 'active' : '' }}">
+                    Diulas
+                </button>
+            </div>
+
+        </div>
+
         <!-- Kategori Dropdown -->
         <div class="custom-dropdown category-dropdown">
 
@@ -111,7 +149,7 @@
 
             <input type="hidden" name="event_category_id" id="categoryInput" value="{{ request('event_category_id') }}">
 
-            <div class="dropdown-panel hidden">
+            <div class="dropdown-panel z-1 hidden">
                 <button type="button" data-value="">Semua Kategori</button>
 
                 @foreach ($event_categories as $cat)
@@ -125,19 +163,6 @@
         </div>
 
         <!-- Province Dropdown -->
-        {{-- <div
-            class="flex items-center gap-2 px-4 py-2 bg-gray-100 border border-gray-200 rounded-lg w-full md:w-auto focus-within:ring-2 focus-within:ring-[var(--color1)] transition-all">
-            <img src="{{ asset('assets/icons/province.png') }}" alt="Provinsi" class="w-5 h-5 flex-shrink-0">
-            <select name="province_id" id="province"
-                class="bg-transparent outline-none text-gray-700 cursor-pointer appearance-none pr-8 bg-no-repeat bg-right">
-                <option value="">Semua Provinsi</option>
-                @foreach ($provinces as $province)
-                    <option value="{{ $province->id }}" @selected(request('province_id') == $province->id)>
-                        {{ $province->name }}
-                    </option>
-                @endforeach
-            </select>
-        </div> --}}
         <div class="custom-dropdown province-dropdown">
 
             <div class="dropdown-trigger" tabindex="0">
@@ -154,7 +179,7 @@
 
             <input type="hidden" name="province_id" id="provinceInput" value="{{ request('province_id') }}">
 
-            <div class="dropdown-panel hidden">
+            <div class="dropdown-panel z-1 hidden">
 
                 <button type="button" data-value="">Semua Provinsi</button>
 
@@ -187,7 +212,7 @@
 
             <input type="hidden" name="city_id" id="cityInput" value="{{ request('city_id') }}">
 
-            <div class="dropdown-panel hidden" id="cityDropdownPanel">
+            <div class="dropdown-panel z-1 hidden" id="cityDropdownPanel">
                 <button type="button" data-value="">Semua Kota</button>
                 <!-- Cities will be injected here by AJAX -->
             </div>
@@ -434,7 +459,7 @@
         });
     </script>
 
-    <script>
+    {{-- <script>
         const selectedCity = "{{ request('city_id') }}";
 
         $(document).ready(function() {
@@ -442,11 +467,11 @@
                 const provinceId = $(this).val();
 
                 if (provinceId) {
-                    $.get(`/provinces/${provinceId}/cities`, function(data) {
+                    $.get(/provinces/${provinceId}/cities, function(data) {
                         let options = '<option></option>';
                         data.forEach(city => {
                             options +=
-                                `<option value="${city.id}" ${selectedCity == city.id ? 'selected' : ''}>${city.name}</option>`;
+                                <option value="${city.id}" ${selectedCity == city.id ? 'selected' : ''}>${city.name}</option>;
                         });
                         $('#city').html(options);
                     });
@@ -474,6 +499,6 @@
                 });
             });
         });
-    </script>
+    </script> --}}
 
 @endsection

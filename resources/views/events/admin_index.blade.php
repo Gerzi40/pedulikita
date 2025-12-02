@@ -5,7 +5,7 @@
 @section('content')
 
     <form action="{{ route('admin.events.index') }}" method="get" id="filterForm"
-        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4 
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 
        items-center p-6 bg-white shadow-md rounded-xl mx-auto my-6 max-w-[90%]">
 
         <!-- Search Bar -->
@@ -14,6 +14,11 @@
             <img src="{{ asset('assets/icons/search.png') }}" alt="Cari" class="w-5 h-5 flex-shrink-0">
             <input type="text" name="name" placeholder="Masukkan nama acara"
                 class="bg-transparent outline-none w-full text-gray-700 placeholder-gray-400" value="{{ request('name') }}">
+            {{-- <button type="submit" class="text-blue-500 flex-shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+            </button> --}}
         </div>
 
         <!-- Date Picker -->
@@ -22,7 +27,7 @@
             <input type="text" class="date-input" name="date" placeholder="Pilih Tanggal"
                 value="{{ request('date') }}" />
 
-            <div class="datepicker" hidden>
+            <div class="datepicker z-1" hidden>
                 <!-- .datepicker-header -->
                 <div class="datepicker-header">
                     <button class="prev" type="button">Prev</button>
@@ -74,6 +79,44 @@
             </div>
         </div>
 
+        <div class="custom-dropdown status-dropdown">
+
+            <div class="dropdown-trigger">
+                <img src="{{ asset('assets/icons/status.png') }}" class="w-5 h-5">
+
+                <span class="dropdown-label">
+                    {{ ucfirst(request('state')) ?: 'Status' }}
+                </span>
+
+                <svg class="arrow" width="16" height="16" viewBox="0 0 24 24">
+                    <path d="M19 9l-7 7-7-7" stroke="#6b7280" stroke-width="2" fill="none" />
+                </svg>
+            </div>
+
+            <input type="hidden" id="stateInput" name="state" value="{{ request('state') }}">
+
+            <div class="dropdown-panel z-1 hidden">
+                <button type="button" data-value="">Status</button>
+
+                <button type="button" data-value="pending" class="{{ request('state') == 'pending' ? 'active' : '' }}">
+                    Diproses
+                </button>
+
+                <button type="button" data-value="approved" class="{{ request('state') == 'approved' ? 'active' : '' }}">
+                    Disetujui
+                </button>
+
+                <button type="button" data-value="finished" class="{{ request('state') == 'finished' ? 'active' : '' }}">
+                    Selesai
+                </button>
+
+                <button type="button" data-value="reviewed" class="{{ request('state') == 'reviewed' ? 'active' : '' }}">
+                    Diulas
+                </button>
+            </div>
+
+        </div>
+
         <!-- Kategori Dropdown -->
         <div class="custom-dropdown category-dropdown">
 
@@ -91,7 +134,7 @@
 
             <input type="hidden" name="event_category_id" id="categoryInput" value="{{ request('event_category_id') }}">
 
-            <div class="dropdown-panel hidden">
+            <div class="dropdown-panel z-1 hidden">
                 <button type="button" data-value="">Semua Kategori</button>
 
                 @foreach ($event_categories as $cat)
@@ -121,7 +164,7 @@
 
             <input type="hidden" name="province_id" id="provinceInput" value="{{ request('province_id') }}">
 
-            <div class="dropdown-panel hidden">
+            <div class="dropdown-panel z-1 hidden">
 
                 <button type="button" data-value="">Semua Provinsi</button>
 
@@ -137,6 +180,7 @@
         </div>
 
         <!-- City Dropdown -->
+        <!-- CITY DROPDOWN (CUSTOM) -->
         <div class="custom-dropdown city-dropdown">
 
             <div class="dropdown-trigger" tabindex="0">
@@ -153,12 +197,13 @@
 
             <input type="hidden" name="city_id" id="cityInput" value="{{ request('city_id') }}">
 
-            <div class="dropdown-panel hidden" id="cityDropdownPanel">
+            <div class="dropdown-panel z-1 hidden" id="cityDropdownPanel">
                 <button type="button" data-value="">Semua Kota</button>
                 <!-- Cities will be injected here by AJAX -->
             </div>
 
         </div>
+
 
         <!-- Filter Button -->
         <button type="submit"

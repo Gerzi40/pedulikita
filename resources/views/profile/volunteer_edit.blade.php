@@ -270,7 +270,7 @@
                 <!-- Tombol Update -->
                 <button type="submit"
                     class="w-full bg-[var(--color1)] text-white py-2.5 rounded-md font-semibold text-base hover:bg-[var(--hovercolor1)] transition duration-300">
-                    Update
+                    Perbarui
                 </button>
             </form>
         </div>

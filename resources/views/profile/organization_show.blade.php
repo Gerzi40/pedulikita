@@ -10,10 +10,21 @@
     profile
 
     <img src="{{ Storage::disk('s3')->url($user->profile_picture_url) }}" style="max-height: 200px;"/> --}}
-    
+
     <div class="container mx-auto">
         <div class="flex justify-end my-5 pe-7">
-            <a href="{{ route('organization.profile.edit') }}" class="text-gray-500 cursor-pointer hover:underline transition-all duration-200">Ubah data profil?</a>
+            <a href="{{ route('organization.profile.edit') }}"
+                class="group inline-flex items-center gap-2 px-4 py-2 
+                  border border-[var(--color1)] text-[var(--color1)]
+                  rounded-full text-sm font-medium
+                  transition duration-300 ease-in-out
+                  hover:bg-[var(--color1)] hover:text-white
+                  hover:shadow-md hover:-translate-y-[1px]">
+
+                <img src="{{ asset('assets/icons/people.png') }}" class="w-4 h-4 transition group-hover:invert" alt="Edit">
+
+                <span>Ubah Profil</span>
+            </a>
         </div>
     </div>
 

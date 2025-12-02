@@ -131,7 +131,7 @@ const createButton = (text, isDisabled = false) => {
     button.type = "button";
     button.textContent = text;
     button.disabled = isDisabled;
-    
+
     if (!isDisabled) {
         const buttonDate = new Date(year, month, text).toDateString();
         const today = buttonDate === new Date().toDateString();
@@ -140,7 +140,7 @@ const createButton = (text, isDisabled = false) => {
         button.classList.toggle("today", today);
         button.classList.toggle("selected", selected);
     }
-    
+
     return button;
 };
 
@@ -241,8 +241,10 @@ provinceTrigger.addEventListener("click", (e) => {
     const isOpen = provinceDropdown.classList.contains("open");
     closeAllDropdowns();
     datepicker.hidden = true;
-    provincePanel.classList.toggle("hidden");
-    provinceDropdown.classList.toggle("open");
+    if (!isOpen) {
+        provincePanel.classList.toggle("hidden");
+        provinceDropdown.classList.toggle("open");
+    }
 });
 
 // Select province option
@@ -279,10 +281,13 @@ const getSelectedProvince = () => provinceInput.value;
 // Toggle city dropdown
 cityTrigger.addEventListener("click", (e) => {
     e.stopPropagation();
+    const isOpen = provinceDropdown.classList.contains("open");
     closeAllDropdowns();
     datepicker.hidden = true;
-    cityDropdown.classList.toggle("open");
-    cityPanel.classList.toggle("hidden");
+    if (!isOpen) {
+        cityPanel.classList.toggle("hidden");
+        cityDropdown.classList.toggle("open");
+    }
 });
 
 // Bind click events to city buttons
@@ -357,6 +362,56 @@ function loadCities(provinceId) {
 const initialProvince = getSelectedProvince();
 if (initialProvince) {
     loadCities(initialProvince);
+}
+
+// ============================================================================
+// STATUS DROPDOWN
+// ============================================================================
+
+const statusDropdown = document.querySelector(".status-dropdown");
+console.log(statusDropdown);
+
+console.log(
+    document.querySelector(".status-dropdown .dropdown-trigger")
+);
+if (statusDropdown) {
+
+    const statusTrigger = statusDropdown.querySelector(".dropdown-trigger");
+    const statusPanel = statusDropdown.querySelector(".dropdown-panel");
+    const statusInput = document.getElementById("stateInput");
+    const statusLabel = statusDropdown.querySelector(".dropdown-label");
+
+    // toggle dropdown
+    statusTrigger.addEventListener("click", (e) => {
+        e.stopPropagation();
+
+        const isOpen = statusDropdown.classList.contains("open");
+
+        closeAllDropdowns();
+        datepicker.hidden = true;
+
+        if (!isOpen) {
+            statusPanel.classList.remove("hidden");
+            statusDropdown.classList.add("open");
+        }
+    });
+
+    // select option
+    statusPanel.querySelectorAll("button").forEach(btn => {
+        btn.addEventListener("click", () => {
+
+            const value = btn.dataset.value;
+            const text = btn.textContent.trim();
+
+            statusInput.value = value;
+            statusLabel.innerText = text;
+
+            statusPanel.classList.add("hidden");
+            statusDropdown.classList.remove("open");
+
+        });
+    });
+
 }
 
 // ============================================================================

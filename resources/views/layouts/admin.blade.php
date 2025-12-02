@@ -40,7 +40,7 @@
                         x-transition:leave-end="opacity-0 translate-y-2"
                         class="absolute right-0 mt-2 w-80 max-h-40 overflow-y-auto bg-white rounded-xl shadow-lg z-50">
                         <div class="px-4 py-3 border-b sticky top-0 bg-white">
-                            <p class="font-semibold text-gray-800">Notifications</p>
+                            <p class="font-semibold text-gray-800">Notifikasi</p>
                         </div>
                         <ul class="divide-y">
                             @forelse (Auth::user()->notifications as $notification)
@@ -54,7 +54,7 @@
                                     </li>
                                 </a>
                             @empty
-                                <li class="px-4 py-6 text-center text-gray-500">No notifications</li>
+                                <li class="px-4 py-6 text-center text-gray-500">Belum Ada Notifikasi</li>
                             @endforelse
                         </ul>
                     </div>
@@ -85,7 +85,7 @@
                                     @csrf
                                     <button type="submit"
                                         class="w-full text-left flex items-center px-4 py-2 hover:bg-gray-100 text-gray-700 text-sm">
-                                        🚪 Sign Out
+                                        🚪 Keluar
                                     </button>
                                 </form>
                             </li>
