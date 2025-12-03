@@ -110,7 +110,12 @@
     <div class="max-w-7xl mx-auto px-6 py-10">
         <h1 class="text-3xl font-semibold mb-8 text-gray-800">Perbarui Profil Organisasi</h1>
 
-        <form action="{{ route('admin.organizations.update', ['id' => $organization->id]) }}" method="post"
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <h2>Alasan Ditolak:</h2>
+            <i>{{ $organization->rejected_reason }}</i>
+        </div>
+
+        <form action="{{ route('organization.update', ['id' => $organization->id]) }}" method="post"
             enctype="multipart/form-data" class="space-y-6">
             @csrf
             @method('put')
@@ -259,7 +264,7 @@
 
             <!-- Tombol Aksi -->
             <div class="flex justify-end space-x-3 pt-4">
-                <a href="{{ route('admin.organizations.index') }}"
+                <a href="{{ route('organization.waiting.rejected') }}"
                     class="px-6 py-2 border text-[var(--color1)] border-[var(--color1)]  rounded-md hover:bg-[var(--color1)] transition duration-300 hover:text-white cursor-pointer font-medium">Kembali</a>
                 <button type="submit"
                     class="px-6 py-2 border text-[var(--color1)] border-[var(--color1)]  rounded-md hover:bg-[var(--color1)] transition duration-300 hover:text-white cursor-pointer font-medium">Ubah</button>

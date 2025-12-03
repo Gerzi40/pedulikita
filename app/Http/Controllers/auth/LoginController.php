@@ -25,7 +25,7 @@ class LoginController extends Controller
             $credentials,
             function (User $user) {
                 if ($user->organization) {
-                    return $user->organization->state == 'pending' || $user->organization->state == 'approved';
+                    return $user->organization->state == 'pending' || $user->organization->state == 'approved' || $user->organization->state == 'rejected';
                 }
                 return true;
             },

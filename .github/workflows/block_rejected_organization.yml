@@ -1,0 +1,13 @@
+name: Block Rejected Organization
+
+on:
+  schedule:
+    - cron: "0 0 * * *" 
+  workflow_dispatch:
+
+jobs:
+  ping_daily:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Block Rejected Organization
+        run: curl -X GET https://peduli-kita.vercel.app/cron/block-rejected-organization

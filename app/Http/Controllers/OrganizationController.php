@@ -14,6 +14,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -248,6 +249,82 @@ class OrganizationController extends Controller
         return view('organizations.admin_show', compact('organization'));
     }
 
+    public function edit()
+    {
+        $user = Auth::user();
+
+        $organization = Organization::findOrFail($user->organization->id);
+        $organization_categories = OrganizationCategory::get();
+        $provinces = Province::get();
+        return view('organizations.edit', compact('organization', 'organization_categories', 'provinces'));
+    }
+
+    public function update(Request $request)
+    {
+        $user = Auth::user();
+
+        $organization = Organization::findOrFail($user->organization->id);
+        $user = $organization->user;
+
+        $validated = $request->validate([
+            'name' => ['required', 'string'],
+            'email' => ['required', 'lowercase', 'email', Rule::unique('users')->ignore($user->id)],
+            'password' => ['nullable', Password::min(8)->letters()->mixedCase()->numbers()->symbols()],
+            'profile_picture' => ['nullable', 'image'],
+            'organization_category_id' => ['required', 'exists:organization_categories,id'],
+            'province_id' => ['required', 'exists:provinces,id'],
+            'city_id' => [
+                'required',
+                Rule::exists('cities', 'id')->where(function ($query) use ($request) {
+                    $query->where('province_id', $request->province_id);
+                })
+            ],
+            'description' => ['required', 'string'],
+            'founded_at' => ['required', Rule::date()->beforeOrEqual(today())],
+            'instagram' => ['required', 'string'],
+            'phone' => ['required', 'digits_between:8,15']
+        ]);
+
+        if (!empty($validated['profile_picture'])) {
+            $path = Storage::disk('s3')->putFile('profiles/organizations', $request->file('profile_picture'));
+            if (!$path) {
+                abort(500);
+            }
+        }
+
+        // dd($validated);
+
+        DB::beginTransaction();
+
+        try {
+            $organization->organization_category_id = $validated['organization_category_id'];
+            $organization->city_id                  = $validated['city_id'];
+            $organization->description              = $validated['description'];
+            $organization->founded_at               = $validated['founded_at'];
+            $organization->instagram                = $validated['instagram'];
+            $organization->phone                    = $validated['phone'];
+            $organization->state                    = 'pending';
+            $organization->save();
+
+            $userData = Arr::only($validated, ['name', 'email']);
+            if (!empty($validated['password'])) {
+                $userData['password'] = $validated['password'];
+            }
+            if (!empty($validated['profile_picture'])) {
+                $userData['profile_picture_url'] = $path;
+            }
+            $user->update($userData);
+
+            DB::commit();
+
+            return redirect()->route('organization.waiting.pending');
+        } catch (Throwable $e) {
+            DB::rollBack();
+
+            throw $e;
+        }
+    }
+
     public function destroy(string $id)
     {
         $organization = Organization::findOrFail($id);
@@ -292,9 +369,15 @@ class OrganizationController extends Controller
         return back();
     }
 
-    public function reject(string $id)
+    public function reject(Request $request, string $id)
     {
+        $validated = $request->validate([
+            'reason' => ['required']
+        ]);
+
         $organization = Organization::findOrFail($id);
+        $organization->rejected_reason = $validated['reason'];
+        $organization->rejected_at = Carbon::now();
         $organization->state = 'rejected';
         $organization->save();
 
@@ -310,8 +393,13 @@ class OrganizationController extends Controller
         return back();
     }
 
-    public function waiting()
+    public function waiting_pending()
     {
-        return view('organizations.waiting');
+        return view('organizations.waiting_pending');
+    }
+
+    public function waiting_rejected()
+    {
+        return view('organizations.waiting_rejected');
     }
 }

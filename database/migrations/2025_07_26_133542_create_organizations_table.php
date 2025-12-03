@@ -20,7 +20,9 @@ return new class extends Migration
             $table->date('founded_at');
             $table->string('instagram');
             $table->string('phone');
-            $table->enum('state', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->enum('state', ['pending', 'approved', 'rejected', 'blocked'])->default('pending');
+            $table->text('rejected_reason')->nullable();
+            $table->timestamp('rejected_at')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
