@@ -59,6 +59,7 @@ class EventController extends Controller
     public function volunteer_index(Request $request)
     {
         $user = Auth::user();
+        $volunteer_id = $user->volunteer->id;
 
         $event_categories = EventCategory::get();
         $provinces = Province::get();
@@ -68,6 +69,10 @@ class EventController extends Controller
             ->where('state', '=', 'approved')
             ->whereRaw('date + start_time > ?', [Carbon::now()])
             ->leftJoin('event_volunteer', 'events.id', '=', 'event_volunteer.event_id')
+            ->leftJoin('organization_volunteer', function ($join) use ($volunteer_id) {
+                $join->on('events.organization_id', '=', 'organization_volunteer.organization_id')
+                    ->where('organization_volunteer.volunteer_id', '=', $volunteer_id);
+            })
             ->select([
                 'events.id',
                 'events.name',
@@ -79,7 +84,8 @@ class EventController extends Controller
                 'events.available_slot',
                 DB::raw('COUNT(event_volunteer.volunteer_id) as volunteer_count')
             ])
-            ->groupBy('events.id', 'events.name', 'events.event_category_id', 'events.city_id', 'events.date', 'events.start_time', 'events.image_url', 'events.available_slot')
+            ->groupBy('events.id', 'events.name', 'events.event_category_id', 'events.city_id', 'events.date', 'events.start_time', 'events.image_url', 'events.available_slot', 'organization_volunteer.organization_id')
+            ->orderByRaw('organization_volunteer.organization_id IS NOT NULL DESC')
             ->havingRaw('COUNT(event_volunteer.volunteer_id) < events.available_slot')
             ->whereNotIn('events.id', $user->volunteer->events()->pluck('id'));
         
