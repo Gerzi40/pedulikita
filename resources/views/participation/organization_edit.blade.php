@@ -302,12 +302,10 @@
 
                 if (isPresent == 'Hadir') {
                     select.value = 'TRUE';
+                    ratingInput.value = rating;
                 } else if (isPresent == 'Tidak Hadir') {
                     select.value = 'FALSE';
-                }
-
-                if (rating) {
-                    ratingInput.value = rating;
+                    ratingInput.value = 0
                 }
 
                 const r = parseInt(ratingInput.value) || 0;
