@@ -31,7 +31,7 @@
                         </div>
                         <div class="flex items-center gap-2">
                             <img src="{{ asset('assets/icons/point.png') }}" class="w-5 h-5" alt="">
-                            <span>{{ $event->point }} pts</span>
+                            <span>{{ !empty($event->point) ? $event->point . ' pts' : '-' }}</span>
                         </div>
                         <div class="flex items-center gap-2">
                             <img src="{{ asset('assets/icons/date.png') }}" class="w-5 h-5" alt="">
@@ -60,7 +60,7 @@
                                 class="px-6 py-2 bg-[var(--color1)] text-white font-semibold rounded-md shadow 
                        border border-transparent hover:bg-white hover:text-[var(--color1)] hover:border-[var(--color1)] 
                        transition duration-300">
-                                Setujui
+                                Kirim
                             </button>
                         </form>
 
@@ -68,7 +68,7 @@
                 @endif
 
 
-                @if($event->state == 'pending')
+                {{-- @if($event->state == 'pending')
                     <form action="{{ route('admin.events.destroy', ['id' => $event->id]) }}" method="post">
                         @csrf
                         @method('delete')
@@ -79,7 +79,7 @@
                                     Hapus
                                 </button>
                     </form>
-                @endif
+                @endif --}}
             </div>
         </div>
     </section>

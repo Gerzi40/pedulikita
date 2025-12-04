@@ -63,26 +63,36 @@
     <section class="container mx-auto px-4 pb-4">
         <div class="flex justify-between items-center">
             <h1 class="text-2xl font-semibold my-6">Partisipasi Oleh</h1>
+            @php
+                use Carbon\Carbon;
+
+                $eventDateTime = Carbon::parse($event->date . ' ' . $event->end_time);
+            @endphp
             @if ($event->state != 'finished')
                 <div class="flex gap-3">
                     <button
                         class="bg-[#1769aa] hover:bg-[#12598d] text-white px-6 py-2 rounded-md font-medium transition cursor-pointer"
                         id="downloadExcel">Unduh Excel</button>
+                    @if ($eventDateTime->lte(now()))
+                        
+                    @endif
+                    <a href="{{ route('organization.participation.edit', ['event_id' => $event->id]) }}"
+                        class="inline-block bg-[#1769aa] hover:bg-[#12598d] text-white px-6 py-2 rounded-md font-medium transition cursor-pointer">Nilai</a>
                     <form action="{{ route('organization.participation.submit', ['event_id' => $event->id]) }}"
                         method="post">
                         @csrf
                         <button type="submit"
-                            class="bg-[#1769aa] hover:bg-[#12598d] text-white px-6 py-2 rounded-md font-medium transition cursor-pointer">Konfirmasi Penilaian</button>
+                            class="bg-[#1769aa] hover:bg-[#12598d] text-white px-6 py-2 rounded-md font-medium transition cursor-pointer">Konfirmasi
+                            Penilaian</button>
                     </form>
-                    <a href="{{ route('organization.participation.edit', ['event_id' => $event->id]) }}"
-                        class="inline-block bg-[#1769aa] hover:bg-[#12598d] text-white px-6 py-2 rounded-md font-medium transition cursor-pointer">Nilai</a>
                 </div>
             @endif
         </div>
         <div class="space-y-4 font-sans p-4">
 
             {{-- Header Tabel --}}
-            <div class="flex justify-between items-center px-6 py-4 text-sm rounded-lg font-semibold text-gray-500 bg-gray-50">
+            <div
+                class="flex justify-between items-center px-6 py-4 text-sm rounded-lg font-semibold text-gray-500 bg-gray-50">
                 <div class="w-2/5">Nama Relawan</div>
                 <div class="w-1/5 text-center">Kehadiran</div>
                 <div class="w-2/5 text-right">Nilai</div>
@@ -97,7 +107,8 @@
 
                         {{-- Kolom Nama Relawan --}}
                         <div class="flex items-center space-x-4 w-2/5">
-                            <img class="h-10 w-10 rounded-full object-cover" src="{{ Storage::disk('s3')->url($volunteer->user->profile_picture_url) }}"
+                            <img class="h-10 w-10 rounded-full object-cover"
+                                src="{{ Storage::disk('s3')->url($volunteer->user->profile_picture_url) }}"
                                 alt="{{ $volunteer->user->name }}">
                             <span class="font-medium text-gray-800">{{ $volunteer->user->name }}</span>
                         </div>
@@ -105,11 +116,13 @@
                         {{-- Kolom Kehadiran --}}
                         <div class="w-1/5 flex justify-center items-center">
                             @if ($volunteer->pivot->is_present === true)
-                                <span class="inline-flex items-center gap-2 bg-green-100 text-green-800 text-xs font-semibold px-3 py-1 rounded-full">
+                                <span
+                                    class="inline-flex items-center gap-2 bg-green-100 text-green-800 text-xs font-semibold px-3 py-1 rounded-full">
                                     Hadir
                                 </span>
                             @elseif ($volunteer->pivot->is_present === false)
-                                <span class="inline-flex items-center gap-2 bg-red-100 text-red-800 text-xs font-semibold px-3 py-1 rounded-full">
+                                <span
+                                    class="inline-flex items-center gap-2 bg-red-100 text-red-800 text-xs font-semibold px-3 py-1 rounded-full">
                                     Absen
                                 </span>
                             @endif

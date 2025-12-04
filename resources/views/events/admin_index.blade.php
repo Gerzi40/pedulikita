@@ -360,7 +360,8 @@
 
                             <!-- Actions -->
                             <td class="px-6 py-4">
-                                <div class="flex items-center {{ $event->state == 'pending' ? 'justify-start space-x-2' : 'justify-center' }}">
+                                {{-- <div class="flex items-center {{ $event->state == 'pending' ? 'justify-start space-x-2' : 'justify-center' }}"> --}}
+                                <div class="flex items-center justify-center">
                                     <a href="{{ route('admin.events.show', ['id' => $event->id]) }}"
                                         class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors duration-150 group"
                                         title="View Event">
@@ -372,7 +373,7 @@
                                             </path>
                                         </svg>
                                     </a>
-                                    @if($event->state == 'pending')
+                                    {{-- @if($event->state == 'pending')
                                         <form action="{{ route('admin.events.destroy', ['id' => $event->id]) }}"
                                             method="POST"
                                             onsubmit="return confirm('Are you sure you want to delete this event? This action cannot be undone.')"
@@ -389,7 +390,7 @@
                                                 </svg>
                                             </button>
                                         </form>
-                                    @endif
+                                    @endif --}}
                                 </div>
                             </td>
                         </tr>
