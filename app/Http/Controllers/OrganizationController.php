@@ -280,9 +280,9 @@ class OrganizationController extends Controller
 
         $validated = $request->validate([
             'name' => ['required', 'string'],
-            'email' => ['required', 'lowercase', 'email', Rule::unique('users')->ignore($user->id)],
+            'email' => ['required', 'lowercase', 'email', 'unique:users,email', 'regex:/^[\w\.\-]+@([\w\-]+\.)+[a-zA-Z]{2,}$/'],
             'password' => ['nullable', Password::min(8)->letters()->mixedCase()->numbers()->symbols()],
-            'profile_picture' => ['nullable', 'image'],
+            'profile_picture' => ['nullable', 'image', 'mimes:jpg,png,jpeg', 'max:2048'],
             'organization_category_id' => ['required', 'exists:organization_categories,id'],
             'province_id' => ['required', 'exists:provinces,id'],
             'city_id' => [
@@ -294,7 +294,7 @@ class OrganizationController extends Controller
             'description' => ['required', 'string'],
             'founded_at' => ['required', Rule::date()->beforeOrEqual(today())],
             'instagram' => ['required', 'string'],
-            'phone' => ['required', 'digits_between:8,15']
+            'phone' => ['required', 'digits_between:8,15', 'starts_with:08']
         ]);
 
         if (!empty($validated['profile_picture'])) {
