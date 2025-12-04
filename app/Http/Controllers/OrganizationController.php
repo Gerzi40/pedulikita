@@ -254,6 +254,12 @@ class OrganizationController extends Controller
         $user = Auth::user();
 
         $organization = Organization::findOrFail($user->organization->id);
+
+        if ($organization->state != 'rejected')
+        {
+            return back();
+        }
+
         $organization_categories = OrganizationCategory::get();
         $provinces = Province::get();
         return view('organizations.edit', compact('organization', 'organization_categories', 'provinces'));
@@ -264,6 +270,12 @@ class OrganizationController extends Controller
         $user = Auth::user();
 
         $organization = Organization::findOrFail($user->organization->id);
+
+        if ($organization->state != 'rejected')
+        {
+            return back();
+        }
+        
         $user = $organization->user;
 
         $validated = $request->validate([
@@ -291,8 +303,6 @@ class OrganizationController extends Controller
                 abort(500);
             }
         }
-
-        // dd($validated);
 
         DB::beginTransaction();
 
@@ -354,6 +364,12 @@ class OrganizationController extends Controller
     public function approve(string $id)
     {
         $organization = Organization::findOrFail($id);
+
+        if ($organization->state != 'pending')
+        {
+            return redirect()->route('admin.organizations.show', ['id' => $organization->id]);
+        }
+
         $organization->state = 'approved';
         $organization->save();
 
@@ -376,6 +392,12 @@ class OrganizationController extends Controller
         ]);
 
         $organization = Organization::findOrFail($id);
+
+        if ($organization->state != 'pending')
+        {
+            return redirect()->route('admin.organizations.show', ['id' => $organization->id]);
+        }
+
         $organization->rejected_reason = $validated['reason'];
         $organization->rejected_at = Carbon::now();
         $organization->state = 'rejected';

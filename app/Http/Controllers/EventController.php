@@ -354,6 +354,12 @@ class EventController extends Controller
     public function edit(string $id)
     {
         $event = Event::findOrFail($id);
+
+        if ($event->state != 'pending')
+        {
+            return redirect()->route('organization.events.show', ['id' => $event->id]);
+        }
+
         $event_categories = EventCategory::get();
         return view('events.edit', compact('event', 'event_categories'));
     }
@@ -361,6 +367,11 @@ class EventController extends Controller
     public function update(Request $request, string $id)
     {
         $event = Event::findOrFail($id);
+
+        if ($event->state != 'pending')
+        {
+            return redirect()->route('organization.events.show', ['id' => $event->id]);
+        }
 
         $validator = Validator::make($request->all(), [
             'event_category_id' => ['required', 'exists:event_categories,id'],
@@ -412,13 +423,29 @@ class EventController extends Controller
 
     public function organization_destroy(string $id)
     {
-        Event::where('id', $id)->delete();
+        $event = Event::findOrFail($id);
+
+        if ($event->state != 'pending')
+        {
+            return redirect()->route('organization.events.show', ['id' => $event->id]);
+        }
+
+        $event->delete();
+
         return redirect()->route('organization.events.index');
     }
 
     public function admin_destroy(string $id)
     {
-        Event::where('id', $id)->delete();
+        $event = Event::findOrFail($id);
+
+        if ($event->state != 'pending')
+        {
+            return redirect()->route('admin.events.show', ['id' => $event->id]);
+        }
+
+        $event->delete();
+
         return redirect()->route('admin.events.index');
     }
 
@@ -428,6 +455,12 @@ class EventController extends Controller
         ]);
 
         $event = Event::findOrFail($id);
+        
+        if ($event->state != 'pending')
+        {
+            return redirect()->route('admin.events.show', ['id' => $event->id]);
+        }
+
         $event->state = 'approved';
         $event->point = $validated['point'];
         $event->save();
