@@ -7,14 +7,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class EnsureOrganizationIsNotApproved
+class EnsureOrganizationIsPending
 {
     /**
      * Handle an incoming request.
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next): Response
     {
         if (!$request->user()->organization)
         {
@@ -26,19 +26,13 @@ class EnsureOrganizationIsNotApproved
         
             return redirect()->route('guest.index');
         }
+        else if ($request->user()->organization->state == 'rejected')
+        {
+            return redirect()->route('organization.waiting.rejected');
+        }
         else if ($request->user()->organization->state == 'approved')
         {
             return redirect()->route('organization.events.index');
-        }
-        else if ($request->user()->organization->state == 'rejected')
-        {
-            Auth::logout();
- 
-            $request->session()->invalidate();
-        
-            $request->session()->regenerateToken();
-        
-            return redirect()->route('guest.index');
         }
 
         return $next($request);

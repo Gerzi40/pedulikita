@@ -66,6 +66,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     Route::middleware(['role:organization'])->group(function () {
+        Route::middleware(['organization.pending'])->group(function () {
+            Route::get('/organization/waiting/pending', [OrganizationController::class, 'waiting_pending'])->name('organization.waiting.pending');
+        });
         Route::middleware(['organization.approved'])->group(function () {
             Route::controller(EventController::class)->group(function () {
                 Route::get('/organization/events', 'organization_index')->name('organization.events.index');
@@ -100,8 +103,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/organization/leaderboard', [LeaderboardController::class, 'organization_index'])->name('organization.leaderboard.index');
             Route::get('/organization/follower', [FollowController::class, 'organization_index'])->name('organization.follow.index');
         });
-        Route::middleware(['organization.not.approved'])->group(function () {
-            Route::get('/organization/waiting', [OrganizationController::class, 'waiting'])->name('organization.waiting');
+        Route::middleware(['organization.rejected'])->group(function () {
+            Route::get('/organization/waiting/rejected', [OrganizationController::class, 'waiting_rejected'])->name('organization.waiting.rejected');
+            Route::get('/organization/edit', [OrganizationController::class, 'edit'])->name('organization.edit');
+            Route::put('/organization', [OrganizationController::class, 'update'])->name('organization.update');
         });
     });
 
@@ -130,3 +135,4 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::get('/provinces/{id}/cities', [ProvinceController::class, 'cities']);
 
 require __DIR__ . '/auth.php';
+require __DIR__ . '/cron.php';

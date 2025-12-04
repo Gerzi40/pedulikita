@@ -5,6 +5,8 @@ use Illuminate\Foundation\Application;
 use App\Http\Middleware\EnsureEmailIsNotVerified;
 use App\Http\Middleware\EnsureOrganizationIsApproved;
 use App\Http\Middleware\EnsureOrganizationIsNotApproved;
+use App\Http\Middleware\EnsureOrganizationIsPending;
+use App\Http\Middleware\EnsureOrganizationIsRejected;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
@@ -20,8 +22,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'role' => AuthorizeByRole::class,
             'not.verified' => EnsureEmailIsNotVerified::class,
+            'organization.pending' => EnsureOrganizationIsPending::class,
             'organization.approved' => EnsureOrganizationIsApproved::class,
-            'organization.not.approved' => EnsureOrganizationIsNotApproved::class
+            'organization.rejected' => EnsureOrganizationIsRejected::class
         ]);
 
         $middleware->redirectUsersTo(function (Request $request) {
