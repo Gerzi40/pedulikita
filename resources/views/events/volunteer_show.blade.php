@@ -5,7 +5,7 @@
 @section('content')
 
     {{-- Event Info --}}
-    <section class="max-w-6xl mx-auto mt-10 px-4">
+    <section class="max-w-6xl mx-auto mt-10 px-4" x-data="{ showConfirmModal: false }">
         <div class="grid md:grid-cols-2 gap-10 items-center">
             {{-- Gambar --}}
             <div>
@@ -42,7 +42,7 @@
                     <div class="space-y-2 text-sm text-gray-600">
                         <div class="flex items-center gap-2">
                             <img src="{{ asset('assets/icons/date.png') }}" class="w-5 h-5" alt="">
-                            <span>{{ \Carbon\Carbon::parse($event->date)->translatedFormat('d, F Y') }}</span>
+                            <span>{{ \Carbon\Carbon::parse($event->date)->translatedFormat('d F Y') }}</span>
                         </div>
                         <div class="flex items-center gap-2">
                             <img src="{{ asset('assets/icons/Clock.png') }}" class="w-5 h-5" alt="">
@@ -57,14 +57,45 @@
                         <p class="mt-4 text-green-600 font-semibold">Anda sudah berpartisipasi</p>
                     @else
                         <form action="{{ route('volunteer.participation.store', ['event_id' => $event->id]) }}"
-                            method="post">
+                            method="POST" id="participationForm">
                             @csrf
-                            <button type="submit"
+                            <button type="button" @click="showConfirmModal = true"
                                 class="mt-4 w-fit px-6 py-2 bg-[var(--color1)] text-white font-semibold rounded-md shadow hover:bg-white hover:text-[var(--color1)] border hover:border-[var(--color1)] transition duration-300 cursor-pointer">
                                 Partisipasi
                             </button>
                         </form>
                     @endif
+                </div>
+
+                {{-- Modal Konfirmasi Partisipasi --}}
+                <div x-show="showConfirmModal" x-cloak x-transition:enter="ease-out duration-300"
+                    x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                    x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100"
+                    x-transition:leave-end="opacity-0"
+                    class="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+
+                    <div @click.away="showConfirmModal = false" x-transition:enter="ease-out duration-300"
+                        x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
+                        x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100 scale-100"
+                        x-transition:leave-end="opacity-0 scale-90"
+                        class="bg-white rounded-lg shadow-xl p-6 w-full max-w-md mx-4">
+
+                        <h3 class="text-xl font-bold mb-4 text-gray-800">Konfirmasi Partisipasi</h3>
+                        <p class="text-gray-600 mb-6">Apakah Anda yakin ingin ikut serta dalam acara ini?</p>
+
+                        <div class="flex justify-end gap-4">
+                            {{-- Tombol Batal --}}
+                            <button type="button" @click="showConfirmModal = false"
+                                class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition duration-300">
+                                Batal
+                            </button>
+                            {{-- Tombol Konfirmasi --}}
+                            <button type="button" @click="document.getElementById('participationForm').submit()"
+                                class="px-4 py-2 bg-[var(--color1)] text-white rounded-lg hover:bg-[var(--hovercolor1)] transition duration-300">
+                                Ya, Ikut
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
