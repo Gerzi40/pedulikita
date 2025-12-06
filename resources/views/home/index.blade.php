@@ -35,7 +35,7 @@
                         <div class="flex justify-center">
                             <img src="{{ Storage::disk('s3')->url($organization->user->profile_picture_url) }}" class="w-30 h-30 object-contain"/>
                         </div>
-                        <h3 class="text-xl font-semibold mb-1">{{ $organization->user->name }}qq</h3>
+                        <h3 class="text-xl font-semibold mb-1">{{ $organization->user->name }}</h3>
                     </div>
                     <div class="flex justify-between items-center">
                         <p>{{ count($organization->volunteers) }} pengikut</p>
