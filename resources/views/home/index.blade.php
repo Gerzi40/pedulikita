@@ -134,103 +134,136 @@
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="bg-[var(--color1)] text-white pt-12 pb-6 px-4">
-    <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-        {{-- Kolom Produk --}}
-        <div>
-            <h4 class="font-bold text-lg mb-4 relative pb-2">
-                Produk
-                <span class="absolute bottom-0 left-0 w-8 h-0.5 bg-white"></span>
-            </h4>
-            <ul class="space-y-2 text-sm">
-                <li><a href="#" class="hover:underline">Acara</a></li>
-                <li><a href="#" class="hover:underline">Organisasi</a></li>
-                <li><a href="#" class="hover:underline">Leaderboard</a></li>
-                <li><a href="#" class="hover:underline">Dashboard</a></li>
-                <li><a href="#" class="hover:underline">Profil</a></li>
-            </ul>
-        </div>
+    {{-- <footer class="bg-[var(--color1)] text-white pt-12 pb-6 px-4">
+        <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+            <div>
+                <h4 class="font-bold text-lg mb-4 relative pb-2">
+                    Produk
+                    <span class="absolute bottom-0 left-0 w-8 h-0.5 bg-white"></span>
+                </h4>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#" class="hover:underline">Acara</a></li>
+                    <li><a href="#" class="hover:underline">Organisasi</a></li>
+                    <li><a href="#" class="hover:underline">Leaderboard</a></li>
+                    <li><a href="#" class="hover:underline">Dashboard</a></li>
+                    <li><a href="#" class="hover:underline">Profil</a></li>
+                </ul>
+            </div>
 
-        {{-- Kolom Informasi --}}
-        <div>
-            <h4 class="font-bold text-lg mb-4 relative pb-2">
-                Informasi
-                <span class="absolute bottom-0 left-0 w-8 h-0.5 bg-white"></span>
-            </h4>
-            <ul class="space-y-2 text-sm">
-                <li><a href="#" class="hover:underline">Sejarah</a></li>
-                <li><a href="#" class="hover:underline">Manfaat</a></li>
-                <li><a href="#" class="hover:underline">Akun</a></li>
-                <li><a href="#" class="hover:underline">Keamanan</a></li>
-            </ul>
-        </div>
+            <div>
+                <h4 class="font-bold text-lg mb-4 relative pb-2">
+                    Informasi
+                    <span class="absolute bottom-0 left-0 w-8 h-0.5 bg-white"></span>
+                </h4>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#" class="hover:underline">Sejarah</a></li>
+                    <li><a href="#" class="hover:underline">Manfaat</a></li>
+                    <li><a href="#" class="hover:underline">Akun</a></li>
+                    <li><a href="#" class="hover:underline">Keamanan</a></li>
+                </ul>
+            </div>
 
-        {{-- Kolom Perusahaan --}}
-        <div>
-            <h4 class="font-bold text-lg mb-4 relative pb-2">
-                Perusahaan
-                <span class="absolute bottom-0 left-0 w-8 h-0.5 bg-white"></span>
-            </h4>
-            <ul class="space-y-2 text-sm">
-                <li><a href="#" class="hover:underline">Tentang Kami</a></li>
-                <li><a href="#" class="hover:underline">Karir</a></li>
-                <li><a href="#" class="hover:underline">FAQs</a></li>
-                <li><a href="#" class="hover:underline">Pengembang</a></li>
-                <li><a href="#" class="hover:underline">Hubungi Kami</a></li>
-            </ul>
-        </div>
+            <div>
+                <h4 class="font-bold text-lg mb-4 relative pb-2">
+                    Perusahaan
+                    <span class="absolute bottom-0 left-0 w-8 h-0.5 bg-white"></span>
+                </h4>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#" class="hover:underline">Tentang Kami</a></li>
+                    <li><a href="#" class="hover:underline">Karir</a></li>
+                    <li><a href="#" class="hover:underline">FAQs</a></li>
+                    <li><a href="#" class="hover:underline">Pengembang</a></li>
+                    <li><a href="#" class="hover:underline">Hubungi Kami</a></li>
+                </ul>
+            </div>
 
-        {{-- Kolom Hubungi Kami (Form) --}}
-        <div>
-            <h4 class="font-bold text-lg mb-4 relative pb-2">
-                Hubungi Kami
-                <span class="absolute bottom-0 left-0 w-8 h-0.5 bg-white"></span>
-            </h4>
-            <form class="space-y-3">
-                <input type="text" placeholder="Nama" class="w-full p-2 rounded bg-white text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
-                <input type="email" placeholder="Email" class="w-full p-2 rounded bg-white text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
-                <button type="submit" class="bg-white text-blue-700 px-4 py-2 rounded font-semibold text-sm hover:bg-gray-200 transition duration-300">Kirim</button>
-            </form>
-        </div>
+            <div>
+                <h4 class="font-bold text-lg mb-4 relative pb-2">
+                    Hubungi Kami
+                    <span class="absolute bottom-0 left-0 w-8 h-0.5 bg-white"></span>
+                </h4>
+                <form class="space-y-3">
+                    <input type="text" placeholder="Nama" class="w-full p-2 rounded bg-white text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
+                    <input type="email" placeholder="Email" class="w-full p-2 rounded bg-white text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
+                    <button type="submit" class="bg-white text-blue-700 px-4 py-2 rounded font-semibold text-sm hover:bg-gray-200 transition duration-300">Kirim</button>
+                </form>
+            </div>
 
-        {{-- Kolom PEDULIKITA & Ikuti Kami --}}
-        <div class="md:col-span-2 lg:col-span-1 md:text-right lg:text-left"> {{-- Menyesuaikan tata letak untuk tablet dan desktop --}}
-            <a href="{{ route('guest.index') }}"><img src="{{ asset('assets/logo/peduli2.png') }}" class="" alt="Peduli Kita Logo" /></a>
-            <h4 class="font-bold text-lg mb-4 relative pb-2">
-                Ikuti Kami
-                <span class="absolute bottom-0 right-0 w-8 h-0.5 bg-white md:left-auto md:right-0 lg:left-0"></span> {{-- Menyesuaikan posisi garis bawah --}}
-            </h4>
-            <div class="flex space-x-4 mt-4 md:justify-end lg:justify-start"> {{-- Menggunakan flex dan justify-end/start --}}
-                <a href="#" aria-label="Facebook" class="text-white hover:text-gray-300 transition duration-300">
-                    <i class="fab fa-facebook-f fa-lg"></i>
-                </a>
-                <a href="#" aria-label="Twitter" class="text-white hover:text-gray-300 transition duration-300">
-                    <i class="fab fa-twitter fa-lg"></i>
-                </a>
-                <a href="#" aria-label="Telegram" class="text-white hover:text-gray-300 transition duration-300">
-                    <i class="fab fa-telegram-plane fa-lg"></i>
-                </a>
-                <a href="#" aria-label="Instagram" class="text-white hover:text-gray-300 transition duration-300">
-                    <i class="fab fa-instagram fa-lg"></i>
-                </a>
+            <div class="md:col-span-2 lg:col-span-1 md:text-right lg:text-left">
+                <a href="{{ route('guest.index') }}"><img src="{{ asset('assets/logo/peduli2.png') }}" class="" alt="Peduli Kita Logo" /></a>
+                <h4 class="font-bold text-lg mb-4 relative pb-2">
+                    Ikuti Kami
+                    <span class="absolute bottom-0 right-0 w-8 h-0.5 bg-white md:left-auto md:right-0 lg:left-0"></span>
+                </h4>
+                <div class="flex space-x-4 mt-4 md:justify-end lg:justify-start">
+                    <a href="#" aria-label="Facebook" class="text-white hover:text-gray-300 transition duration-300">
+                        <i class="fab fa-facebook-f fa-lg"></i>
+                    </a>
+                    <a href="#" aria-label="Twitter" class="text-white hover:text-gray-300 transition duration-300">
+                        <i class="fab fa-twitter fa-lg"></i>
+                    </a>
+                    <a href="#" aria-label="Telegram" class="text-white hover:text-gray-300 transition duration-300">
+                        <i class="fab fa-telegram-plane fa-lg"></i>
+                    </a>
+                    <a href="#" aria-label="Instagram" class="text-white hover:text-gray-300 transition duration-300">
+                        <i class="fab fa-instagram fa-lg"></i>
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
 
-    {{-- Bagian Bawah Footer (Copyright dll.) --}}
-    <div class="container mx-auto text-center text-xs mt-10 border-t border-blue-600 pt-6"> {{-- Menambahkan border-top --}}
-        <ul class="flex flex-wrap justify-center space-x-4 sm:space-x-8"> {{-- Menggunakan flex-wrap untuk responsif --}}
-            <li><a href="#" class="hover:underline">Privacy Policy</a></li>
-            <li><a href="#" class="hover:underline">Terms of Use</a></li>
-            <li><a href="#" class="hover:underline">Bug and Reports</a></li>
-            <li><a href="#" class="hover:underline">Legal</a></li>
-            <li><a href="#" class="hover:underline">Copyright</a></li>
-        </ul>
-    </div>
-</footer>
+        <div class="container mx-auto text-center text-xs mt-10 border-t border-blue-600 pt-6">
+            <ul class="flex flex-wrap justify-center space-x-4 sm:space-x-8">
+                <li><a href="#" class="hover:underline">Privacy Policy</a></li>
+                <li><a href="#" class="hover:underline">Terms of Use</a></li>
+                <li><a href="#" class="hover:underline">Bug and Reports</a></li>
+                <li><a href="#" class="hover:underline">Legal</a></li>
+                <li><a href="#" class="hover:underline">Copyright</a></li>
+            </ul>
+        </div>
+    </footer> --}}
 
-{{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40NZjgTlkISLRS5XUaPzC/TzU4b6t1z+oM6lK+f6Q+Q9vJ9zD9u+d80P1S3+tXGf5W7+b+c+A==" crossorigin="anonymous" referrerpolicy="no-referrer" /> --}}
-
+    <footer>
+        <div class="bg-[#3F3F3F] text-white py-10">
+            <div class="container mx-auto px-4 md:px-6 lg:px-8">
+                <div class="mb-3 flex justify-center md:justify-start">
+                    <img src="{{ asset('assets/logo/peduli2.png') }}" class="w-75 md:w-100" alt="Peduli Kita Logo" />
+                </div>
+                <div class="flex flex-col md:flex-row gap-3 text-sm md:font-base">
+                    <div class="w-1/2 space-y-3">
+                        <div>
+                            <div class="text-xl font-bold">Alamat</div>
+                            <div>
+                                <p>Jl. Raya Kb. Jeruk No.27, RT.1/RW.9,</p>
+                                <p>Kemanggisan, Kec. Palmerah, Kota Jakarta Barat,</p>
+                                <p>Daerah Khusus Ibukota Jakarta 11530</p>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="text-xl font-bold">Email</div>
+                            <div>pedulikita2026@gmail.com</div>
+                        </div>
+                        <div>
+                            <div class="text-xl font-bold">Telepon</div>
+                            <div>+62 812 345 678</div>
+                        </div>
+                    </div>
+                    <div class="w-1/2">
+                        <h3 class="text-xl font-bold">Halaman</h3>
+                        <div class="flex flex-col gap-3">
+                            <a href="{{ route('guest.events.index') }}">Acara</a>
+                            <a href="{{ route('guest.organizations.index') }}">Organisasi</a>
+                            <a href="{{ route('register') }}">Daftar</a>
+                            <a href="{{ route('guest.organizations.create') }}">Daftar Organisasi</a>
+                            <a href="{{ route('login') }}">Masuk</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center font-semibold py-3">
+            Copyright © PeduliKita
+        </div>
+    </footer>
 
 @endsection
