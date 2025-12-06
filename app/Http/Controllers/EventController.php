@@ -275,7 +275,19 @@ class EventController extends Controller
             'available_slot' => ['required', 'integer'],
             'date' => ['required', Rule::date()->after(today()->addDays(7))],
             'start_time' => ['required', 'date_format:H:i'],
-            'end_time' => ['required', 'date_format:H:i', 'after:start_time'],
+            'end_time' => [
+                            'required',
+                            'date_format:H:i',
+                            'after:start_time',
+                            function ($attribute, $value, $fail) use ($request) {
+                                $start = Carbon::createFromFormat('H:i', $request->start_time);
+                                $end   = Carbon::createFromFormat('H:i', $value);
+
+                                if ($start->diffInMinutes($end, false) < 30) {
+                                    $fail('Durasi acara minimal 30 menit.');
+                                }
+                            }
+                        ],
             'description' => ['required', 'string'],
             'location' => ['required', 'string'],
             'latitude' => ['required', 'numeric', 'between:-90,90'],

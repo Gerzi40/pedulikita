@@ -5,6 +5,28 @@
 @section('content')
 
     <section class="max-w-6xl mx-auto mt-10 px-4">
+        {{-- BACK BUTTON --}}
+        <a href="{{ route('admin.events.index') }}"
+        class="inline-flex items-center gap-2 px-4 py-2 mb-6
+                bg-white text-[var(--color1)] border border-[var(--color1)]
+                rounded-md shadow hover:bg-[var(--color1)] hover:text-white
+                transition duration-300 w-fit">
+
+            <svg xmlns="http://www.w3.org/2000/svg"
+                class="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2">
+                <path stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M15 19l-7-7 7-7"/>
+            </svg>
+
+            <span class="text-sm font-medium">
+                Kembali
+            </span>
+        </a>
         <div class="grid md:grid-cols-2 gap-10 items-center" x-data="{ showPointModal: false}">
             {{-- Gambar --}}
             <div>
@@ -168,7 +190,12 @@
         x-data="{ show: true }"
         x-show="show"
         x-init="setTimeout(() => show = false, 3500)"
-        x-transition
+
+        x-transition:enter-start="-translate-y-3 opacity-0"
+        x-transition:enter-end="translate-y-0 opacity-100"
+        x-transition:leave-start="translate-y-0 opacity-100"
+        x-transition:leave-end="-translate-y-3 opacity-0"
+        
         class="fixed top-20 right-6 z-50"
     >
         <div 
