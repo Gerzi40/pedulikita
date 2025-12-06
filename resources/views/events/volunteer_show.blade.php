@@ -125,7 +125,7 @@
                 <form action="{{ route('volunteer.follow.store', ['organization_id' => $event->organization_id]) }}" method="post" class="flex-shrink-0">
                     @csrf
                     <button type="submit" class="bg-[var(--color1)] border hover:bg-[var(--hovercolor1)] cursor-pointer border-[var(--color1)] text-white font-semibold py-2 px-6 rounded-lg shadow-md hover:scale-[1.05] transition duration-300">
-                        + Ikuti
+                        Ikuti
                     </button>
                 </form>
             @endif

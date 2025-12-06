@@ -75,7 +75,7 @@
             </a>
 
             <a href="{{ route('login') }}" class="inline-block bg-[var(--color1)] border hover:bg-[var(--hovercolor1)] cursor-pointer border-[var(--color1)] text-white font-semibold py-2 px-6 rounded-lg shadow-md hover:scale-[1.05] transition duration-300 flex-shrink-0">
-                + Ikuti
+                Ikuti
             </a>
         </div>
     </section>
