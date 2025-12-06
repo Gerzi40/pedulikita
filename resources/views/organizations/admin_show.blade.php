@@ -6,8 +6,8 @@
 
     <div class="container mx-auto px-4 py-8">
 
-        {{-- Gunakan x-data untuk menginisialisasi state modal --}}
-        <div x-data="{ showConfirmModal: false }">
+        {{-- Gunakan x-data untuk menginisialisasi state kedua modal --}}
+        <div x-data="{ showConfirmModal: false, showRejectModal: false }">
 
             <div class="flex items-center space-x-6 mb-8">
                 {{-- Bagian Logo dan Nama Organisasi --}}
@@ -17,37 +17,48 @@
                 </div>
                 <div>
                     <h1 class="text-3xl font-bold text-gray-800">{{ $organization->user->name }}</h1>
-                    <div class="flex gap-5 mt-5">
+                    <div class="flex gap-2 mt-5">
                         @if ($organization->state === 'pending')
-                            <form action="{{ route('admin.organizations.approve', ['id' => $organization->id]) }}" method="POST">
+                            <form action="{{ route('admin.organizations.approve', ['id' => $organization->id]) }}"
+                                method="POST">
                                 @csrf
                                 @method('PUT')
-                                <button type="submit" class="px-6 py-2 bg-[var(--color1)] text-white font-semibold rounded-md shadow border border-transparent hover:bg-white hover:text-[var(--color1)] hover:border-[var(--color1)] transition duration-300">
+                                <button type="submit"
+                                    class="px-6 py-2 bg-[var(--color1)] text-white font-semibold rounded-md shadow border border-transparent hover:bg-white hover:text-[var(--color1)] hover:border-[var(--color1)] transition duration-300">
                                     Setuju
                                 </button>
                             </form>
 
-                            <form action="{{ route('admin.organizations.reject', ['id' => $organization->id]) }}" method="POST">
+                            {{-- Form untuk reject (disembunyikan, hanya untuk submit) --}}
+                            <form x-ref="rejectForm"
+                                action="{{ route('admin.organizations.reject', ['id' => $organization->id]) }}"
+                                method="POST">
                                 @csrf
                                 @method('PUT')
-                                <input type="text" name="reason" class="border"/>
-                                <button type="submit" class="px-6 py-2 bg-[var(--color1)] text-white font-semibold rounded-md shadow border border-transparent hover:bg-white hover:text-[var(--color1)] hover:border-[var(--color1)] transition duration-300">
-                                    Tolak
-                                </button>
+                                <input type="hidden" name="reason" x-ref="rejectReason">
                             </form>
+
+                            {{-- Tombol Tolak yang memicu modal --}}
+                            <button type="button" @click="showRejectModal = true"
+                                class="px-6 py-2 bg-yellow-500 text-white font-semibold rounded-md shadow border border-transparent hover:bg-white hover:text-yellow-500 hover:border-yellow-500 transition duration-300">
+                                Tolak
+                            </button>
                         @endif
 
                         {{-- Form untuk delete --}}
-                        <form x-ref="deleteForm" action="{{ route('admin.organizations.destroy', ['id' => $organization->id]) }}" method="post">
-                            @csrf
-                            @method('delete')
+                        @if ($organization->state != 'pending')
+                            <form x-ref="deleteForm"
+                                action="{{ route('admin.organizations.destroy', ['id' => $organization->id]) }}" method="post">
+                                @csrf
+                                @method('delete')
 
-                            {{-- Tombol ini sekarang memicu modal, bukan submit form langsung --}}
-                            <button type="button" @click="showConfirmModal = true"
-                                class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300">
-                                Hapus
-                            </button>
-                        </form>
+                                {{-- Tombol Hapus yang memicu modal --}}
+                                <button type="button" @click="showConfirmModal = true"
+                                    class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300">
+                                    Hapus
+                                </button>
+                            </form>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -56,22 +67,48 @@
             <div x-show="showConfirmModal" style="display: none;" x-transition:enter="ease-out duration-300"
                 x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
                 x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100"
-                x-transition:leave-end="opacity-0"
-                class="fixed inset-0 z-50 flex items-center justify-center bg-white/30">
+                x-transition:leave-end="opacity-0" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
 
                 <div @click.away="showConfirmModal = false" class="bg-white rounded-lg shadow-xl p-6 w-full max-w-md mx-4">
                     <h3 class="text-xl font-bold mb-4 text-gray-800">Konfirmasi Penghapusan</h3>
-                    <p class="text-gray-600 mb-6">Apakah Anda yakin ingin menghapus organisasi ini? Tindakan ini tidak dapat dibatalkan.</p>
+                    <p class="text-gray-600 mb-6">Apakah Anda yakin ingin menghapus organisasi ini? Tindakan ini tidak dapat
+                        dibatalkan.</p>
                     <div class="flex justify-end gap-4">
-                        {{-- Tombol Batal --}}
                         <button type="button" @click="showConfirmModal = false"
                             class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition duration-300">
                             Batal
                         </button>
-                        {{-- Tombol Hapus (submit form) --}}
                         <button type="button" @click="$refs.deleteForm.submit()"
                             class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition duration-300">
                             Ya, Hapus
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Modal Konfirmasi Reject --}}
+            <div x-show="showRejectModal" style="display: none;" x-transition:enter="ease-out duration-300"
+                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100"
+                x-transition:leave-end="opacity-0" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+
+                <div @click.away="showRejectModal = false" class="bg-white rounded-lg shadow-xl p-6 w-full max-w-md mx-4">
+                    <h3 class="text-xl font-bold mb-4 text-gray-800">Konfirmasi Penolakan</h3>
+                    <p class="text-gray-600 mb-4">Berikan alasan penolakan organisasi ini:</p>
+
+                    {{-- Input untuk alasan penolakan --}}
+                    <textarea x-model="rejectReason" rows="4"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent mb-4"
+                        placeholder="Masukkan alasan penolakan..."></textarea>
+
+                    <div class="flex justify-end gap-4">
+                        <button type="button" @click="showRejectModal = false"
+                            class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition duration-300">
+                            Batal
+                        </button>
+                        <button type="button" @click="$refs.rejectReason.value = rejectReason; $refs.rejectForm.submit()"
+                            class="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition duration-300">
+                            Ya, Tolak
                         </button>
                     </div>
                 </div>
@@ -133,7 +170,8 @@
         <div class="mt-10">
             <section class="py-10">
                 <div class="container mx-auto px-4">
-                    <h2 class="text-xl font-bold text-[var(--color1)] mb-6">Acara dari {{ $organization->user->name }}</h2>
+                    <h2 class="text-xl font-bold text-[var(--color1)] mb-6">Acara dari {{ $organization->user->name }}
+                    </h2>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         @foreach ($organization->events as $event)
                             <div class="bg-white shadow-md rounded-lg overflow-hidden">
@@ -148,25 +186,29 @@
                                             Disetujui
                                         </div>
                                     @elseif($event->state == 'pending')
-                                        <div class="absolute top-2 right-2 bg-[var(--color1)] text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
+                                        <div
+                                            class="absolute top-2 right-2 bg-[var(--color1)] text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
                                             Diproses
                                         </div>
                                     @elseif($event->state == 'finished')
-                                        <div class="absolute top-2 right-2 bg-[var(--color1)] text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
+                                        <div
+                                            class="absolute top-2 right-2 bg-[var(--color1)] text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
                                             Selesai
                                         </div>
                                     @elseif($event->state == 'reviewed')
-                                        <div class="absolute top-2 right-2 bg-[var(--color1)] text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
+                                        <div
+                                            class="absolute top-2 right-2 bg-[var(--color1)] text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
                                             Diulas
                                         </div>
                                     @endif
                                 </div>
                                 <div class="p-4">
                                     <h3 class="font-semibold text-base text-[var(--color2)] mb-2">{{ $event->name }}</h3>
-                                    
+
                                     {{-- Kategori --}}
                                     <div class="flex items-center text-gray-500 text-xs mb-1">
-                                        <img src="{{ asset('assets/icons/category.png') }}" class="mr-2 h-3 w-3 object-contain" alt="">
+                                        <img src="{{ asset('assets/icons/category.png') }}"
+                                            class="mr-2 h-3 w-3 object-contain" alt="">
                                         <p class="text-[var(--color2)]">{{ $event->event_category->name }}</p>
                                     </div>
 

@@ -422,6 +422,10 @@ class OrganizationController extends Controller
 
     public function waiting_rejected()
     {
-        return view('organizations.waiting_rejected');
+        $user = Auth::user();
+
+        $organization = Organization::findOrFail($user->organization->id);
+
+        return view('organizations.waiting_rejected', compact(('organization')));
     }
 }
