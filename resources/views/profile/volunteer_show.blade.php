@@ -54,7 +54,7 @@
                 </div>
 
                 {{-- Right: Statistic Cards --}}
-                <div class="flex flex-wrap gap-5">
+                <div class="flex justify-center flex-wrap gap-5">
                     <!-- Card 1 -->
                     <div
                         class="flex flex-col items-center p-6 bg-white rounded-2xl shadow-md w-48 border-2 border-[var(--color1)]">
