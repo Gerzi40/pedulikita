@@ -40,7 +40,7 @@
 
                             {{-- Tombol Tolak yang memicu modal --}}
                             <button type="button" @click="showRejectModal = true"
-                                class="px-6 py-2 bg-yellow-500 text-white font-semibold rounded-md shadow border border-transparent hover:bg-white hover:text-yellow-500 hover:border-yellow-500 transition duration-300">
+                                class="px-6 py-2 bg-[#960018] text-white font-semibold rounded-md shadow border border-transparent hover:bg-white hover:text-[#960018] hover:border-[#960018] transition duration-300">
                                 Tolak
                             </button>
                         @endif
@@ -54,7 +54,7 @@
 
                                 {{-- Tombol Hapus yang memicu modal --}}
                                 <button type="button" @click="showConfirmModal = true"
-                                    class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300">
+                                    class="bg-[#960018] text-white font-semibold py-2 px-6 rounded-md shadow border border-transparent hover:bg-white hover:text-[#960018] hover:border-[#960018] transition duration-300">
                                     Hapus
                                 </button>
                             </form>
@@ -79,7 +79,7 @@
                             Batal
                         </button>
                         <button type="button" @click="$refs.deleteForm.submit()"
-                            class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition duration-300">
+                            class="px-4 py-2 bg-[#960018] text-white rounded-lg hover:bg-[#7E191B] transition duration-300">
                             Ya, Hapus
                         </button>
                     </div>

@@ -477,7 +477,7 @@ class EventController extends Controller
             Log::error($e->getMessage());
         }
 
-        return back();
+        return back()->with('success', 'Poin berhasil diberikan & event disetujui.');
     }
 
 }

@@ -39,7 +39,7 @@
             <!-- Slot tersedia -->
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Slot tersedia <span class="text-red-500">*</span></label>
-                <input type="number" name="available_slot" class="w-full border rounded-md px-4 py-2 text-sm" value="{{ old('available_slot') }}" required />
+                <input type="number" name="available_slot" class="w-full border rounded-md px-4 py-2 text-sm" value="{{ old('available_slot') }}" min="5" required />
                 @error('available_slot')
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
