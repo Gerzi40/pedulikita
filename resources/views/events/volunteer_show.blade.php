@@ -104,43 +104,31 @@
     {{-- Judul dan Organisasi --}}
     <section class="max-w-6xl mx-auto mt-12 px-4 space-y-6">
         <h1 class="text-2xl md:text-3xl font-bold text-gray-800">{{ $event->name }}</h1>
+        <div class="flex justify-between items-center gap-3">
+            <a href="{{ route('volunteer.organizations.show', ['id' => $event->organization_id]) }}" class="flex gap-4">
+                <img src="{{ Storage::disk('s3')->url($event->organization->user->profile_picture_url) }}" class="w-12 h-12 rounded-full object-cover" alt="">
+                <div class="flex flex-col">
+                    <span class="text-sm text-gray-600">Dibuat oleh</span>
+                    <span class="text-lg font-semibold">{{ $event->organization->user->name }}</span>
+                </div>
+            </a>
 
-        <div class="flex items-center gap-4">
-            <img src="{{ Storage::disk('s3')->url($event->organization->user->profile_picture_url) }}"
-                class="w-12 h-12 rounded-full object-cover" alt="">
-            <div class="flex flex-col">
-                <span class="text-sm text-gray-600">Dibuat oleh</span>
-                <span class="text-lg font-semibold">{{ $event->organization->user->name }}</span>
-            </div>
-
-            <div class="hidden md:flex items-center gap-2 ml-auto">
-                <a href="{{ route('volunteer.organizations.show', ['id' => $event->organization_id]) }}"
-                    class="px-6 py-2 border text-[var(--color1)] border-[var(--color1)]  rounded-md hover:bg-[var(--color1)] hover:text-white hover:shadow-md hover:scale-[1.05] transition duration-300 font-medium">Lihat</a>
-                {{-- <a href="#"
-                    class="px-6 py-2 bg-[var(--color1)] text-white rounded-md border border-[var(--color1)] hover:bg-transparent hover:text-[var(--color1)] hover:shadow-md hover:scale-[1.03] transition duration-300 font-medium">
-                    + Ikuti
-                </a> --}}
-                @if ($event->organization->volunteers->contains('user_id', Auth::user()->id))
-                    <form action="{{ route('volunteer.follow.destroy', ['organization_id' => $event->organization_id]) }}"
-                        method="post" class="">
-                        @csrf
-                        @method('delete')
-                        <button type="submit"
-                            class="bg-[#960018] hover:bg-[#7E191B] text-white font-semibold cursor-pointer py-2 px-6 rounded-lg shadow-md transition duration-300">
-                            Behenti Mengikuti
-                        </button>
-                    </form>
-                @else
-                    <form action="{{ route('volunteer.follow.store', ['organization_id' => $event->organization_id]) }}"
-                        method="post" class="">
-                        @csrf
-                        <button type="submit"
-                            class="bg-[var(--color1)] border hover:bg-[var(--hovercolor1)] cursor-pointer border-[var(--color1)] text-white font-semibold py-2 px-6 rounded-lg shadow-md hover:scale-[1.05] transition duration-300">
-                            + Ikuti
-                        </button>
-                    </form>
-                @endif
-            </div>
+            @if ($event->organization->volunteers->contains('user_id', Auth::user()->id))
+                <form action="{{ route('volunteer.follow.destroy', ['organization_id' => $event->organization_id]) }}" method="post" class="flex-shrink-0">
+                    @csrf
+                    @method('delete')
+                    <button type="submit" class="bg-[#960018] hover:bg-[#7E191B] text-white font-semibold cursor-pointer py-2 px-6 rounded-lg shadow-md transition duration-300">
+                        Behenti
+                    </button>
+                </form>
+            @else
+                <form action="{{ route('volunteer.follow.store', ['organization_id' => $event->organization_id]) }}" method="post" class="flex-shrink-0">
+                    @csrf
+                    <button type="submit" class="bg-[var(--color1)] border hover:bg-[var(--hovercolor1)] cursor-pointer border-[var(--color1)] text-white font-semibold py-2 px-6 rounded-lg shadow-md hover:scale-[1.05] transition duration-300">
+                        Ikuti
+                    </button>
+                </form>
+            @endif
         </div>
     </section>
 

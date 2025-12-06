@@ -5,14 +5,17 @@
 @section('content')
 
     <div class="container mx-auto px-4 py-8">
-        <div class="flex items-center space-x-6 mb-8">
+
+
+
+        <div class="flex items-center space-x-6 mb-8 flex-col md:flex-row">
             {{-- Bagian Logo dan Nama Organisasi --}}
             <div class="flex-shrink-0">
                 {{-- Pastikan $organization->user->profile_picture_url mengarah ke gambar yang benar --}}
                 <img src="{{ Storage::disk('s3')->url($organization->user->profile_picture_url) }}" alt="Logo Organisasi"
                     class="w-48 h-48 object-cover rounded-full border-2 border-gray-200">
             </div>
-            <div>
+            <div class="flex flex-col items-center md:items-start">
                 <h1 class="text-3xl font-bold text-gray-800">{{ $organization->user->name }}</h1>
                 {{-- Tombol Follow/Unfollow --}}
                 @if ($organization->volunteers->contains('user_id', Auth::user()->id))
@@ -22,7 +25,7 @@
                         @method('delete')
                         <button type="submit"
                             class="bg-[#960018] hover:bg-[#7E191B] text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300">
-                            Behenti Mengikuti
+                            Behenti
                         </button>
                     </form>
                 @else

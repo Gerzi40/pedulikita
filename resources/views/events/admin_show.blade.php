@@ -86,14 +86,14 @@
 
     <section class="max-w-6xl mx-auto mt-12 px-4 space-y-6">
         <h1 class="text-2xl md:text-3xl font-bold text-gray-800">{{ $event->name }}</h1>
-
-        <div class="flex items-center gap-4">
-            <img src="{{ Storage::disk('s3')->url($event->organization->user->profile_picture_url) }}"
-                class="w-12 h-12 rounded-full object-cover" alt="">
-            <div class="flex flex-col">
-                <span class="text-sm text-gray-600">Dibuat oleh</span>
-                <span class="text-lg font-semibold">{{ $event->organization->user->name }}</span>
-            </div>
+        <div class="flex justify-between items-center gap-3">
+            <a href="{{ route('admin.organizations.show', ['id' => $event->organization_id]) }}" class="flex gap-4">
+                <img src="{{ Storage::disk('s3')->url($event->organization->user->profile_picture_url) }}" class="w-12 h-12 rounded-full object-cover" alt="">
+                <div class="flex flex-col">
+                    <span class="text-sm text-gray-600">Dibuat oleh</span>
+                    <span class="text-lg font-semibold">{{ $event->organization->user->name }}</span>
+                </div>
+            </a>
         </div>
     </section>
 

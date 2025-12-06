@@ -339,6 +339,8 @@ class OrganizationController extends Controller
     {
         $organization = Organization::findOrFail($id);
 
+        DB::beginTransaction();
+
         try
         {
             $organization->delete();

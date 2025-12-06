@@ -26,114 +26,111 @@
         </div>
     </section>
 
-    <!-- Organisasi Favorit -->
-    <section class="container mx-auto px-4 py-10">
-        <h2 class="text-xl font-bold text-[var(--color1)] mb-6">Organisasi Favorit</h2>
-        <div class="grid grid-cols-2 md:grid-cols-5 gap-6 text-center">
+    <h2 class="text-4xl font-bold text-center mb-10 mt-10">Organisasi Favorit</h2>
+    <section class="container mx-auto px-4 md:px-6 lg:px-8 mb-10">
+        <div class="flex flex-col lg:flex-row items-center lg:items-stretch gap-5">
             @foreach ($organizations as $organization)
-                <a href="{{ route('guest.organizations.show', ['id' => $organization->id]) }}" 
-                class="flex flex-col items-center p-3 rounded-lg shadow transition-all duration-200 hover:scale-110 hover:shadow-lg">
-                    <div class="w-full aspect-square bg-white overflow-hidden">
-                        <img src="{{ Storage::disk('s3')->url($organization->user->profile_picture_url) }}"
-                            alt="Organisasi"
-                            class="w-full h-full object-contain" />
+                <div class="flex flex-col justify-between item bg-white shadow-md rounded-lg p-3 w-60 lg:w-[20%]">
+                    <div>
+                        <div class="flex justify-center">
+                            <img src="{{ Storage::disk('s3')->url($organization->user->profile_picture_url) }}" class="w-30 h-30 object-contain"/>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-1">{{ $organization->user->name }}qq</h3>
                     </div>
-                    <p class="mt-2 text-base font-semibold">{{ $organization->user->name }}</p>
-                </a>
+                    <div class="flex justify-between items-center">
+                        <p>{{ count($organization->volunteers) }} pengikut</p>
+                        <a href="{{ route('guest.organizations.show', ['id' => $organization->id]) }}" class="px-4 py-2 bg-[var(--color1)] text-white text-sm rounded-md hover:bg-[var(--hovercolor1)] focus:outline-none focus:ring-2 focus:ring-[var(--hovercolor1)] focus:ring-opacity-50">Lihat</a>
+                    </div>
+                </div>
             @endforeach
         </div>
     </section>
 
-    <!-- Eksplor Acara -->
-    <section class="py-10">
-        <div class="container mx-auto px-4">
-            <h2 class="text-xl font-bold text-[var(--color1)] mb-6">Ayo Eksplor!</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"> {{-- Menyesuaikan grid untuk responsif --}}
-                @foreach ($events as $event)
-                    <div class="bg-white shadow-md rounded-lg overflow-hidden"> {{-- Menambahkan rounded-lg dan shadow-md --}}
-                        <img src="{{ Storage::disk('s3')->url($event->image_url) }}" alt="Acara"
-                            class="w-full h-40 object-cover" />
-                        <div class="p-4">
-                            <h3 class="font-semibold text-base text-[var(--color2)] mb-2">{{ $event->name }}</h3>
+    <h2 class="text-4xl font-bold text-center mb-10">Ayo Eksplor!</h2>
+    <section class="container mx-auto px-4 md:px-6 lg:px-8 mb-10">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            @foreach ($events as $event)
+                <div class="bg-white shadow-md rounded-lg overflow-hidden">
+                    <img src="{{ Storage::disk('s3')->url($event->image_url) }}" alt="Acara"
+                        class="w-full h-40 object-cover" />
+                    <div class="p-4">
+                        <h3 class="font-semibold text-base text-[var(--color2)] mb-2">{{ $event->name }}</h3>
 
-                            {{-- Kategori --}}
-                            <div class="flex items-center text-gray-500 text-xs mb-1">
-                                <img src="{{ asset('assets/icons/category.png') }}" class="mr-2 h-3 w-3 object-contain" alt="">
-                                <p class="text-[var(--color2)]">{{ $event->event_category->name }}</p>
-                            </div>
+                        {{-- Kategori --}}
+                        <div class="flex items-center text-gray-500 text-xs mb-1">
+                            <img src="{{ asset('assets/icons/category.png') }}" class="mr-2 h-3 w-3 object-contain" alt="">
+                            <p class="text-[var(--color2)]">{{ $event->event_category->name }}</p>
+                        </div>
 
-                            {{-- Lokasi --}}
-                            <div class="flex items-center text-gray-500 text-xs mb-1"> {{-- Menambahkan items-center dan mb-1 --}}
-                                <img src="{{ asset('assets/icons/Vector.png') }}" class="mr-2 h-3 w-3 object-contain"
-                                    alt="Lokasi"> {{-- Menyesuaikan ukuran icon --}}
-                                <p class="text-[var(--color2)]">{{ $event->city->name }}, {{ $event->city->province->name }}</p>
-                            </div>
+                        {{-- Lokasi --}}
+                        <div class="flex items-center text-gray-500 text-xs mb-1">
+                            <img src="{{ asset('assets/icons/Vector.png') }}" class="mr-2 h-3 w-3 object-contain"
+                                alt="Lokasi">
+                            <p class="text-[var(--color2)]">{{ $event->city->name }}, {{ $event->city->province->name }}</p>
+                        </div>
 
-                            {{-- Tanggal & Waktu --}}
-                            <div class="flex items-center text-gray-500 text-xs mb-1">
-                                <img src="{{ asset('assets/icons/Clock.png') }}" class="mr-2 h-3 w-3 object-contain"
-                                    alt="Waktu">
-                                <p class="text-[var(--color2)]">{{ \Carbon\Carbon::parse($event->date)->locale('id')->isoFormat('dddd, D MMMM YYYY') }}
-                                    • {{ \Carbon\Carbon::parse($event->start_time)->format('H:i') }} WIB</p>
-                            </div>
+                        {{-- Tanggal & Waktu --}}
+                        <div class="flex items-center text-gray-500 text-xs mb-1">
+                            <img src="{{ asset('assets/icons/Clock.png') }}" class="mr-2 h-3 w-3 object-contain"
+                                alt="Waktu">
+                            <p class="text-[var(--color2)]">{{ \Carbon\Carbon::parse($event->date)->locale('id')->isoFormat('dddd, D MMMM YYYY') }}
+                                • {{ \Carbon\Carbon::parse($event->start_time)->format('H:i') }} WIB</p>
+                        </div>
 
-                            {{-- Slot Tersedia --}}
-                            <div class="flex items-center text-gray-500 text-xs mb-4">
-                                <img src="{{ asset('assets/icons/Crowd.png') }}" class="mr-2 h-3 w-3 object-contain"
-                                    alt="Slot">
-                                <p class="text-[var(--color2)]">Tersedia {{ $event->available_slot - $event->volunteer_count }} slot</p>
-                                {{-- Menambahkan teks "Tersedia ... slot" --}}
-                            </div>
+                        {{-- Slot Tersedia --}}
+                        <div class="flex items-center text-gray-500 text-xs mb-4">
+                            <img src="{{ asset('assets/icons/Crowd.png') }}" class="mr-2 h-3 w-3 object-contain"
+                                alt="Slot">
+                            <p class="text-[var(--color2)]">Tersedia {{ $event->available_slot - $event->volunteer_count }} slot</p>
+                            {{-- Menambahkan teks "Tersedia ... slot" --}}
+                        </div>
 
-                            {{-- Tombol Lihat --}}
-                            <div class="flex justify-end"> {{-- Menggunakan justify-end untuk memposisikan tombol di kanan --}}
-                                <a href="{{ route('guest.events.show', ['id' => $event->id]) }}"
-                                    class="px-4 py-2 bg-[var(--color1)] text-white text-sm rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Lihat</a>
-                                {{-- Mengubah button menjadi link a dan menambahkan styling Tailwind --}}
-                            </div>
+                        {{-- Tombol Lihat --}}
+                        <div class="flex justify-end">
+                            <a href="{{ route('guest.events.show', ['id' => $event->id]) }}"
+                                class="px-4 py-2 bg-[var(--color1)] text-white text-sm rounded-md hover:bg-[var(--hovercolor1)] focus:outline-none focus:ring-2 focus:ring-[var(--hovercolor1)] focus:ring-opacity-50">Lihat</a>
                         </div>
                     </div>
-                @endforeach
-            </div>
+                </div>
+            @endforeach
         </div>
     </section>
 
-    <!-- Tentang Kami & Sejarah -->
-    <section class="container mx-auto px-20 py-10">
-        <div class="grid md:grid-cols-2 gap-8 items-center">
-            <img src="{{ asset('assets/general_image/landing_1.png') }}" class="rounded-xl" />
+    <h2 class="text-4xl font-bold text-center mb-10">Tentang PeduliKita</h2>
+    <section class="container mx-auto px-4 md:px-6 lg:px-8 mb-10 space-y-5">
+        <div class="flex flex-col lg:flex-row items-center gap-3 md:gap-5">
+            <img src="{{ asset('assets/general_image/landing_1.png') }}" class="rounded-xl"/>
+
             <div>
-                <h2 class="text-xl font-bold">Sejarah Peduli<span class="text-[var(--color1)]">Kita</span></h2>
-                <p class="text-sm mt-2 text-black">
+                <h3 class="text-2xl font-bold">Sejarah Peduli<span class="text-[var(--color1)]">Kita</span></h3>
+                <p class="text-sm md:text-base mt-2 text-black">
                     Peduli Kita adalah platform event sosial berbasis gamifikasi yang didirikan pada tahun 2025 oleh tiga
                     mahasiswa Binus University: Timothy Purnawan, Juwan Jatmiko, dan Garry Nathanael. Terinspirasi oleh
                     semangat untuk menciptakan dunia yang lebih baik, mereka membangun Peduli Kita sebagai wadah kolaboratif
                     yang mengubah aksi sosial menjadi pengalaman yang menyenangkan dan interaktif.
                 </p>
-                <p class="text-sm mt-2 text-gray-700">
+                <p class="text-sm md:text-base mt-2 text-gray-700">
                     Melalui pendekatan gamifikasi, pengguna tidak hanya dapat berpartisipasi dalam berbagai kegiatan sosial,
                     tetapi juga mendapatkan penghargaan, lencana, dan level pencapaian yang mendorong keterlibatan jangka
                     panjang. Peduli Kita percaya bahwa
                 </p>
             </div>
         </div>
-    </section>
 
-    <!-- Kenapa Peduli Kita -->
-    <section class=" px-20 py-10">
-        <div class="container mx-auto px-4 grid md:grid-cols-2 gap-8 items-center">
-            <div class="px-5">
-                <h2 class="text-xl font-bold"><span class="text-[var(--color1)]">Kenapa</span> PeduliKita?</h2>
-                <p class="text-sm mt-2  text-black">
+        <div class="flex flex-col lg:flex-row-reverse items-center gap-5">
+            <img src="{{ asset('assets/general_image/landing_2.png') }}" class="rounded-xl"/>
+    
+            <div>
+                <h3 class="text-2xl font-bold"><span class="text-[var(--color1)]">Kenapa</span> PeduliKita?</h3>
+                <p class="text-sm md:text-base mt-2  text-black">
                     Melalui website ini, pengguna bisa mendapatkan poin, naik level, dan meraih lencana setiap kali
                     mengikuti event sosial — layaknya bermain game, tapi dengan dampak nyata.
                 </p>
-                <p class="text-sm mt-2 text-gray-700">
+                <p class="text-sm md:text-base mt-2 text-gray-700">
                     Didirikan oleh tiga mahasiswa Binus pada tahun 2025, Peduli Kita lahir dari keinginan untuk menciptakan
                     perubahan nyata melalui teknologi dan semangat kolaborasi.
                 </p>
             </div>
-            <img src="{{ asset('assets/general_image/landing_2.png') }}" class="rounded-xl" />
         </div>
     </section>
 
