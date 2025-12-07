@@ -159,13 +159,13 @@
 
                 if (!select.value && !input.value) return;
 
-                if (select.value && !input.value) {
+                if (!select.value && input.value) {
                     valid = false;
                     console.log(`Relawan ${volunteerName}: Kehadiran perlu diisi.`);
                     messages.push(`Relawan ${volunteerName}: Kehadiran perlu diisi.`);
                 }
 
-                if (!select.value && input.value) {
+                if (select.value && !input.value) {
                     valid = false;
                     console.log(`Relawan ${volunteerName}: Nilai perlu diisi.`);
                     messages.push(`Relawan ${volunteerName}: Nilai perlu diisi.`);
