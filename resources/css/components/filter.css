@@ -293,3 +293,46 @@
     border-color: var(--color1);
     box-shadow: 0 0 0 2px rgba(33, 112, 184, .15);
 }
+
+/* =======================
+   RESPONSIVE ADJUSTMENTS
+   ======================= */
+
+/* Mobile tweak */
+@media (max-width: 640px) {
+
+    #filterForm{
+        row-gap: 12px;
+    }
+
+    #filterForm > div{
+        margin-bottom:6px;
+    }
+
+    .dropdown-label {
+        font-size: 13px;
+    }
+
+    .date-input {
+        font-size: 13px;
+        padding: 10px 10px 10px 36px;
+    }
+
+    .dropdown-trigger {
+        padding: 10px;
+        gap: 6px;
+    }
+
+    .dropdown-panel button {
+        font-size: 13px;
+        padding: 9px 10px;
+        z-index:9999;
+    }
+
+    .datepicker{
+        left:50%!important;
+        transform:translateX(-50%)!important;
+        max-width:95vw;
+        z-index:9999;
+    }
+}
