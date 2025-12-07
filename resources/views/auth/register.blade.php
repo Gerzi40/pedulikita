@@ -102,7 +102,7 @@
 
                 <!-- Tombol Daftar -->
                 <button type="submit"
-                    class="w-full bg-blue-600 text-white py-2.5 rounded-md font-semibold text-base hover:bg-blue-700 transition duration-300 cursor-pointer">
+                    class="w-full bg-[var(--color1)] text-white py-2.5 rounded-md font-semibold text-base hover:bg-[var(--hovercolor1)] transition duration-300 cursor-pointer">
                     Daftar
                 </button>
             </form>

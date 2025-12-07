@@ -46,15 +46,15 @@
                 <!-- Remember Me -->
                 <div class="flex items-center justify-between text-sm">
                     <label class="flex items-center text-gray-700">
-                        <input type="checkbox" name="remember" class="form-checkbox text-blue-600 h-4 w-4">
+                        <input type="checkbox" name="remember" class="form-checkbox text-[var(--color1)] h-4 w-4">
                         <span class="ml-2">Ingat saya</span>
                     </label>
-                    <a href="{{ route('password.request') }}" class="text-blue-600 hover:underline">Lupa kata sandi?</a>
+                    <a href="{{ route('password.request') }}" class="text-[var(--color1)] hover:underline">Lupa kata sandi?</a>
                 </div>
 
                 <!-- Tombol Login -->
                 <button type="submit"
-                    class="w-full bg-blue-600 text-white py-2.5 rounded-md font-semibold text-base hover:bg-blue-700 transition duration-300 cursor-pointer">
+                    class="w-full bg-[var(--color1)] text-white py-2.5 rounded-md font-semibold text-base hover:bg-[var(--hovercolor1)] transition duration-300 cursor-pointer">
                     Masuk
                 </button>
             </form>
@@ -62,7 +62,7 @@
             <!-- Link ke Register -->
             <p class="text-center text-sm text-gray-600 mt-4">
                 Belum punya akun? 
-                <a href="{{ route('register') }}" class="text-blue-600 hover:underline font-medium">Daftar</a>
+                <a href="{{ route('register') }}" class="text-[var(--color1)] hover:underline font-medium">Daftar</a>
             </p>
         </div>
     </div>
