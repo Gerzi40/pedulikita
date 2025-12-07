@@ -3,14 +3,46 @@
 @section('title', 'Organisasi')
 
 @section('content')
-    <div class="flex justify-center">
+
+        <!-- MOBILE FILTER TOGGLE -->
+        <div class="block lg:hidden px-4 mt-4">
+            <button id="toggleFilter"
+                class="w-full flex justify-between items-center px-4 py-3 bg-white border border-[var(--color1)] rounded-lg shadow-sm">
+                <span class="font-medium text-gray-700">Filter Organisasi</span>
+                <svg id="filterArrow" class="w-5 h-5 transition-transform" viewBox="0 0 24 24" fill="none">
+                    <path d="M19 9l-7 7-7-7" stroke="#6b7280" stroke-width="2" />
+                </svg>
+            </button>
+        </div>
+
         <form action="{{ route('admin.organizations.index') }}" method="get" id="filterForm"
-            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 
-       items-center p-6 bg-white shadow-md rounded-xl mx-auto my-6 max-w-[70%]">
+            class="mobile-filter hidden
+            lg:grid
+            grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6
+            gap-3 sm:gap-4
+            items-center
+            p-4 sm:p-6
+            bg-white
+            shadow-md
+            rounded-xl
+            mx-auto my-4
+            max-w-[90%]">
 
             <!-- Search Bar -->
             <div
-                class="col-span-2 flex items-center gap-2 px-4 py-2 bg-gray-100 border border-gray-200 rounded-lg w-full md:w-auto focus-within:ring-2 focus-within:ring-[var(--color1)] transition-all">
+                class="col-span-1
+                sm:col-span-2
+                md:col-span-3
+                lg:col-span-2
+                flex items-center gap-2
+                px-4 py-2
+                bg-gray-100
+                border border-gray-200
+                rounded-lg
+                w-full
+                focus-within:ring-2
+                focus-within:ring-[var(--color1)]
+                transition-all"">
                 <img src="{{ asset('assets/icons/search.png') }}" alt="Cari" class="w-5 h-5 flex-shrink-0">
                 <input type="text" name="name" placeholder="Masukkan nama organisasi"
                     class="bg-transparent outline-none w-full text-gray-700 placeholder-gray-400"
@@ -33,7 +65,7 @@
                 <input type="hidden" id="categoryInput" name="organization_category_id"
                     value="{{ request('organization_category_id') }}">
 
-                <div class="dropdown-panel hidden">
+                <div class="dropdown-panel z-1 hidden">
                     <button type="button" data-value="">Kategori Organisasi</button>
 
                     @foreach ($organization_categories as $cat)
@@ -62,7 +94,7 @@
 
                 <input type="hidden" id="provinceInput" name="province_id" value="{{ request('province_id') }}">
 
-                <div class="dropdown-panel hidden">
+                <div class="dropdown-panel z-1 hidden">
                     <button type="button" data-value="">Semua Provinsi</button>
 
                     @foreach ($provinces as $prov)
@@ -91,7 +123,7 @@
 
                 <input type="hidden" id="cityInput" name="city_id" value="{{ request('city_id') }}">
 
-                <div class="dropdown-panel hidden" id="cityDropdownPanel">
+                <div class="dropdown-panel z-1 hidden" id="cityDropdownPanel">
                     <button type="button" data-value="">Semua Kota</button>
                 </div>
 
@@ -99,13 +131,23 @@
 
             <!-- Filter Button -->
             <button type="submit"
-                class="bg-[var(--color1)] text-white px-6 py-2.5 rounded-lg font-medium shadow hover:shadow-md transition-all hover:bg-[var(--hovercolor1)] active:scale-95">
+                class="w-full
+                lg:w-auto
+                bg-[var(--color1)]
+                text-white
+                px-6 py-2.5
+                rounded-lg
+                font-medium
+                shadow
+                hover:shadow-md
+                transition-all
+                hover:bg-[var(--hovercolor1)]
+                active:scale-95">
                 Cari
             </button>
         </form>
-    </div>
 
-    <div x-data="{ showConfirmModal: false, formToSubmit: null }" class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+    <div x-data="{ showConfirmModal: false, formToSubmit: null }" class="bg-white rounded-lg shadow-sm border mt-5 border-gray-200 overflow-hidden">
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
@@ -529,6 +571,17 @@
                 });
             }
 
+        });
+    </script>
+
+    <script>
+        const toggleBtn = document.getElementById('toggleFilter');
+        const filterForm = document.getElementById('filterForm');
+        const arrow = document.getElementById('filterArrow');
+
+        toggleBtn.addEventListener('click', () => {
+            filterForm.classList.toggle('hidden');
+            arrow.classList.toggle('rotate-180');
         });
     </script>
 
