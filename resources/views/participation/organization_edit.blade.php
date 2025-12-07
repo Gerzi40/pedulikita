@@ -77,71 +77,53 @@
                 </div>
             </div>
 
-            {{-- Tabel Input --}}
-            <table class="w-full border-separate" style="border-spacing: 0 0.75rem;"> {{-- Sedikit tambah spasi antar baris --}}
-                {{-- Header Tabel --}}
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th
-                            class="w-[40%] px-6 py-3 text-left text-sm font-semibold text-gray-500 rounded-l-lg">
-                            Nama Relawan
-                        </th>
-                        <th class="w-[45%] px-6 py-3 text-left text-sm font-semibold text-gray-500">
-                            Kehadiran
-                        </th>
-                        <th
-                            class="w-[15%] px-8 py-3 text-left text-sm font-semibold text-gray-500 rounded-r-lg">
-                            Nilai
-                        </th>
-                    </tr>
-                </thead>
-
-                {{-- Body Tabel --}}
-                <tbody class="bg-white">
-                    @foreach ($event->volunteers as $volunteer)
-                        <tr class="shadow-sm">
-                            {{-- Nama Relawan --}}
-                            <td
-                                class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 rounded-l-lg {{ $loop->odd ? 'bg-white' : 'bg-gray-50' }}">
-                                <div class="flex items-center gap-5">
-                                    <img class="h-10 w-10 rounded-full object-cover"
-                                        src="{{ Storage::disk('s3')->url($volunteer->user->profile_picture_url) }}"
-                                        alt="{{ $volunteer->user->name }}">
-                                    <span class="font-medium text-gray-800">{{ $volunteer->user->name }}</span>
-                                </div>
-                            </td>
-
-                            {{-- Input Kehadiran --}}
-                            <td
-                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 {{ $loop->odd ? 'bg-white' : 'bg-gray-50' }}">
-                                <select name="data[{{ $volunteer->id }}][is_present]"
-                                    class="block w-3/4 p-2 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
-                                    <option value="" @selected($volunteer->pivot->is_present === null)>Pilih Status</option>
-                                    <option value="TRUE" @selected($volunteer->pivot->is_present === true)>Hadir</option>
-                                    <option value="FALSE" @selected($volunteer->pivot->is_present === false)>Tidak Hadir</option>
-                                </select>
-                            </td>
-
-                            {{-- Input Nilai (Rating) --}}
-                            <td
-                                class="px-8 py-4 whitespace-nowrap text-sm text-gray-500 rounded-r-lg {{ $loop->odd ? 'bg-white' : 'bg-gray-50' }}">
-                                <input type="number" name="data[{{ $volunteer->id }}][rating]"
-                                    value="{{ $volunteer->pivot->rating }}" class="hidden rating-input" />
-                                <div class="stars flex gap-1">
-                                    @for ($i = 1; $i <= 5; $i++)
-                                        <svg data-rating="{{ $i }}"
-                                            class="star w-6 h-6 cursor-pointer transition-all duration-200 hover:scale-110 {{ $volunteer->pivot->rating >= $i ? 'text-yellow-400' : 'text-gray-300' }}"
-                                            fill="currentColor" viewBox="0 0 20 20">
-                                            <path
-                                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                        </svg>
-                                    @endfor
-                                </div>
-                            </td>
+            <div class="overflow-x-auto">
+                <table class="w-full border-separate" style="border-spacing: 0 0.75rem;">
+                    <thead class="rounded-lg text-gray-500 bg-gray-50">
+                        <tr>
+                            <th class="min-w-100 w-3/5 px-6 py-3 text-left text-sm font-semibold">Nama Relawan</th>
+                            <th class="min-w-50 w-1/5 px-6 py-3 text-left text-sm font-semibold">Kehadiran</th>
+                            <th class="min-w-50 w-1/5 px-8 py-3 text-left text-sm font-semibold">Nilai</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach ($event->volunteers as $volunteer)
+                            <tr class="rounded-lg shadow-sm">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 rounded-l-lg {{ $loop->odd ? 'bg-white' : 'bg-gray-50' }}">
+                                    <div class="flex items-center gap-5">
+                                        <img class="h-10 w-10 rounded-full object-cover"
+                                            src="{{ Storage::disk('s3')->url($volunteer->user->profile_picture_url) }}"
+                                            alt="{{ $volunteer->user->name }}">
+                                        <span class="font-medium text-gray-800">{{ $volunteer->user->name }}</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 {{ $loop->odd ? 'bg-white' : 'bg-gray-50' }}">
+                                    <select name="data[{{ $volunteer->id }}][is_present]"
+                                        class="block w-3/4 p-2 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                                        <option value="" @selected($volunteer->pivot->is_present === null)>Pilih Status</option>
+                                        <option value="TRUE" @selected($volunteer->pivot->is_present === true)>Hadir</option>
+                                        <option value="FALSE" @selected($volunteer->pivot->is_present === false)>Tidak Hadir</option>
+                                    </select>
+                                </td>
+                                <td class="px-8 py-4 whitespace-nowrap text-sm text-gray-500 rounded-r-lg {{ $loop->odd ? 'bg-white' : 'bg-gray-50' }}">
+                                    <input type="number" name="data[{{ $volunteer->id }}][rating]"
+                                        value="{{ $volunteer->pivot->rating }}" class="hidden rating-input" />
+                                    <div class="stars flex gap-1">
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            <svg data-rating="{{ $i }}"
+                                                class="star w-6 h-6 cursor-pointer transition-all duration-200 hover:scale-110 {{ $volunteer->pivot->rating >= $i ? 'text-yellow-400' : 'text-gray-300' }}"
+                                                fill="currentColor" viewBox="0 0 20 20">
+                                                <path
+                                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                            </svg>
+                                        @endfor
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </form>
     </section>
 
