@@ -6,14 +6,24 @@
 
     <section class="container mx-auto mt-10">
         <h1 class="text-5xl font-bold text-center mb-5">Data Acara</h1>
-        <div class="flex justify-evenly">
-            <div class="w-100">
+
+        <div class="flex justify-center items-center gap-3 lg:hidden">
+            <label for="chartSelector" class="font-semibold">Grafik:</label>
+            <select id="chartSelector" class="p-2 border border-gray-300 rounded-md">
+                <option value="chart1">Jumlah Acara</option>
+                <option value="chart2">Jumlah Acara per Bulan</option>
+                <option value="chart3">Jumlah Relawan</option>
+            </select>
+        </div>
+
+        <div class="flex flex-col lg:flex-row lg:justify-evenly items-center">
+            <div id="chartContainer1" class="w-full md:w-100 px-3 chart-item">
                 <canvas id="chart1"></canvas>
             </div>
-            <div class="w-100">
+            <div id="chartContainer2" class="w-full md:w-100 px-3 chart-item">
                 <canvas id="chart2"></canvas>
             </div>
-            <div class="w-100">
+            <div id="chartContainer3" class="w-full md:w-100 px-3 chart-item">
                 <canvas id="chart3"></canvas>
             </div>
         </div>
@@ -593,6 +603,36 @@
         toggleBtn.addEventListener('click', () => {
             filterForm.classList.toggle('hidden');
             arrow.classList.toggle('rotate-180');
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const chartSelector = document.getElementById('chartSelector');
+            const chartItems = document.querySelectorAll('.chart-item');
+
+            function updateChartVisibility() {
+                if (window.innerWidth < 1024) {
+                    const selectedChartId = chartSelector.value;
+                    
+                    chartItems.forEach(item => {
+                        if (item.id === `chartContainer${selectedChartId.slice(-1)}`) {
+                            item.classList.remove('hidden');
+                        } else {
+                            item.classList.add('hidden');
+                        }
+                    });
+                } else {
+                    chartItems.forEach(item => {
+                        item.classList.remove('hidden');
+                    });
+                }
+            }
+
+            updateChartVisibility();
+
+            chartSelector.addEventListener('change', updateChartVisibility);
+            window.addEventListener('resize', updateChartVisibility);
         });
     </script>
 
