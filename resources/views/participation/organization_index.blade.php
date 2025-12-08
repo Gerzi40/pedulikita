@@ -57,7 +57,7 @@
                 $eventDateTime = Carbon::parse($event->date . ' ' . $event->end_time);
             @endphp
             @if ($event->state != 'finished')
-                <div class="flex gap-3">
+                <div class="flex flex-wrap gap-3">
                     <button
                         class="bg-[#1769aa] hover:bg-[#12598d] text-white px-6 py-2 rounded-md font-medium transition cursor-pointer"
                         id="downloadExcel">Unduh Excel</button>
