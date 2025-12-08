@@ -73,7 +73,7 @@
                         </div>
 
                         <div class="flex items-center gap-2">
-                            <img src="{{ asset('assets/icons/clock.png') }}" class="w-5 h-5" alt="">
+                            <img src="{{ asset('assets/icons/Clock.png') }}" class="w-5 h-5" alt="">
                             <span>
                                 {{ \Carbon\Carbon::parse($event->start_time)->format('H:i') }}
                                 –
