@@ -90,8 +90,8 @@
                     Kembali
                 </a>
                 <button type="submit" 
-                    class="px-5 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-md transition">
-                    Kirim
+                    class="px-5 py-2 rounded-lg bg-[var(--color1)] hover:[var(--hovercolor1)] text-white font-semibold shadow-md transition">
+                    {{ isset($news) ? 'Ubah' : 'Buat' }}
                 </button>
             </div>
         </form>

@@ -1,2 +1,2 @@
 import './bootstrap';
-import './components/dropdown_event';
+// import './components/dropdown_event';

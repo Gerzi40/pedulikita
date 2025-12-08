@@ -278,336 +278,10 @@
 
     {{ $events->links() }}
 
-    {{-- <style>
-        :root {
-            --color1: #2170B8;
-            --color1-soft: #70a0cc;
-        }
-
-        /* ---------- INPUT AREA ---------- */
-
-        .datepicker-container {
-            position: relative;
-            display: inline-block;
-            width: 100%;
-        }
-
-        /* Icon styling - menggunakan img yang ada */
-        .datepicker-container>img {
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 18px;
-            height: 18px;
-            opacity: .90;
-            pointer-events: none;
-            /* z-index: 1; */
-        }
-
-        .date-input {
-            width: 100%;
-            padding: 10px 12px 10px 38px;
-            font-size: 0.95rem;
-            border-radius: 8px;
-            border: 1px solid #e5e7eb;
-            background-color: #f5f5f5;
-            outline: none;
-            color: #374151;
-            cursor: pointer;
-        }
-
-        .date-input::placeholder {
-            color: #9ca3af;
-        }
-
-        .date-input:focus {
-            border-color: var(--color1);
-            box-shadow: 0 0 0 2px rgba(33, 112, 184, .15);
-        }
-
-
-        /* ---------- DATEPICKER POPUP ---------- */
-
-        .datepicker {
-            position: absolute;
-            left: 0;
-            top: calc(100% + 6px);
-            /* z-index: 30; */
-            background: #fff;
-            padding: 12px;
-            border-radius: 10px;
-            border: 1px solid #e5e7eb;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, .08);
-            width: max-content;
-        }
-
-
-        /* ---------- HEADER ---------- */
-
-        .datepicker-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #eee;
-            gap: 8px;
-        }
-
-        .datepicker-header>div {
-            display: flex;
-            gap: 6px;
-        }
-
-        .datepicker-header select,
-        .datepicker-header input {
-            font-size: 14px;
-            padding: 4px 6px;
-            border-radius: 6px;
-            border: 1px solid #e5e7eb;
-            outline: none;
-        }
-
-        .datepicker-header select:focus,
-        .datepicker-header input:focus {
-            border-color: var(--color1);
-        }
-
-        .datepicker-header button {
-            background: transparent;
-            border: none;
-            font-weight: 600;
-            color: #6b7280;
-            cursor: pointer;
-            padding: 4px 8px;
-        }
-
-        .datepicker-header button:hover {
-            color: var(--color1);
-        }
-
-
-        /* ---------- GRID ---------- */
-
-        .days,
-        .dates {
-            display: grid;
-            grid-template-columns: repeat(7, 36px);
-            gap: 6px;
-            margin-block: 10px;
-        }
-
-        .days span {
-            font-size: 11px;
-            font-weight: 700;
-            color: #6b7280;
-            text-align: center;
-        }
-
-
-        /* ---------- DATE BUTTON ---------- */
-
-        .dates button {
-            border: none;
-            background: transparent;
-            border-radius: 8px;
-            font-size: 13px;
-            color: #374151;
-            width: 36px;
-            height: 36px;
-            cursor: pointer;
-        }
-
-        .dates button:disabled {
-            opacity: .3;
-            cursor: not-allowed;
-        }
-
-        /* hover */
-        .dates button:not(:disabled):hover {
-            background: rgba(33, 112, 184, .12);
-        }
-
-        /* today style */
-        .dates button.today {
-            background: var(--color1);
-            color: #fff;
-        }
-
-        /* selected style */
-        .dates button.selected {
-            background: var(--color1-soft);
-            color: var(--color1);
-            font-weight: 600;
-        }
-
-
-        /* ---------- FOOTER ---------- */
-
-        .datepicker-footer {
-            display: flex;
-            justify-content: flex-end;
-            gap: 8px;
-            padding-top: 10px;
-            border-top: 1px solid #eee;
-        }
-
-        .datepicker-footer button {
-            padding: 6px 14px;
-            border-radius: 6px;
-            font-size: 12px;
-            border: none;
-            cursor: pointer;
-        }
-
-        /* cancel */
-        .cancel {
-            background: #f1f5f9;
-            color: #374151;
-        }
-
-        .cancel:hover {
-            background: #e2e8f0;
-        }
-
-        /* apply */
-        .apply {
-            background: var(--color1);
-            color: #fff;
-        }
-
-        .apply:hover {
-            background: #1a5a93;
-        }
-
-        /* ===== CUSTOM DROPDOWN ===== */
-
-        .custom-dropdown {
-            position: relative;
-            width: 100%;
-            /* Add this */
-        }
-
-        .dropdown-trigger {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 12px;
-            background: #f9fafb;
-            border-radius: 8px;
-            border: 1px solid #e5e7eb;
-            cursor: pointer;
-            position: relative;
-            /* Add this */
-            /* z-index: 2; */
-            /* Add this */
-        }
-
-        .dropdown-trigger:hover {
-            border-color: var(--color1);
-        }
-
-        .dropdown-label {
-            flex: 1;
-            color: #374151;
-            font-size: 14px;
-            white-space: nowrap;
-            /* Add this to prevent text wrapping */
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .arrow {
-            transition: .2s;
-            flex-shrink: 0;
-            /* Add this to prevent arrow from shrinking */
-        }
-
-        .custom-dropdown.open .arrow {
-            transform: rotate(180deg);
-        }
-
-        /* ===== PANEL ===== */
-
-        .dropdown-panel {
-            position: absolute;
-            top: calc(100% + 6px);
-            left: 0;
-            right: 0;
-            /* Change from width: 100% to right: 0 */
-            background: white;
-            border-radius: 10px;
-            border: 1px solid #e5e7eb;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, .08);
-            overflow: hidden;
-            /* z-index: 40; */
-            max-height: 300px;
-            overflow-y: auto;
-        }
-
-        .dropdown-panel button {
-            width: 100%;
-            padding: 10px 12px;
-            text-align: left;
-            border: none;
-            background: transparent;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background 0.2s ease;
-            /* Add smooth transition*/
-        }
-
-        .dropdown-panel button:hover {
-            background: var(--color1-soft);
-            color: var(--color1);
-        }
-
-        .dropdown-panel button.active {
-            background: var(--color1);
-            color: #fff;
-        }
-
-        .dropdown-trigger:focus,
-        .dropdown-trigger:focus-visible,
-        .custom-dropdown.open .dropdown-trigger {
-            outline: none;
-            border-color: var(--color1);
-            box-shadow: 0 0 0 2px rgba(33, 112, 184, .15);
-        }
-
-        /* .hidden {
-            display: none;
-        } */
-    </style> --}}
-
-    {{-- <script>
-        const selectedCity = "{{ request('city_id') }}";
-
-        $(document).ready(function() {
-            $('#province').on('change', function() {
-                const provinceId = $(this).val();
-
-                if (provinceId) {
-                    $.get(`/provinces/${provinceId}/cities`, function(data) {
-                        let options = '<option></option>';
-                        data.forEach(city => {
-                            options +=
-                                `<option value="${city.id}" ${selectedCity == city.id ? 'selected' : ''}>${city.name}</option>`;
-                        });
-                        $('#city').html(options);
-                    });
-                } else {
-                    $('#city').html('<option></option>');
-                }
-            });
-
-            if ($('#province').val()) {
-                $('#province').trigger('change');
-            }
-        });
-    </script> --}}
-
-    {{-- <script>
+    <script>
+        // ============================================================================
+        // FORM HANDLER - Remove empty inputs before submit
+        // ============================================================================
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('filterForm');
             if (!form) return;
@@ -620,9 +294,12 @@
                 });
             });
         });
-    </script>
 
-    <script>
+        // ============================================================================
+        // DATEPICKER COMPONENT
+        // ============================================================================
+
+        // DOM Elements
         const datepicker = document.querySelector(".datepicker");
         const dateInput = document.querySelector(".date-input");
         const yearInput = datepicker.querySelector(".year-input");
@@ -633,27 +310,75 @@
         const prevBtn = datepicker.querySelector(".prev");
         const dates = datepicker.querySelector(".dates");
 
+        // State
         let selectedDate = new Date();
         let year = selectedDate.getFullYear();
         let month = selectedDate.getMonth();
 
-        // show datepicker
-        dateInput.addEventListener("click", () => {
+        // --- Event Listeners ---
+
+        // Show datepicker
+        dateInput.addEventListener("click", (e) => {
+            e.stopPropagation();
+            closeAllDropdowns();
             datepicker.hidden = false;
         });
 
-        // hide datepicker
-        cancelBtn.addEventListener("click", () => {
+        // Hide datepicker
+        cancelBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
             datepicker.hidden = true;
         });
 
-        // close datepicker on outside click
+        // Close datepicker on outside click
         document.addEventListener("click", (e) => {
             const datepickerContainer = datepicker.parentNode;
             if (!datepickerContainer.contains(e.target)) {
                 datepicker.hidden = true;
             }
         });
+
+        // Apply selected date
+        applyBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            console.log(selectedDate);
+            dateInput.value = formatDate(selectedDate);
+            datepicker.hidden = true;
+        });
+
+        // Navigation - Next month
+        nextBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            if (month === 11) year++;
+            month = (month + 1) % 12;
+            displayDates();
+        });
+
+        // Navigation - Previous month
+        prevBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            if (month === 0) year--;
+            month = (month - 1 + 12) % 12;
+            displayDates();
+        });
+
+        // Month input change
+        monthInput.addEventListener("change", (e) => {
+            e.stopPropagation();
+            month = monthInput.selectedIndex;
+            displayDates();
+        });
+
+        // Year input change
+        yearInput.addEventListener("change", (e) => {
+            e.stopPropagation();
+            const newYear = parseInt(yearInput.value, 10) || new Date().getFullYear();
+            year = Math.min(2100, Math.max(1900, newYear));
+            yearInput.value = year;
+            displayDates();
+        });
+
+        // --- Helper Functions ---
 
         const formatDate = (date) => {
             const y = date.getFullYear();
@@ -662,110 +387,24 @@
             return `${y}-${m}-${d}`;
         };
 
-        // handle apply button click event
-        applyBtn.addEventListener("click", () => {
-            // set the selected date to date input
-            console.log(selectedDate)
-            // dateInput.value = selectedDate.toISOString().split("T")[0];
-            dateInput.value = formatDate(selectedDate);
-
-
-            // hide datepicker
-            datepicker.hidden = true;
-        });
-
-        // handle next month nav
-        nextBtn.addEventListener("click", () => {
-            if (month === 11) year++;
-            month = (month + 1) % 12;
-            displayDates();
-        });
-
-        // handle prev month nav
-        prevBtn.addEventListener("click", () => {
-            if (month === 0) year--;
-            month = (month - 1 + 12) % 12;
-            displayDates();
-        });
-
-        // handle month input change event
-        monthInput.addEventListener("change", () => {
-            month = monthInput.selectedIndex;
-            displayDates();
-        });
-
-        // handle year input change event
-        yearInput.addEventListener("change", () => {
-            const newYear = parseInt(yearInput.value, 10) || new Date().getFullYear();
-            year = Math.min(2100, Math.max(1900, newYear));
-            yearInput.value = year;
-            displayDates();
-        });
-
         const updateYearMonth = () => {
             monthInput.selectedIndex = month;
             yearInput.value = year;
         };
 
         const handleDateClick = (e) => {
+            e.stopPropagation();
             const button = e.target;
 
-            // remove the 'selected' class from other buttons
+            // Remove 'selected' class from other buttons
             const selected = dates.querySelector(".selected");
             selected && selected.classList.remove("selected");
 
-            // add the 'selected' class to current button
+            // Add 'selected' class to current button
             button.classList.add("selected");
 
-            // set the selected date
+            // Set the selected date
             selectedDate = new Date(year, month, parseInt(button.textContent));
-        };
-
-        // render the dates in the calendar interface
-        const displayDates = () => {
-            // update year & month whenever the dates are updated
-            updateYearMonth();
-
-            // clear the dates
-            dates.innerHTML = "";
-
-            //* display the last week of previous month
-
-            // get the last date of previous month
-            const lastOfPrevMonth = new Date(year, month, 0);
-
-            for (let i = 0; i <= lastOfPrevMonth.getDay(); i++) {
-                // if the last day is Saturday don't show the leading dates
-                if (lastOfPrevMonth.getDay() === 6) break;
-
-                const text = lastOfPrevMonth.getDate() - lastOfPrevMonth.getDay() + i;
-                const button = createButton(text, true);
-                dates.appendChild(button);
-            }
-
-            //* display the current month
-
-            // get the last date of the month
-            const lastOfMonth = new Date(year, month + 1, 0);
-
-            for (let i = 1; i <= lastOfMonth.getDate(); i++) {
-                const button = createButton(i, false);
-                button.addEventListener("click", handleDateClick);
-                dates.appendChild(button);
-            }
-
-            //* display the first week of next month
-
-            const firstOfNextMonth = new Date(year, month + 1, 1);
-
-            for (let i = firstOfNextMonth.getDay(); i < 7; i++) {
-                // if the first day starts on Sunday don't show the trailing dates
-                if (firstOfNextMonth.getDay() === 0) break;
-
-                const text = firstOfNextMonth.getDate() - firstOfNextMonth.getDay() + i;
-                const button = createButton(text, true);
-                dates.appendChild(button);
-            }
         };
 
         const createButton = (text, isDisabled = false) => {
@@ -773,6 +412,7 @@
             button.type = "button";
             button.textContent = text;
             button.disabled = isDisabled;
+
             if (!isDisabled) {
                 const buttonDate = new Date(year, month, text).toDateString();
                 const today = buttonDate === new Date().toDateString();
@@ -781,25 +421,78 @@
                 button.classList.toggle("today", today);
                 button.classList.toggle("selected", selected);
             }
+
             return button;
         };
 
-        displayDates();
-    </script>
+        // Render dates in calendar
+        const displayDates = () => {
+            // Update year & month
+            updateYearMonth();
 
-    <script>
+            // Clear existing dates
+            dates.innerHTML = "";
+
+            // Display last week of previous month
+            const lastOfPrevMonth = new Date(year, month, 0);
+
+            for (let i = 0; i <= lastOfPrevMonth.getDay(); i++) {
+                // If last day is Saturday, don't show leading dates
+                if (lastOfPrevMonth.getDay() === 6) break;
+
+                const text = lastOfPrevMonth.getDate() - lastOfPrevMonth.getDay() + i;
+                const button = createButton(text, true);
+                dates.appendChild(button);
+            }
+
+            // Display current month
+            const lastOfMonth = new Date(year, month + 1, 0);
+
+            for (let i = 1; i <= lastOfMonth.getDate(); i++) {
+                const button = createButton(i, false);
+                button.addEventListener("click", handleDateClick);
+                dates.appendChild(button);
+            }
+
+            // Display first week of next month
+            const firstOfNextMonth = new Date(year, month + 1, 1);
+
+            for (let i = firstOfNextMonth.getDay(); i < 7; i++) {
+                // If first day is Sunday, don't show trailing dates
+                if (firstOfNextMonth.getDay() === 0) break;
+
+                const text = firstOfNextMonth.getDate() - firstOfNextMonth.getDay() + i;
+                const button = createButton(text, true);
+                dates.appendChild(button);
+            }
+        };
+
+        // Initialize datepicker
+        displayDates();
+
+        // ============================================================================
+        // CATEGORY DROPDOWN
+        // ============================================================================
+
         const categoryDropdown = document.querySelector(".category-dropdown");
         const categoryTrigger = categoryDropdown.querySelector(".dropdown-trigger");
         const categoryPanel = categoryDropdown.querySelector(".dropdown-panel");
         const categoryInput = document.getElementById("categoryInput");
         const categoryLabel = categoryDropdown.querySelector(".dropdown-label");
 
+        // Toggle category dropdown
         categoryTrigger.addEventListener("click", (e) => {
             e.stopPropagation();
-            categoryPanel.classList.toggle("hidden");
-            categoryDropdown.classList.toggle("open");
+            const isOpen = categoryDropdown.classList.contains("open");
+            closeAllDropdowns();
+            datepicker.hidden = true;
+            if (!isOpen) {
+                categoryPanel.classList.remove("hidden");
+                categoryDropdown.classList.add("open");
+            }
         });
 
+        // Select category option
         categoryPanel.querySelectorAll("button").forEach(btn => {
             btn.addEventListener("click", () => {
                 const value = btn.dataset.value;
@@ -813,28 +506,29 @@
             });
         });
 
-        /* close dropdown on outside click */
-        document.addEventListener("click", () => {
-            categoryPanel.classList.add("hidden");
-            categoryDropdown.classList.remove("open");
-        });
-    </script>
+        // ============================================================================
+        // PROVINCE DROPDOWN
+        // ============================================================================
 
-    <script>
         const provinceDropdown = document.querySelector(".province-dropdown");
         const provinceTrigger = provinceDropdown.querySelector(".dropdown-trigger");
         const provincePanel = provinceDropdown.querySelector(".dropdown-panel");
         const provinceInput = document.getElementById("provinceInput");
         const provinceLabel = provinceDropdown.querySelector(".dropdown-label");
 
-
+        // Toggle province dropdownD
         provinceTrigger.addEventListener("click", (e) => {
             e.stopPropagation();
-            // closeAllDropdowns(); // optional helper
-            provincePanel.classList.toggle("hidden");
-            provinceDropdown.classList.toggle("open");
+            const isOpen = provinceDropdown.classList.contains("open");
+            closeAllDropdowns();
+            datepicker.hidden = true;
+            if (!isOpen) {
+                provincePanel.classList.toggle("hidden");
+                provinceDropdown.classList.toggle("open");
+            }
         });
 
+        // Select province option
         provincePanel.querySelectorAll("button").forEach(btn => {
             btn.addEventListener("click", () => {
                 const value = btn.dataset.value;
@@ -846,25 +540,14 @@
                 provincePanel.classList.add("hidden");
                 provinceDropdown.classList.remove("open");
 
-                // ✅ Kalau nanti mau autoload kota:
+                // Auto-load cities for selected province
                 loadCities(value);
             });
         });
 
-        document.addEventListener("click", () => {
-            closeAllDropdowns();
-        });
-
-        function closeAllDropdowns() {
-            document.querySelectorAll(".custom-dropdown").forEach(dd => {
-                dd.classList.remove("open");
-                dd.querySelector(".dropdown-panel")?.classList.add("hidden");
-            });
-        }
-    </script>
-
-    <script>
-        const selectedCity = "{{ request('city_id') }}";
+        // ============================================================================
+        // CITY DROPDOWN
+        // ============================================================================
 
         const cityDropdown = document.querySelector(".city-dropdown");
         const cityTrigger = cityDropdown.querySelector(".dropdown-trigger");
@@ -872,15 +555,23 @@
         const cityInput = document.getElementById("cityInput");
         const cityLabel = cityDropdown.querySelector(".dropdown-label");
 
-        /* open / close */
+        // Get selected values from hidden inputs (not template syntax)
+        const getSelectedCity = () => cityInput.value;
+        const getSelectedProvince = () => provinceInput.value;
+
+        // Toggle city dropdown
         cityTrigger.addEventListener("click", (e) => {
             e.stopPropagation();
+            const isOpen = provinceDropdown.classList.contains("open");
             closeAllDropdowns();
-            cityDropdown.classList.toggle("open");
-            cityPanel.classList.toggle("hidden");
+            datepicker.hidden = true;
+            if (!isOpen) {
+                cityPanel.classList.toggle("hidden");
+                cityDropdown.classList.toggle("open");
+            }
         });
 
-        /* select city */
+        // Bind click events to city buttons
         function bindCityClick() {
             cityPanel.querySelectorAll("button").forEach(btn => {
                 btn.addEventListener("click", () => {
@@ -896,30 +587,33 @@
             });
         }
 
-        /* load city list */
+        // Load city list based on province
         function loadCities(provinceId) {
-
             cityPanel.innerHTML = `<button type="button">Loading...</button>`;
 
             if (!provinceId) {
                 cityPanel.innerHTML = `<button type="button" data-value="">Semua Kota</button>`;
                 bindCityClick();
 
-                cityInput.value = "";
-                cityLabel.innerText = "Semua Kota";
+                // Only reset if no city is selected
+                if (!getSelectedCity()) {
+                    cityInput.value = "";
+                    cityLabel.innerText = "Semua Kota";
+                }
                 return;
             }
 
             fetch(`/provinces/${provinceId}/cities`)
                 .then(res => res.json())
                 .then(data => {
+                    const currentSelectedCity = getSelectedCity();
                     let html = `<button type="button" data-value="">Semua Kota</button>`;
 
                     data.forEach(city => {
                         html += `
                     <button type="button"
                             data-value="${city.id}"
-                            class="${selectedCity == city.id ? 'active' : ''}">
+                            class="${currentSelectedCity == city.id ? 'active' : ''}">
                         ${city.name}
                     </button>
                 `;
@@ -927,19 +621,98 @@
 
                     cityPanel.innerHTML = html;
 
-                    // re-bind events
+                    // Re-bind click events
                     bindCityClick();
 
-                    // sync selected on reload
-                    if (selectedCity) {
-                        const activeBtn = cityPanel.querySelector(`button[data-value="${selectedCity}"]`);
+                    // Sync selected city label
+                    if (currentSelectedCity) {
+                        const activeBtn = cityPanel.querySelector(`button[data-value="${currentSelectedCity}"]`);
                         if (activeBtn) {
                             cityLabel.innerText = activeBtn.textContent.trim();
                         }
                     }
+                })
+                .catch(error => {
+                    console.error('Error loading cities:', error);
+                    cityPanel.innerHTML = `<button type="button" data-value="">Error loading cities</button>`;
+                    bindCityClick();
                 });
         }
-    </script> --}}
+
+        // Initialize city dropdown on page load if province is selected
+        const initialProvince = getSelectedProvince();
+        if (initialProvince) {
+            loadCities(initialProvince);
+        }
+
+        // ============================================================================
+        // STATUS DROPDOWN
+        // ============================================================================
+
+        const statusDropdown = document.querySelector(".status-dropdown");
+        console.log(statusDropdown);
+
+        console.log(
+            document.querySelector(".status-dropdown .dropdown-trigger")
+        );
+        if (statusDropdown) {
+
+            const statusTrigger = statusDropdown.querySelector(".dropdown-trigger");
+            const statusPanel = statusDropdown.querySelector(".dropdown-panel");
+            const statusInput = document.getElementById("stateInput");
+            const statusLabel = statusDropdown.querySelector(".dropdown-label");
+
+            // toggle dropdown
+            statusTrigger.addEventListener("click", (e) => {
+                e.stopPropagation();
+
+                const isOpen = statusDropdown.classList.contains("open");
+
+                closeAllDropdowns();
+                datepicker.hidden = true;
+
+                if (!isOpen) {
+                    statusPanel.classList.remove("hidden");
+                    statusDropdown.classList.add("open");
+                }
+            });
+
+            // select option
+            statusPanel.querySelectorAll("button").forEach(btn => {
+                btn.addEventListener("click", () => {
+
+                    const value = btn.dataset.value;
+                    const text = btn.textContent.trim();
+
+                    statusInput.value = value;
+                    statusLabel.innerText = text;
+
+                    statusPanel.classList.add("hidden");
+                    statusDropdown.classList.remove("open");
+
+                });
+            });
+
+        }
+
+        // ============================================================================
+        // GLOBAL DROPDOWN HANDLER
+        // ============================================================================
+
+        // Close all dropdowns on outside click
+        document.addEventListener("click", () => {
+            closeAllDropdowns();
+            datepicker.hidden = true;
+        });
+
+        // Helper function to close all dropdowns
+        function closeAllDropdowns() {
+            document.querySelectorAll(".custom-dropdown").forEach(dd => {
+                dd.classList.remove("open");
+                dd.querySelector(".dropdown-panel")?.classList.add("hidden");
+            });
+        }
+    </script>
 
     <script>
         const toggleBtn = document.getElementById('toggleFilter');
