@@ -208,7 +208,7 @@
                 <div>
                     <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Nama</label>
                     <input type="text" name="name" id="name" value="{{ old('name', $user->name) }}" required
-                        class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800" />
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color1)] text-gray-800" />
                     @error('name')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror
@@ -241,12 +241,12 @@
                     <label class="block text-sm font-medium text-gray-700 mb-2">Jenis Kelamin</label>
                     <div class="flex items-center space-x-4">
                         <label class="inline-flex items-center text-sm text-gray-700">
-                            <input type="radio" name="gender" value="male" class="form-radio text-blue-600 h-4 w-4"
+                            <input type="radio" name="gender" value="male" class="form-radio text-blue-600 h-4 w-4 cursor-pointer"
                                 @checked(old('gender', $user->volunteer->gender) == 'male')>
                             <span class="ml-1.5">Laki-laki</span>
                         </label>
                         <label class="inline-flex items-center text-sm text-gray-700">
-                            <input type="radio" name="gender" value="female" class="form-radio text-blue-600 h-4 w-4"
+                            <input type="radio" name="gender" value="female" class="form-radio text-blue-600 h-4 w-4 cursor-pointer"
                                 @checked(old('gender', $user->volunteer->gender) == 'female')>
                             <span class="ml-1.5">Perempuan</span>
                         </label>
@@ -261,7 +261,7 @@
                     <label for="date_of_birth" class="block text-sm font-medium text-gray-700 mb-1">Tanggal Lahir</label>
                     <input type="date" name="date_of_birth" id="date_of_birth"
                         value="{{ old('date_of_birth', $user->volunteer->date_of_birth) }}"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800" />
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color1)] text-gray-800" />
                     @error('date_of_birth')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror
@@ -269,7 +269,7 @@
 
                 <!-- Tombol Update -->
                 <button type="submit"
-                    class="w-full bg-[var(--color1)] text-white py-2.5 rounded-md font-semibold text-base hover:bg-[var(--hovercolor1)] transition duration-300">
+                    class="w-full bg-[var(--color1)] text-white py-2.5 rounded-md font-semibold text-base hover:bg-[var(--hovercolor1)] transition duration-300 cursor-pointer">
                     Perbarui
                 </button>
             </form>

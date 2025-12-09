@@ -84,7 +84,7 @@ class OrganizationController extends Controller
 
             DB::commit();
 
-            return redirect()->route('organization.profile.show');
+            return redirect()->route('organization.profile.show')->with('success', 'Profil berhasil diperbarui.');
         }
         catch (Throwable $e)
         {

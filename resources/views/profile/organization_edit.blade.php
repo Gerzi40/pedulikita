@@ -265,9 +265,9 @@
             <!-- Tombol Aksi -->
             <div class="flex justify-end space-x-3 pt-4">
                 <a href="{{ route('organization.profile.show') }}"
-                    class="px-6 py-2 border text-[var(--color1)] border-[var(--color1)]  rounded-md hover:bg-[var(--color1)] hover:text-white hover:shadow-md hover:scale-[1.05] transition duration-300 font-medium">Kembali</a>
+                    class="px-6 py-2 border text-[var(--color1)] border-[var(--color1)]  rounded-md hover:bg-[var(--color1)] transition duration-300 hover:text-white cursor-pointer font-medium">Kembali</a>
                 <button type="submit"
-                    class="bg-[#1769aa] hover:bg-[#12598d] text-white px-6 py-2 rounded-md font-medium transition cursor-pointer hover:scale-[1.05]">Ubah</button>
+                    class="px-6 py-2 border text-[var(--color1)] border-[var(--color1)]  rounded-md hover:bg-[var(--color1)] transition duration-300 hover:text-white cursor-pointer font-medium">Ubah</button>
             </div>
         </form>
     </div>

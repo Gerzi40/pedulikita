@@ -46,7 +46,7 @@
                                 @csrf
                                 @method('PUT')
                                 <button type="submit"
-                                    class="px-6 py-2 bg-[var(--color1)] text-white font-semibold rounded-md shadow border border-transparent hover:bg-white hover:text-[var(--color1)] hover:border-[var(--color1)] transition duration-300">
+                                    class="px-6 py-2 bg-[var(--color1)] text-white font-semibold rounded-md shadow border border-transparent hover:bg-white hover:text-[var(--color1)] hover:border-[var(--color1)] transition duration-300 cursor-pointer">
                                     Setuju
                                 </button>
                             </form>
@@ -62,7 +62,7 @@
 
                             {{-- Tombol Tolak yang memicu modal --}}
                             <button type="button" @click="showRejectModal = true"
-                                class="px-6 py-2 bg-[#960018] text-white font-semibold rounded-md shadow border border-transparent hover:bg-white hover:text-[#960018] hover:border-[#960018] transition duration-300">
+                                class="px-6 py-2 bg-[#960018] text-white font-semibold rounded-md shadow border border-transparent hover:bg-white hover:text-[#960018] hover:border-[#960018] transition duration-300 cursor-pointer">
                                 Tolak
                             </button>
                         @endif
@@ -76,7 +76,7 @@
 
                                 {{-- Tombol Hapus yang memicu modal --}}
                                 <button type="button" @click="showConfirmModal = true"
-                                    class="bg-[#960018] text-white font-semibold py-2 px-6 rounded-md shadow border border-transparent hover:bg-white hover:text-[#960018] hover:border-[#960018] transition duration-300">
+                                    class="bg-[#960018] text-white font-semibold py-2 px-6 rounded-md shadow border border-transparent hover:bg-white hover:text-[#960018] hover:border-[#960018] transition duration-300 cursor-pointer">
                                     Hapus
                                 </button>
                             </form>
@@ -97,11 +97,11 @@
                         dibatalkan.</p>
                     <div class="flex justify-end gap-4">
                         <button type="button" @click="showConfirmModal = false"
-                            class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition duration-300">
+                            class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition duration-300 cursor-pointer">
                             Batal
                         </button>
                         <button type="button" @click="$refs.deleteForm.submit()"
-                            class="px-4 py-2 bg-[#960018] text-white rounded-lg hover:bg-[#7E191B] transition duration-300">
+                            class="px-4 py-2 bg-[#960018] text-white rounded-lg hover:bg-[#7E191B] transition duration-300 cursor-pointer">
                             Ya, Hapus
                         </button>
                     </div>
@@ -120,16 +120,16 @@
 
                     {{-- Input untuk alasan penolakan --}}
                     <textarea x-model="rejectReason" rows="4"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent mb-4"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#960018] focus:border-transparent mb-4"
                         placeholder="Masukkan alasan penolakan..."></textarea>
 
                     <div class="flex justify-end gap-4">
                         <button type="button" @click="showRejectModal = false"
-                            class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition duration-300">
+                            class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition duration-300 cursor-pointer">
                             Batal
                         </button>
                         <button type="button" @click="$refs.rejectReason.value = rejectReason; $refs.rejectForm.submit()"
-                            class="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition duration-300">
+                            class="px-4 py-2 bg-[#960018] text-white rounded-lg hover:bg-[#7E191B] transition duration-300 cursor-pointer">
                             Ya, Tolak
                         </button>
                     </div>
@@ -274,3 +274,34 @@
     </div>
 
 @endsection
+
+@if (session('success'))
+    <div 
+        x-data="{ show: true }"
+        x-show="show"
+        x-init="setTimeout(() => show = false, 3500)"
+
+        x-transition:enter-start="-translate-y-3 opacity-0"
+        x-transition:enter-end="translate-y-0 opacity-100"
+        x-transition:leave-start="translate-y-0 opacity-100"
+        x-transition:leave-end="-translate-y-3 opacity-0"
+        
+        class="fixed top-20 right-6 z-50"
+    >
+        <div 
+            class="flex items-center gap-3 bg-white border border-green-500 
+                   text-green-600 px-5 py-3 rounded-md shadow-lg"
+        >
+            {{-- CHECK ICON --}}
+            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" stroke-width="2"
+                 viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M5 13l4 4L19 7"/>
+            </svg>
+
+            <span class="font-medium text-sm">
+                {{ session('success') }}
+            </span>
+        </div>
+    </div>
+@endif

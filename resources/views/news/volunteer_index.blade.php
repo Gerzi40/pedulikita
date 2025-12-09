@@ -46,7 +46,7 @@
                                 
                                 {{-- Title overlay --}}
                                 <div class="absolute bottom-0 left-0 right-0 p-5 text-white">
-                                    <h3 class="font-bold text-lg line-clamp-2 group-hover:text-blue-300 transition">
+                                    <h3 class="font-bold text-lg line-clamp-2 group-hover:text-blue-400 transition">
                                         {{ $item->news_title }}
                                     </h3>
                                 </div>
@@ -87,7 +87,7 @@
                             @endif
                             
                             <div class="flex-1 min-w-0">
-                                <h4 class="text-sm font-semibold text-gray-800 line-clamp-2 group-hover:text-blue-600 transition mb-2">
+                                <h4 class="text-sm font-semibold text-gray-800 line-clamp-2 group-hover:text-[var(--color1)] transition mb-2">
                                     {{ $item->news_title }}
                                 </h4>
                                 <p class="text-xs text-gray-500">

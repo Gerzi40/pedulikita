@@ -360,7 +360,7 @@ class OrganizationController extends Controller
             throw $e;
         }
 
-        return redirect()->route('admin.organizations.index');
+        return redirect()->route('admin.organizations.index')->with('success', 'Organisasi berhasil dihapus.');
     }
 
     public function approve(string $id)
@@ -384,7 +384,7 @@ class OrganizationController extends Controller
             Log::error($e->getMessage());
         }
 
-        return back();
+        return back()->with('success', 'Organisasi berhasil disetujui.');
     }
 
     public function reject(Request $request, string $id)
@@ -414,7 +414,7 @@ class OrganizationController extends Controller
             Log::error($e->getMessage());
         }
 
-        return back();
+        return back()->with('success', 'Organisasi berhasil ditolak dan menunggu perbaikan dari pihak organisasi.');
     }
 
     public function waiting_pending()

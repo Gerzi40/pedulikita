@@ -336,7 +336,7 @@ class EventController extends Controller
             Log::error($e->getMessage());
         }
 
-        return redirect()->route('organization.events.show', ['id' => $event->id]);
+        return redirect()->route('organization.events.show', ['id' => $event->id])->with('success', 'Acara baru berhasil dibuat dan menunggu pemberian poin oleh admin.');
     }
 
     public function guest_show(string $id)
@@ -430,7 +430,7 @@ class EventController extends Controller
 
         $event->update($eventData);
 
-        return redirect()->route('organization.events.show', ['id' => $event->id]);
+        return redirect()->route('organization.events.show', ['id' => $event->id])->with('success', 'Acara berhasil diubah dan menunggu pemberian poin oleh admin.');
     }
 
     public function organization_destroy(string $id)
@@ -489,7 +489,7 @@ class EventController extends Controller
             Log::error($e->getMessage());
         }
 
-        return back()->with('success', 'Poin berhasil diberikan & event disetujui.');
+        return back()->with('success', 'Poin berhasil diberikan & acara disetujui.');
     }
 
 }

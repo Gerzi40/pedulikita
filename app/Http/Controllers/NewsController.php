@@ -110,7 +110,7 @@ class NewsController extends Controller
             $existingNews->image_url = $image_url_value;
             $existingNews->save();
             $existingNews;
-            $message = 'Berita berhasil diperbarui.';
+            $message = 'Berita acara berhasil diperbarui.';
         } else {
             // create new
             News::create([
@@ -122,10 +122,10 @@ class NewsController extends Controller
             $event = Event::where('id', $event->id)->first();
             $event->state = 'reviewed';
             $event->save();
-            $message = 'Berita berhasil dibuat.';
+            $message = 'Berita acara berhasil dibuat.';
         }
 
-        return redirect()->route('organization.news.index')->with('success', 'Berita berhasil dibuat.');
+        return redirect()->route('organization.news.index')->with('success', $message);
     }
 
     public function guest_show(string $id)

@@ -109,12 +109,12 @@
                         <div class="flex justify-end gap-4">
                             {{-- Tombol Batal --}}
                             <button type="button" @click="showConfirmModal = false"
-                                class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition duration-300">
+                                class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition duration-300 cursor-pointer">
                                 Batal
                             </button>
                             {{-- Tombol Konfirmasi --}}
                             <button type="button" @click="document.getElementById('participationForm').submit()"
-                                class="px-4 py-2 bg-[var(--color1)] text-white rounded-lg hover:bg-[var(--hovercolor1)] transition duration-300">
+                                class="px-4 py-2 bg-[var(--color1)] text-white rounded-lg hover:bg-[var(--hovercolor1)] transition duration-300 cursor-pointer">
                                 Ya, Ikut
                             </button>
                         </div>
@@ -140,8 +140,8 @@
                 <form action="{{ route('volunteer.follow.destroy', ['organization_id' => $event->organization_id]) }}" method="post" class="flex-shrink-0">
                     @csrf
                     @method('delete')
-                    <button type="submit" class="bg-[#960018] hover:bg-[#7E191B] text-white font-semibold cursor-pointer py-2 px-6 rounded-lg shadow-md transition duration-300">
-                        Behenti
+                    <button type="submit" class="bg-[#960018] hover:bg-[#7E191B] text-white font-semibold cursor-pointer py-2 px-6 rounded-lg shadow-md transition duration-300 cursor-pointer">
+                        Berhenti
                     </button>
                 </form>
             @else

@@ -85,12 +85,12 @@
             </div>
 
             <div class="flex justify-end mt-6 space-x-3">
-                <a href="{{ url()->previous() }}" 
-                   class="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium">
+                <a href="{{ route('organization.news.index')}}" 
+                   class="px-6 py-2 border text-[var(--color1)] border-[var(--color1)]  rounded-md hover:bg-[var(--color1)] transition duration-300 hover:text-white cursor-pointer font-medium">
                     Kembali
                 </a>
                 <button type="submit" 
-                    class="px-5 py-2 rounded-lg bg-[var(--color1)] hover:[var(--hovercolor1)] text-white font-semibold shadow-md transition">
+                    class="px-6 py-2 border text-[var(--color1)] border-[var(--color1)]  rounded-md hover:bg-[var(--color1)] transition duration-300 hover:text-white cursor-pointer font-medium">
                     {{ isset($news) ? 'Ubah' : 'Buat' }}
                 </button>
             </div>

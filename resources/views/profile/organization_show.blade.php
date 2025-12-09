@@ -76,6 +76,12 @@
                                     • {{ \Carbon\Carbon::parse($event->start_time)->format('H:i') }} WIB
                                 </p>
                             </div>
+
+                            {{-- Tombol Lihat --}}
+                            <div class="flex justify-end">
+                                <a href="{{ route('organization.events.show', ['id' => $event->id]) }}"
+                                    class="px-4 py-2 bg-[var(--color1)] text-white text-sm rounded-md hover:bg-[var(--hovercolor1)] focus:outline-none focus:ring-2 focus:ring-[var(--hovercolor1)] focus:ring-opacity-50">Lihat</a>
+                            </div>
                         </div>
                     </div>
 
@@ -164,3 +170,34 @@
 
 
 @endsection
+
+@if (session('success'))
+    <div 
+        x-data="{ show: true }"
+        x-show="show"
+        x-init="setTimeout(() => show = false, 3500)"
+
+        x-transition:enter-start="-translate-y-3 opacity-0"
+        x-transition:enter-end="translate-y-0 opacity-100"
+        x-transition:leave-start="translate-y-0 opacity-100"
+        x-transition:leave-end="-translate-y-3 opacity-0"
+        
+        class="fixed top-20 right-6 z-50"
+    >
+        <div 
+            class="flex items-center gap-3 bg-white border border-green-500 
+                   text-green-600 px-5 py-3 rounded-md shadow-lg"
+        >
+            {{-- CHECK ICON --}}
+            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" stroke-width="2"
+                 viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M5 13l4 4L19 7"/>
+            </svg>
+
+            <span class="font-medium text-sm">
+                {{ session('success') }}
+            </span>
+        </div>
+    </div>
+@endif

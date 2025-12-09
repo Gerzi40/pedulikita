@@ -68,7 +68,7 @@ class VolunteerController extends Controller
 
             DB::commit();
 
-            return redirect()->route('volunteer.profile.show');
+            return redirect()->route('volunteer.profile.show')->with('success', 'Profil berhasil diperbarui.');
         }
         catch (Throwable $e)
         {

@@ -40,7 +40,10 @@ class ParticipationController extends Controller
         
         $user = Auth::user();
         $user->volunteer->events()->syncWithoutDetaching($event_id);
-        return redirect()->route('volunteer.participation.index');
+        return redirect()->route('volunteer.participation.index')->with('success', sprintf(
+        'Anda telah terdaftar di acara %s',
+            $event->name
+        ));
     }
 
     public function organization_edit(string $event_id)

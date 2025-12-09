@@ -339,7 +339,7 @@
                                         @method('DELETE')
                                         <button type="button"
                                             @click="formToSubmit = $el.closest('form'); showConfirmModal = true"
-                                            class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition-colors duration-150 group"
+                                            class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition-colors duration-150 group cursor-pointer"
                                             title="Delete Organization">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
@@ -384,11 +384,11 @@
                     dapat dibatalkan.</p>
                 <div class="flex justify-end gap-4">
                     <button type="button" @click="showConfirmModal = false"
-                        class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition duration-300">
+                        class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition duration-300 cursor-pointer">
                         Batal
                     </button>
                     <button type="button" @click="formToSubmit.submit()"
-                        class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition duration-300">
+                        class="px-4 py-2 bg-[#960018] text-white rounded-lg hover:bg-[#7E191B] transition duration-300 cursor-pointer">
                         Ya, Hapus
                     </button>
                 </div>
@@ -586,3 +586,34 @@
     </script>
 
 @endsection
+
+@if (session('success'))
+    <div 
+        x-data="{ show: true }"
+        x-show="show"
+        x-init="setTimeout(() => show = false, 3500)"
+
+        x-transition:enter-start="-translate-y-3 opacity-0"
+        x-transition:enter-end="translate-y-0 opacity-100"
+        x-transition:leave-start="translate-y-0 opacity-100"
+        x-transition:leave-end="-translate-y-3 opacity-0"
+        
+        class="fixed top-20 right-6 z-50"
+    >
+        <div 
+            class="flex items-center gap-3 bg-white border border-green-500 
+                   text-green-600 px-5 py-3 rounded-md shadow-lg"
+        >
+            {{-- CHECK ICON --}}
+            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" stroke-width="2"
+                 viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M5 13l4 4L19 7"/>
+            </svg>
+
+            <span class="font-medium text-sm">
+                {{ session('success') }}
+            </span>
+        </div>
+    </div>
+@endif
