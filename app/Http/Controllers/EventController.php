@@ -201,6 +201,7 @@ class EventController extends Controller
 
         $query = Event::query()
             ->with('city')
+            ->whereIn('state', ['pending', 'approved', 'finished', 'reviewed'])
             ->leftJoin('event_volunteer', 'events.id', '=', 'event_volunteer.event_id')
             ->select([
                 'events.id',
@@ -231,7 +232,7 @@ class EventController extends Controller
             'date' => ['nullable', 'date'],
             'province_id' => ['nullable', 'exists:provinces,id'],
             'city_id' => ['nullable', 'exists:cities,id'],
-            'state' => ['nullable', Rule::in(['pending', 'approved', 'finished', 'reviewed'])],
+            'state' => ['nullable', Rule::in(['draft', 'pending', 'approved', 'finished', 'reviewed'])],
         ]);
 
         $query->join('cities', 'events.city_id', '=', 'cities.id');
@@ -324,17 +325,6 @@ class EventController extends Controller
             'city_id' => $city->id,
             'image_url' => $path,
         ]);
-
-        try
-        {
-            $admins = User::where('role', '=', 'admin')->get();
-
-            Notification::send($admins, new EventCreated($user->name, $event->name, $event->id));
-        }
-        catch (Throwable $e)
-        {
-            Log::error($e->getMessage());
-        }
 
         return redirect()->route('organization.events.show', ['id' => $event->id])->with('success', 'Acara baru berhasil dibuat dan menunggu pemberian poin oleh admin.');
     }
@@ -492,4 +482,23 @@ class EventController extends Controller
         return back()->with('success', 'Poin berhasil diberikan & acara disetujui.');
     }
 
+    public function confirm($id)
+    {
+        $event = Event::findOrFail($id);
+        $event->state = 'pending';
+        $event->save();
+
+        try
+        {
+            $admins = User::where('role', '=', 'admin')->get();
+
+            Notification::send($admins, new EventCreated($event->organization->user->name, $event->name, $event->id));
+        }
+        catch (Throwable $e)
+        {
+            Log::error($e->getMessage());
+        }
+
+        return back()->with('success', 'Acara berhasil dikonfirmasi.');
+    }
 }

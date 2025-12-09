@@ -27,7 +27,7 @@ return new class extends Migration
             $table->decimal('longitude', 10, 7);
             $table->unsignedSmallInteger('available_slot');
             $table->unsignedTinyInteger('point')->nullable();
-            $table->enum('state', ['pending', 'approved', 'finished', 'reviewed'])->default('pending');
+            $table->enum('state', ['draft', 'pending', 'approved', 'finished', 'reviewed'])->default('draft');
             $table->timestamps();
         });
     }

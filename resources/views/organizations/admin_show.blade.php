@@ -232,7 +232,7 @@
                     <h2 class="text-xl font-bold text-[var(--color1)] mb-6">Acara dari {{ $organization->user->name }}
                     </h2>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        @foreach ($organization->events as $event)
+                        @foreach ($organization->events->where('state', '!=', 'draft') as $event)
                             <div class="bg-white shadow-md rounded-lg overflow-hidden">
                                 <div class="relative w-full h-40">
                                     <img src="{{ Storage::disk('s3')->url($event->image_url) }}" alt="Acara"

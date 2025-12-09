@@ -155,6 +155,10 @@
             <div class="dropdown-panel z-1 hidden">
                 <button type="button" data-value="">Status</button>
 
+                <button type="button" data-value="draft" class="{{ request('state') == 'draft' ? 'active' : '' }}">
+                    Baru
+                </button>
+
                 <button type="button" data-value="pending" class="{{ request('state') == 'pending' ? 'active' : '' }}">
                     Diproses
                 </button>
@@ -302,6 +306,11 @@
                                 <div
                                     class="absolute top-2 right-2 bg-green-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
                                     Disetujui
+                                </div>
+                            @elseif($event->state == 'draft')
+                                <div
+                                    class="absolute top-2 right-2 bg-[var(--color1)] text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
+                                    Baru
                                 </div>
                             @elseif($event->state == 'pending')
                                 <div

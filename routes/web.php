@@ -78,6 +78,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 Route::get('/organization/events/{id}/edit', 'edit')->name('organization.events.edit');
                 Route::put('/organization/events/{id}', 'update')->name('organization.events.update');
                 Route::delete('/organization/events/{id}', 'organization_destroy')->name('organization.events.destroy');
+                Route::post('/organization/events/{id}', 'confirm')->name('organization.events.confirm');
             });
 
             Route::controller(NewsController::class)->group(function () {

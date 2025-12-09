@@ -86,10 +86,31 @@
 
 
                 {{-- ACTION BUTTONS --}}
-                <div class="flex items-center gap-4 mt-4">
+                <div class="flex flex-wrap items-center gap-4 mt-4">
+
+                    @if ($event->state == 'draft')
+                        <form action="{{ route('organization.events.confirm', ['id' => $event->id]) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="inline-flex px-6 py-2 bg-[var(--color1)] text-white font-semibold rounded-md shadow  border border-transparent hover:bg-white hover:text-[var(--color1)] hover:border-[var(--color1)] transition duration-300 cursor-pointer">
+                                Konfirmasi Peninjauan
+                            </button>
+                        </form>
+                    @elseif ($event->state == 'pending')
+                        <p class="mt-4 text-green-600 font-semibold">Acara sedang ditinjau</p>
+                    @endif
+
+                    {{-- Tombol Edit --}}
+                    @if ($event->state == 'draft')
+                        <a href="{{ route('organization.events.edit', ['id' => $event->id]) }}"
+                            class="inline-flex px-6 py-2 bg-[var(--color1)] text-white font-semibold rounded-md shadow 
+                        border border-transparent hover:bg-white hover:text-[var(--color1)]
+                        hover:border-[var(--color1)] transition duration-300">
+                            Ubah
+                        </a>
+                    @endif
 
                     {{-- Tombol Hapus --}}
-                    @if ($event->state == 'pending')
+                    @if ($event->state == 'draft')
                         <form x-ref="deleteForm" action="{{ route('organization.events.destroy', ['id' => $event->id]) }}"
                             method="POST">
                             @csrf
@@ -103,18 +124,6 @@
                             </button>
                         </form>
                     @endif
-
-
-                    {{-- Tombol Edit --}}
-                    @if ($event->state == 'pending')
-                        <a href="{{ route('organization.events.edit', ['id' => $event->id]) }}"
-                            class="inline-flex px-6 py-2 bg-[var(--color1)] text-white font-semibold rounded-md shadow 
-                        border border-transparent hover:bg-white hover:text-[var(--color1)]
-                        hover:border-[var(--color1)] transition duration-300">
-                            Ubah
-                        </a>
-                    @endif
-
 
                     {{-- Tombol Lihat Relawan --}}
                     @if ($event->state === 'approved' || $event->state === 'finished')
