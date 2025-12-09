@@ -143,43 +143,262 @@
             width: 94%;
         }
     }
+
+    @media (max-width: 640px) {
+
+        body {
+            padding: 16px;
+        }
+
+        /* container lebih kecil */
+        .content-wrap {
+            width: 100%;
+            max-width: 100%;
+        }
+
+        /* countdown */
+        .countdown-wrap h2 {
+            font-size: 16px;
+        }
+
+        .countdown {
+            gap: 20px;
+        }
+
+        .countdown span {
+            font-size: 26px;
+        }
+
+        .countdown small {
+            font-size: 11px;
+        }
+
+        /* monitor */
+        .monitor {
+            height: 200px;
+            border-width: 4px;
+            padding: 0;
+        }
+
+        /* text card */
+        .title {
+            font-size: 16px;
+        }
+
+        .note {
+            font-size: 13px;
+        }
+
+        /* buttons jadi stack */
+        .navigation {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .navigation button,
+        .navigation a {
+            width: 100%;
+            text-align: center;
+        }
+
+    }
+
+    /* ===========================
+   TABLET
+============================*/
+
+    @media (max-width: 920px) {
+
+        .content-wrap {
+            width: 100%;
+        }
+
+        .monitor {
+            height: 240px;
+        }
+
+        .countdown span {
+            font-size: 30px;
+        }
+    }
+
+    .countdown-wrap {
+        width: 100%;
+        text-align: center;
+        /* biar sejajar dengan card */
+        padding-left: 8px;
+        margin-bottom: 20px;
+    }
+
+    .countdown-wrap h2 {
+        color: #2563eb;
+        /* Biru */
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    .countdown {
+        display: flex;
+        justify-content: center;
+        gap: 48px;
+    }
+
+    .countdown div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .countdown span {
+        font-size: 42px;
+        font-weight: 700;
+        color: #2563eb;
+        line-height: 1;
+    }
+
+    .countdown small {
+        font-size: 14px;
+        color: #2563eb;
+    }
+
+    .content-wrap {
+        width: 820px;
+        /* SAMA dengan .card */
+        max-width: 94%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    @media (max-width:640px){
+
+    /* countdown jadi panel putih */
+    .countdown-wrap{
+        background: rgba(255,255,255,0.9);
+        backdrop-filter: blur(6px);
+        border-radius: 16px;
+        padding: 12px 8px;
+        margin-bottom: 16px;
+        box-shadow: 0 4px 14px rgba(0,0,0,.08);
+    }
+
+    /* teks gelap supaya kebaca */
+    .countdown-wrap h2{
+        color:#1e293b;
+        font-size:14px;
+    }
+
+    .countdown span{
+        color:#0b56cc;
+        font-size:24px;
+    }
+
+    .countdown small{
+        color:#334155;
+        font-size:11px;
+    }
+}
 </style>
 <div class="page-bg" aria-hidden="true">
     <div class="wave left"></div>
     <div class="wave right"></div>
 </div>
 <div class="container">
-    <div class="card" role="main" aria-labelledby="waiting-title">
-        <div class="monitor"> <img src="{{ asset('assets/general_image/waiting.gif') }}" alt="Waiting animation"> </div>
-        <div class="progress-wrap" aria-hidden="true">
-            <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="72">
-                <div class="bar"></div>
+    <div class="content-wrap">
+        <div class="countdown-wrap">
+            <h2>Mohon melakukan revisi dalam:</h2>
+
+            <div class="countdown">
+                <div>
+                    <span id="cd-days">00</span>
+                    <small>Hari</small>
+                </div>
+                <div>
+                    <span id="cd-hours">00</span>
+                    <small>Jam</small>
+                </div>
+                <div>
+                    <span id="cd-minutes">00</span>
+                    <small>Menit</small>
+                </div>
             </div>
         </div>
-        <h1 id="waiting-title" class="title">Maaf, pengajuan organisasi Anda belum masuk dalam kriteria kami</h1>
-        <p class="note"> {{ $organization->rejected_reason }} </p>
-        <div class="navigation flex w-full justify-between items-center mt-4 gap-4">
-            <div>
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit"
+        <div class="card" role="main" aria-labelledby="waiting-title">
+            <div class="monitor"> <img src="{{ asset('assets/general_image/waiting.gif') }}" alt="Waiting animation">
+            </div>
+            <div class="progress-wrap" aria-hidden="true">
+                <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="72">
+                    <div class="bar"></div>
+                </div>
+            </div>
+            <h1 id="waiting-title" class="title">Maaf, pengajuan organisasi Anda belum masuk dalam kriteria kami</h1>
+            <p class="note"> {{ $organization->rejected_reason }} </p>
+            <div class="navigation flex w-full justify-between items-center mt-4 gap-4">
+                <div>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit"
+                            class="px-5 py-2 rounded-full bg-[var(--color1)]
+                           hover:bg-[var(--hovercolor1)]
+                           text-white text-sm transition font-medium">
+                            Balik ke halaman sebelumnya?
+                        </button>
+                    </form>
+                </div>
+
+                <div>
+                    <a href="{{ route('organization.edit') }}"
                         class="px-5 py-2 rounded-full bg-[var(--color1)]
                        hover:bg-[var(--hovercolor1)]
                        text-white text-sm transition font-medium">
-                        Balik ke halaman sebelumnya?
-                    </button>
-                </form>
-            </div>
-
-            <div>
-                <a href="{{ route('organization.edit') }}"
-                    class="px-5 py-2 rounded-full bg-[var(--color1)]
-                   hover:bg-[var(--hovercolor1)]
-                   text-white text-sm transition font-medium">
-                    Revisi Pengajuan
-                </a>
+                        Revisi Pengajuan
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 </div>
 @endsection
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+
+        const daysEl = document.getElementById("cd-days");
+        const hoursEl = document.getElementById("cd-hours");
+        const minutesEl = document.getElementById("cd-minutes");
+        const wrap = document.querySelector(".countdown-wrap");
+
+        if (!daysEl || !hoursEl || !minutesEl || !wrap) return;
+
+        const rejectedAt = new Date("{{ \Carbon\Carbon::parse($organization->rejected_at)->toISOString() }}");
+
+        let deadline = new Date(rejectedAt);
+        deadline.setMonth(deadline.getMonth() + 1);
+
+        function updateCountdown() {
+
+            const now = new Date();
+            const diff = deadline - now;
+
+            if (diff <= 0) {
+                wrap.innerHTML =
+                    "<h2 style='color:red;font-weight:700;'>Masa revisi telah berakhir</h2>";
+                return;
+            }
+
+            const totalMinutes = Math.floor(diff / 1000 / 60);
+            const days = Math.floor(totalMinutes / 60 / 24);
+            const hours = Math.floor((totalMinutes / 60) % 24);
+            const minutes = totalMinutes % 60;
+
+            daysEl.textContent = String(days).padStart(2, "0");
+            hoursEl.textContent = String(hours).padStart(2, "0");
+            minutesEl.textContent = String(minutes).padStart(2, "0");
+        }
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+
+    });
+</script>
