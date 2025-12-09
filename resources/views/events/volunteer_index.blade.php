@@ -6,7 +6,7 @@
 
     {{-- Hero Section --}}
     <section>
-        <div class="py-5 mx-auto max-w-5xl">
+        <div class="py-5 mx-4 lg:mx-auto max-w-5xl">
             <img src="{{ asset('assets/hero/hero_event.png') }}" alt="">
         </div>
     </section>
