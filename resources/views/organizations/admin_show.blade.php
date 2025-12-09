@@ -29,7 +29,7 @@
         </a>
 
         {{-- Gunakan x-data untuk menginisialisasi state kedua modal --}}
-        <div x-data="{ showConfirmModal: false, showRejectModal: false }">
+        <div x-data="{ showConfirmModal: false, showRejectModal: false, approveConfirmModal : false }">
 
             <div class="flex items-center space-x-6 mb-8 flex-col md:flex-row">
                 {{-- Bagian Logo dan Nama Organisasi --}}
@@ -41,11 +41,12 @@
                     <h1 class="text-3xl font-bold text-gray-800">{{ $organization->user->name }}</h1>
                     <div class="flex gap-2 mt-5">
                         @if ($organization->state === 'pending')
-                            <form action="{{ route('admin.organizations.approve', ['id' => $organization->id]) }}"
+                            <form x-ref="approveForm"
+                                action="{{ route('admin.organizations.approve', ['id' => $organization->id]) }}"
                                 method="POST">
                                 @csrf
                                 @method('PUT')
-                                <button type="submit"
+                                <button type="button" @click="approveConfirmModal = true"
                                     class="px-6 py-2 bg-[var(--color1)] text-white font-semibold rounded-md shadow border border-transparent hover:bg-white hover:text-[var(--color1)] hover:border-[var(--color1)] transition duration-300 cursor-pointer">
                                     Setuju
                                 </button>
@@ -132,6 +133,42 @@
                             class="px-4 py-2 bg-[#960018] text-white rounded-lg hover:bg-[#7E191B] transition duration-300 cursor-pointer">
                             Ya, Tolak
                         </button>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Modal Konfirmasi Approve --}}
+            <div x-show="approveConfirmModal" style="display: none;"
+                x-transition:enter="ease-out duration-300"
+                x-transition:enter-start="opacity-0"
+                x-transition:enter-end="opacity-100"
+                x-transition:leave="ease-in duration-200"
+                x-transition:leave-start="opacity-100"
+                x-transition:leave-end="opacity-0"
+                class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+
+                <div @click.away="approveConfirmModal = false" class="bg-white rounded-lg shadow-xl p-6 w-full max-w-md mx-4">
+                    <h3 class="text-xl font-bold mb-4 text-gray-800">Konfirmasi Persetujuan</h3>
+
+                    <p class="text-gray-600 mb-6">
+                        Apakah Anda yakin ingin memberi persetujuan pada organisasi ini?
+                        Tindakan ini tidak dapat dibatalkan.
+                    </p>
+
+                    <div class="flex justify-end gap-4">
+
+                        <button type="button"
+                                @click="approveConfirmModal = false"
+                                class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition duration-300 cursor-pointer">
+                            Batal
+                        </button>
+
+                        <button type="button"
+                                @click="$refs.approveForm.submit()"
+                                class="px-4 py-2 bg-[var(--color1)] text-white rounded-lg hover:bg-[var(--hovercolor1)] transition duration-300 cursor-pointer">
+                            Ya, Setuju
+                        </button>
+
                     </div>
                 </div>
             </div>
