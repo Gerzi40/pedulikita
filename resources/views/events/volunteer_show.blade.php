@@ -140,7 +140,7 @@
                 <form action="{{ route('volunteer.follow.destroy', ['organization_id' => $event->organization_id]) }}" method="post" class="flex-shrink-0">
                     @csrf
                     @method('delete')
-                    <button type="submit" class="bg-[#960018] hover:bg-[#7E191B] text-white font-semibold cursor-pointer py-2 px-6 rounded-lg shadow-md transition duration-300 cursor-pointer">
+                    <button type="submit" class="bg-[#960018] hover:bg-[#7E191B] text-white font-semibold cursor-pointer py-2 px-6 rounded-lg shadow-md transition duration-300">
                         Berhenti
                     </button>
                 </form>
@@ -188,3 +188,35 @@
     </form> --}}
 
 @endsection
+
+@if (session('error'))
+    <div 
+        x-data="{ show: true }"
+        x-show="show"
+        x-init="setTimeout(() => show = false, 7000)"
+
+        x-transition:enter-start="-translate-y-3 opacity-0"
+        x-transition:enter-end="translate-y-0 opacity-100"
+        x-transition:leave-start="translate-y-0 opacity-100"
+        x-transition:leave-end="-translate-y-3 opacity-0"
+        
+        class="fixed top-20 right-6 z-50"
+    >
+        <div 
+            class="flex items-center gap-3 bg-white border border-red-500
+                   text-red-600 px-5 py-3 rounded-md shadow-lg"
+        >
+            {{-- CHECK ICON --}}
+            <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" stroke-width="2"
+                viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+
+
+            <span class="font-medium text-sm">
+                {{ session('error') }}
+            </span>
+        </div>
+    </div>
+@endif
