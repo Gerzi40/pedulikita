@@ -361,7 +361,7 @@ class EventController extends Controller
     {
         $event = Event::findOrFail($id);
 
-        if ($event->state != 'pending')
+        if ($event->state != 'draft')
         {
             return redirect()->route('organization.events.show', ['id' => $event->id]);
         }
@@ -374,7 +374,7 @@ class EventController extends Controller
     {
         $event = Event::findOrFail($id);
 
-        if ($event->state != 'pending')
+        if ($event->state != 'draft')
         {
             return redirect()->route('organization.events.show', ['id' => $event->id]);
         }
@@ -447,7 +447,7 @@ class EventController extends Controller
     {
         $event = Event::findOrFail($id);
 
-        if ($event->state != 'pending')
+        if ($event->state != 'draft')
         {
             return redirect()->route('organization.events.show', ['id' => $event->id]);
         }
@@ -461,7 +461,7 @@ class EventController extends Controller
     {
         $event = Event::findOrFail($id);
 
-        if ($event->state != 'pending')
+        if ($event->state != 'draft')
         {
             return redirect()->route('admin.events.show', ['id' => $event->id]);
         }
@@ -505,6 +505,12 @@ class EventController extends Controller
     public function confirm($id)
     {
         $event = Event::findOrFail($id);
+
+        if ($event->state != 'draft')
+        {
+            return redirect()->route('organization.events.show', ['id' => $event->id]);
+        }
+
         $event->state = 'pending';
         $event->save();
 
