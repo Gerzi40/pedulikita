@@ -69,25 +69,24 @@
                         @endif
 
                         {{-- Form untuk delete --}}
-                        @if ($organization->state != 'pending')
+                        {{-- @if ($organization->state != 'pending')
                             <form x-ref="deleteForm"
                                 action="{{ route('admin.organizations.destroy', ['id' => $organization->id]) }}" method="post">
                                 @csrf
                                 @method('delete')
 
-                                {{-- Tombol Hapus yang memicu modal --}}
                                 <button type="button" @click="showConfirmModal = true"
                                     class="bg-[#960018] text-white font-semibold py-2 px-6 rounded-md shadow border border-transparent hover:bg-white hover:text-[#960018] hover:border-[#960018] transition duration-300 cursor-pointer">
                                     Hapus
                                 </button>
                             </form>
-                        @endif
+                        @endif --}}
                     </div>
                 </div>
             </div>
 
             {{-- Modal Konfirmasi Delete --}}
-            <div x-show="showConfirmModal" style="display: none;" x-transition:enter="ease-out duration-300"
+            {{-- <div x-show="showConfirmModal" style="display: none;" x-transition:enter="ease-out duration-300"
                 x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
                 x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100"
                 x-transition:leave-end="opacity-0" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
@@ -107,7 +106,7 @@
                         </button>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
             {{-- Modal Konfirmasi Reject --}}
             <div x-show="showRejectModal" style="display: none;" x-transition:enter="ease-out duration-300"
