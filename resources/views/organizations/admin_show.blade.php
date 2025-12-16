@@ -7,20 +7,14 @@
     <div class="container mx-auto px-4 py-8">
         {{-- BACK BUTTON --}}
         <a href="{{ route('admin.organizations.index') }}"
-        class="inline-flex items-center gap-2 px-4 py-2 mb-6
+            class="inline-flex items-center gap-2 px-4 py-2 mb-6
                 bg-white text-[var(--color1)] border border-[var(--color1)]
                 rounded-md shadow hover:bg-[var(--color1)] hover:text-white
                 transition duration-300 w-fit">
 
-            <svg xmlns="http://www.w3.org/2000/svg"
-                class="w-4 h-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                 stroke-width="2">
-                <path stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M15 19l-7-7 7-7"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
             </svg>
 
             <span class="text-sm font-medium">
@@ -29,13 +23,13 @@
         </a>
 
         {{-- Gunakan x-data untuk menginisialisasi state kedua modal --}}
-        <div x-data="{ showConfirmModal: false, showRejectModal: false, approveConfirmModal : false }">
+        <div x-data="{ showConfirmModal: false, showRejectModal: false, approveConfirmModal: false }">
 
             <div class="flex items-center space-x-6 mb-8 flex-col md:flex-row">
                 {{-- Bagian Logo dan Nama Organisasi --}}
                 <div class="flex-shrink-0">
-                    <img src="{{ Storage::disk('s3')->url($organization->user->profile_picture_url) }}" alt="Logo Organisasi"
-                        class="w-48 h-48 object-cover rounded-full border-2 border-gray-200">
+                    <img src="{{ Storage::disk('s3')->url($organization->user->profile_picture_url) }}"
+                        alt="Logo Organisasi" class="w-48 h-48 object-cover rounded-full border-2 border-gray-200">
                 </div>
                 <div class="flex flex-col items-center md:items-start">
                     <h1 class="text-3xl font-bold text-gray-800">{{ $organization->user->name }}</h1>
@@ -137,16 +131,13 @@
             </div>
 
             {{-- Modal Konfirmasi Approve --}}
-            <div x-show="approveConfirmModal" style="display: none;"
-                x-transition:enter="ease-out duration-300"
-                x-transition:enter-start="opacity-0"
-                x-transition:enter-end="opacity-100"
-                x-transition:leave="ease-in duration-200"
-                x-transition:leave-start="opacity-100"
-                x-transition:leave-end="opacity-0"
-                class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+            <div x-show="approveConfirmModal" style="display: none;" x-transition:enter="ease-out duration-300"
+                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100"
+                x-transition:leave-end="opacity-0" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
 
-                <div @click.away="approveConfirmModal = false" class="bg-white rounded-lg shadow-xl p-6 w-full max-w-md mx-4">
+                <div @click.away="approveConfirmModal = false"
+                    class="bg-white rounded-lg shadow-xl p-6 w-full max-w-md mx-4">
                     <h3 class="text-xl font-bold mb-4 text-gray-800">Konfirmasi Persetujuan</h3>
 
                     <p class="text-gray-600 mb-6">
@@ -156,15 +147,13 @@
 
                     <div class="flex justify-end gap-4">
 
-                        <button type="button"
-                                @click="approveConfirmModal = false"
-                                class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition duration-300 cursor-pointer">
+                        <button type="button" @click="approveConfirmModal = false"
+                            class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition duration-300 cursor-pointer">
                             Batal
                         </button>
 
-                        <button type="button"
-                                @click="$refs.approveForm.submit()"
-                                class="px-4 py-2 bg-[var(--color1)] text-white rounded-lg hover:bg-[var(--hovercolor1)] transition duration-300 cursor-pointer">
+                        <button type="button" @click="$refs.approveForm.submit()"
+                            class="px-4 py-2 bg-[var(--color1)] text-white rounded-lg hover:bg-[var(--hovercolor1)] transition duration-300 cursor-pointer">
                             Ya, Setuju
                         </button>
 
@@ -230,109 +219,114 @@
                 <div class="container mx-auto px-4">
                     <h2 class="text-xl font-bold text-[var(--color1)] mb-6">Acara dari {{ $organization->user->name }}
                     </h2>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        @foreach ($organization->events->where('state', '!=', 'draft') as $event)
-                            <div class="bg-white shadow-md rounded-lg overflow-hidden">
-                                <div class="relative w-full h-40">
-                                    <img src="{{ Storage::disk('s3')->url($event->image_url) }}" alt="Acara"
-                                        class="w-full h-full object-cover" />
+                    @forelse ($organization->events->where('state', '!=', 'draft') as $event)
+                        @if ($loop->first)
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        @endif
 
-                                    {{-- Badge Status --}}
-                                    @if ($event->state == 'approved')
-                                        <div
-                                            class="absolute top-2 right-2 bg-green-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
-                                            Disetujui
-                                        </div>
-                                    @elseif($event->state == 'pending')
-                                        <div
-                                            class="absolute top-2 right-2 bg-[var(--color1)] text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
-                                            Diproses
-                                        </div>
-                                    @elseif($event->state == 'finished')
-                                        <div
-                                            class="absolute top-2 right-2 bg-[var(--color1)] text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
-                                            Selesai
-                                        </div>
-                                    @elseif($event->state == 'reviewed')
-                                        <div
-                                            class="absolute top-2 right-2 bg-[var(--color1)] text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
-                                            Diulas
-                                        </div>
-                                    @endif
+                        {{-- CARD --}}
+                        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+                            <div class="relative w-full h-40">
+                                <img src="{{ Storage::disk('s3')->url($event->image_url) }}" alt="Acara"
+                                    class="w-full h-full object-cover" />
+
+                                {{-- Badge Status --}}
+                                @if ($event->state == 'approved')
+                                    <div
+                                        class="absolute top-2 right-2 bg-green-600 text-white text-xs font-semibold px-3 py-1 rounded-full">
+                                        Disetujui
+                                    </div>
+                                @elseif ($event->state == 'pending')
+                                    <div
+                                        class="absolute top-2 right-2 bg-[var(--color1)] text-white text-xs font-semibold px-3 py-1 rounded-full">
+                                        Diproses
+                                    </div>
+                                @elseif ($event->state == 'finished')
+                                    <div
+                                        class="absolute top-2 right-2 bg-[var(--color1)] text-white text-xs font-semibold px-3 py-1 rounded-full">
+                                        Selesai
+                                    </div>
+                                @elseif ($event->state == 'reviewed')
+                                    <div
+                                        class="absolute top-2 right-2 bg-[var(--color1)] text-white text-xs font-semibold px-3 py-1 rounded-full">
+                                        Diulas
+                                    </div>
+                                @endif
+                            </div>
+
+                            <div class="p-4">
+                                <h3 class="font-semibold text-base text-[var(--color2)] mb-2">
+                                    {{ $event->name }}
+                                </h3>
+
+                                {{-- Kategori --}}
+                                <div class="flex items-center text-xs mb-1">
+                                    <img src="{{ asset('assets/icons/category.png') }}" class="mr-2 h-3 w-3">
+                                    <p>{{ $event->event_category->name }}</p>
                                 </div>
-                                <div class="p-4">
-                                    <h3 class="font-semibold text-base text-[var(--color2)] mb-2">{{ $event->name }}</h3>
 
-                                    {{-- Kategori --}}
-                                    <div class="flex items-center text-gray-500 text-xs mb-1">
-                                        <img src="{{ asset('assets/icons/category.png') }}"
-                                            class="mr-2 h-3 w-3 object-contain" alt="">
-                                        <p class="text-[var(--color2)]">{{ $event->event_category->name }}</p>
-                                    </div>
+                                {{-- Lokasi --}}
+                                <div class="flex items-center text-xs mb-1">
+                                    <img src="{{ asset('assets/icons/Vector.png') }}" class="mr-2 h-3 w-3">
+                                    <p>{{ $event->city->name }}, {{ $event->city->province->name }}</p>
+                                </div>
 
-                                    {{-- Lokasi --}}
-                                    <div class="flex items-center text-gray-500 text-xs mb-1">
-                                        <img src="{{ asset('assets/icons/Vector.png') }}"
-                                            class="mr-2 h-3 w-3 object-contain" alt="Lokasi">
-                                        <p class="text-[var(--color2)]">{{ $event->city->name }},
-                                            {{ $event->city->province->name }}</p>
-                                    </div>
+                                {{-- Tanggal --}}
+                                <div class="flex items-center text-xs mb-4">
+                                    <img src="{{ asset('assets/icons/Clock.png') }}" class="mr-2 h-3 w-3">
+                                    <p>
+                                        {{ \Carbon\Carbon::parse($event->date)->locale('id')->isoFormat('dddd, D MMMM YYYY') }}
+                                        • {{ \Carbon\Carbon::parse($event->start_time)->format('H:i') }} WIB
+                                    </p>
+                                </div>
 
-                                    {{-- Tanggal & Waktu --}}
-                                    <div class="flex items-center text-gray-500 text-xs mb-1">
-                                        <img src="{{ asset('assets/icons/Clock.png') }}"
-                                            class="mr-2 h-3 w-3 object-contain" alt="Waktu">
-                                        <p class="text-[var(--color2)]">
-                                            {{ \Carbon\Carbon::parse($event->date)->locale('id')->isoFormat('dddd, D MMMM YYYY') }}
-                                            • {{ \Carbon\Carbon::parse($event->start_time)->format('H:i') }} WIB</p>
-                                    </div>
-
-                                    {{-- Slot Tersedia --}}
-                                    <div class="flex items-center text-gray-500 text-xs mb-4">
-                                        <img src="{{ asset('assets/icons/Crowd.png') }}"
-                                            class="mr-2 h-3 w-3 object-contain" alt="Slot">
-                                        <p class="text-[var(--color2)]">Tersedia
-                                            {{ $event->available_slot - $event->volunteers->count() }} slot</p>
-                                    </div>
-
-                                    {{-- Tombol Lihat --}}
-                                    <div class="flex justify-end">
-                                        <a href="{{ route('admin.events.show', ['id' => $event->id]) }}"
-                                            class="px-4 py-2 bg-[var(--color1)] text-white text-sm rounded-md hover:bg-[var(--hovercolor1)] focus:outline-none focus:ring-2 focus:ring-[var(--hovercolor1)] focus:ring-opacity-50">Lihat</a>
-                                    </div>
+                                <div class="flex justify-end">
+                                    <a href="{{ route('admin.events.show', $event->id) }}"
+                                        class="px-4 py-2 bg-[var(--color1)] text-white text-sm rounded-md hover:bg-[var(--hovercolor1)]">
+                                        Lihat
+                                    </a>
                                 </div>
                             </div>
-                        @endforeach
-                    </div>
+                        </div>
+
+                        @if ($loop->last)
                 </div>
-            </section>
+                @endif
+
+            @empty
+                {{-- EMPTY STATE --}}
+                <div class="flex flex-col items-center justify-center py-16 bg-white rounded-xl shadow-sm">
+                    <img src="{{ asset('assets/icons/calendar.png') }}" class="w-20 h-20 opacity-50 mb-4"
+                        alt="Kosong">
+
+                    <h3 class="text-lg font-semibold text-[var(--color2)] mb-1">
+                        Belum Ada Acara
+                    </h3>
+
+                    <p class="text-sm text-gray-400 text-center max-w-sm">
+                        Organisasi ini belum membuat acara apapun.
+                    </p>
+                </div>
+                @endforelse
         </div>
+        </section>
+    </div>
     </div>
 
 @endsection
 
 @if (session('success'))
-    <div 
-        x-data="{ show: true }"
-        x-show="show"
-        x-init="setTimeout(() => show = false, 3500)"
-
-        x-transition:enter-start="-translate-y-3 opacity-0"
-        x-transition:enter-end="translate-y-0 opacity-100"
-        x-transition:leave-start="translate-y-0 opacity-100"
-        x-transition:leave-end="-translate-y-3 opacity-0"
-        
-        class="fixed top-20 right-6 z-50"
-    >
-        <div 
+    <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 3500)"
+        x-transition:enter-start="-translate-y-3 opacity-0" x-transition:enter-end="translate-y-0 opacity-100"
+        x-transition:leave-start="translate-y-0 opacity-100" x-transition:leave-end="-translate-y-3 opacity-0"
+        class="fixed top-20 right-6 z-50">
+        <div
             class="flex items-center gap-3 bg-white border border-green-500 
-                   text-green-600 px-5 py-3 rounded-md shadow-lg"
-        >
+                   text-green-600 px-5 py-3 rounded-md shadow-lg">
             {{-- CHECK ICON --}}
             <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" stroke-width="2"
-                 viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                      d="M5 13l4 4L19 7"/>
+                viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
             </svg>
 
             <span class="font-medium text-sm">

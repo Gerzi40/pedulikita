@@ -364,7 +364,6 @@
                                         </svg>
                                         Ditolak
                                     </span>
-                                @endif
                                 @elseif($organization->state == 'blocked')
                                     <span
                                         class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-200 text-gray-700 border border-gray-300">
