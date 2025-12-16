@@ -279,6 +279,7 @@ class EventController extends Controller
             'end_time' => [
                             'required',
                             'date_format:H:i',
+                            'after:start_time',
                             function ($attribute, $value, $fail) use ($request) {
                                 $start = Carbon::createFromFormat('H:i', $request->start_time);
                                 $end   = Carbon::createFromFormat('H:i', $value);
@@ -387,6 +388,7 @@ class EventController extends Controller
             'end_time' => [
                             'required',
                             'date_format:H:i',
+                            'after:start_time',
                             function ($attribute, $value, $fail) use ($request) {
                                 $start = Carbon::createFromFormat('H:i', $request->start_time);
                                 $end   = Carbon::createFromFormat('H:i', $value);
