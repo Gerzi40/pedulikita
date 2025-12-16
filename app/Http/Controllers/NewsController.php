@@ -25,16 +25,12 @@ class NewsController extends Controller
 
     public function organization_index(Request $request)
     {
-        // get events of the authenticated user's organization that have already passed (date < today)
         $user = Auth::user();
 
-        $events = $user->organization->events()
-            ->whereDate('date', '<', Carbon::today()->toDateString())
-            // ensure we only pick events belonging to this organization
-            ->where('events.organization_id', '=', $user->organization->id)->get();
-
-        // nanti pake ini
-        // $events = $user->organization->events()->where('status', 'finished')->get();
+        $events = Event::where('organization_id', '=', $user->organization->id)
+            ->where('date', '<=', Carbon::today()->toDateString())
+            ->whereIn('state', ['finished', 'reviewed'])
+            ->get();
 
         return view('news.organization_index', compact('events'));
     }
