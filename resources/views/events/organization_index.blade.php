@@ -142,7 +142,19 @@
                 <img src="{{ asset('assets/icons/status.png') }}" class="w-5 h-5">
 
                 <span class="dropdown-label">
-                    {{ ucfirst(request('state')) ?: 'Status' }}
+                    @if (request('state') == 'draft')
+                        Baru
+                    @elseif (request('state') == 'pending')
+                        Diproses
+                    @elseif (request('state') == 'approved')
+                        Disetujui
+                    @elseif (request('state') == 'finished')
+                        Selesai
+                    @elseif (request('state') == 'reviewed')
+                        Diulas
+                    @else
+                        Status
+                    @endif
                 </span>
 
                 <svg class="arrow" width="16" height="16" viewBox="0 0 24 24">

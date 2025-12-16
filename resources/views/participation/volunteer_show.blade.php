@@ -8,7 +8,7 @@
     <section class="max-w-6xl mx-auto mt-10 px-4" x-data="{ showConfirmModal: false }">
 
         {{-- BACK BUTTON --}}
-        <a href="{{ route('volunteer.events.index') }}"
+        <a href="{{ route('volunteer.participation.index') }}"
         class="inline-flex items-center gap-2 px-4 py-2 mb-6
                 bg-white text-[var(--color1)] border border-[var(--color1)]
                 rounded-md shadow hover:bg-[var(--color1)] hover:text-white
@@ -75,21 +75,6 @@
                     </div>
                 </div>
 
-                <div>
-                    @if ($event->volunteers->contains('id', Auth::user()->volunteer->id))
-                        <p class="mt-4 text-green-600 font-semibold">Anda sudah berpartisipasi</p>
-                    @else
-                        <form action="{{ route('volunteer.participation.store', ['event_id' => $event->id]) }}"
-                            method="POST" id="participationForm">
-                            @csrf
-                            <button type="button" @click="showConfirmModal = true"
-                                class="mt-4 w-fit px-6 py-2 bg-[var(--color1)] text-white font-semibold rounded-md shadow hover:bg-white hover:text-[var(--color1)] border hover:border-[var(--color1)] transition duration-300 cursor-pointer">
-                                Partisipasi
-                            </button>
-                        </form>
-                    @endif
-                </div>
-
                 {{-- Modal Konfirmasi Partisipasi --}}
                 <div x-show="showConfirmModal" x-cloak x-transition:enter="ease-out duration-300"
                     x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
@@ -141,7 +126,7 @@
                     @csrf
                     @method('delete')
                     <button type="submit" class="bg-[#960018] hover:bg-[#7E191B] text-white font-semibold cursor-pointer py-2 px-6 rounded-lg shadow-md transition duration-300">
-                        Berhenti Ikuti
+                        Berhenti
                     </button>
                 </form>
             @else
@@ -176,16 +161,6 @@
             </iframe>
         </div>
     </section>
-
-
-    {{-- <img src="{{ Storage::disk('s3')->url($event->image_url) }}" style="max-height: 200px;"/> --}}
-
-    {{-- {{ $event }} --}}
-
-    {{-- <form action="{{ route('volunteer.participation.store', ['event_id' => $event->id]) }}" method="post">
-        @csrf
-        <button type="submit">Participate</button>
-    </form> --}}
 
 @endsection
 

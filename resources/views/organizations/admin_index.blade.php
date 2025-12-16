@@ -26,7 +26,7 @@
             shadow-md
             rounded-xl
             mx-auto my-4
-            max-w-[90%]">
+            max-w-[95%]">
 
             <!-- Search Bar -->
             <div
@@ -42,7 +42,7 @@
                 w-full
                 focus-within:ring-2
                 focus-within:ring-[var(--color1)]
-                transition-all"">
+                transition-all">
                 <img src="{{ asset('assets/icons/search.png') }}" alt="Cari" class="w-5 h-5 flex-shrink-0">
                 <input type="text" name="name" placeholder="Masukkan nama organisasi"
                     class="bg-transparent outline-none w-full text-gray-700 placeholder-gray-400"

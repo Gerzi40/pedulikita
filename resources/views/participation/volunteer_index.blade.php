@@ -52,7 +52,7 @@
 
                             {{-- Tombol Lihat --}}
                             <div class="flex justify-end">
-                                <a href="{{ route('volunteer.events.show', ['id' => $event->id]) }}"
+                                <a href="{{ route('volunteer.participation.show', ['id' => $event->id]) }}"
                                     class="px-4 py-2 bg-[var(--color1)] text-white text-sm rounded-md hover:bg-[var(--hovercolor1)] focus:outline-none focus:ring-2 focus:ring-[var(--hovercolor1)] focus:ring-opacity-50">Lihat</a>
                             </div>
                         </div>
