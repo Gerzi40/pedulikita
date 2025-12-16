@@ -18,7 +18,7 @@
         <form action="{{ route('admin.organizations.index') }}" method="get" id="filterForm"
             class="mobile-filter hidden
             lg:grid
-            grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6
+            grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-7
             gap-3 sm:gap-4
             items-center
             p-4 sm:p-6
@@ -26,7 +26,7 @@
             shadow-md
             rounded-xl
             mx-auto my-4
-            max-w-[90%]">
+            max-w-[95%]">
 
             <!-- Search Bar -->
             <div
@@ -47,6 +47,49 @@
                 <input type="text" name="name" placeholder="Masukkan nama organisasi"
                     class="bg-transparent outline-none w-full text-gray-700 placeholder-gray-400"
                     value="{{ request('name') }}">
+            </div>
+
+            <div class="custom-dropdown status-dropdown">
+
+                <div class="dropdown-trigger">
+                    <img src="{{ asset('assets/icons/status.png') }}" class="w-5 h-5">
+
+                    <span class="dropdown-label">
+                        @if (request('state') == 'pending')
+                            Diproses
+                        @elseif (request('state') == 'approved')
+                            Disetujui
+                        @elseif (request('state') == 'rejected')
+                            Ditolak
+                        @else
+                            Status
+                        @endif
+                    </span>
+
+                    <svg class="arrow" width="16" height="16" viewBox="0 0 24 24">
+                        <path d="M19 9l-7 7-7-7" stroke="#6b7280" stroke-width="2" fill="none" />
+                    </svg>
+                </div>
+
+                <input type="hidden" id="stateInput" name="state" value="{{ request('state') }}">
+
+                <div class="dropdown-panel z-1 hidden">
+                    <button type="button" data-value="">Status</button>
+
+                    <button type="button" data-value="pending" class="{{ request('state') == 'pending' ? 'active' : '' }}">
+                        Diproses
+                    </button>
+
+                    <button type="button" data-value="approved" class="{{ request('state') == 'approved' ? 'active' : '' }}">
+                        Disetujui
+                    </button>
+
+                    <button type="button" data-value="rejected" class="{{ request('state') == 'rejected' ? 'active' : '' }}">
+                        Ditolak
+                    </button>
+
+                </div>
+
             </div>
 
             <!-- Kategori Dropdown -->
