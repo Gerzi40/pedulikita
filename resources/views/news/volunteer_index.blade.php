@@ -15,7 +15,7 @@
 
             {{-- Kolom utama --}}
             <div class="lg:col-span-2">
-                <h2 class="text-3xl font-bold text-gray-900 mb-6">Acara Terkini</h2>
+                <h2 class="text-3xl font-bold text-[var(--color1)] mb-6">Acara Terkini</h2>
 
                 {{-- 4 Berita Utama dengan Ukuran Sama --}}
                 <div class="grid sm:grid-cols-2 gap-6">
@@ -59,7 +59,7 @@
             {{-- Sidebar --}}
             <div class="lg:col-span-1">
                 <div class="flex items-center justify-between mb-6">
-                    <h3 class="text-xl font-bold text-gray-900">Acara lainnya</h3>
+                    <h3 class="text-xl font-bold text-[var(--color1)]">Acara lainnya</h3>
                     {{-- <a href="#" class="text-sm text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md transition">
                         View all
                     </a> --}}
