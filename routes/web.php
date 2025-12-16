@@ -54,6 +54,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::controller(ParticipationController::class)->group(function () {
             Route::get('/volunteer/activity', 'volunteer_index')->name('volunteer.participation.index');
+            Route::get('/volunteer/activity/{id}', 'volunteer_show')->name('volunteer.participation.show');
             Route::post('/volunteer/events/{event_id}', 'store')->name('volunteer.participation.store');
         });
 

@@ -18,6 +18,12 @@ class ParticipationController extends Controller
         return view('participation.volunteer_index', compact('events'));
     }
 
+    public function volunteer_show($id)
+    {
+        $event = Event::findOrFail($id);
+        return view('participation.volunteer_show', compact('event'));
+    }
+
     public function organization_index(string $event_id)
     {
         $event = Event::findOrFail($event_id);
