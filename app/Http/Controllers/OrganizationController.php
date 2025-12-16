@@ -60,7 +60,7 @@ class OrganizationController extends Controller
             'organization_category_id' => ['nullable', 'exists:organization_categories,id'],
             'province_id' => ['nullable', 'exists:provinces,id'],
             'city_id' => ['nullable', 'exists:cities,id'],
-            'state' => ['nullable', Rule::in(['pending', 'approved', 'rejected'])]
+            'state' => ['nullable', Rule::in(['pending', 'approved', 'rejected', 'blocked'])]
         ]);
 
         $query->join('cities', 'organizations.city_id', '=', 'cities.id')

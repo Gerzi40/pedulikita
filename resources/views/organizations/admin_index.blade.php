@@ -18,7 +18,7 @@
         <form action="{{ route('admin.organizations.index') }}" method="get" id="filterForm"
             class="mobile-filter hidden
             lg:grid
-            grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6
+            grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-7
             gap-3 sm:gap-4
             items-center
             p-4 sm:p-6
@@ -47,6 +47,53 @@
                 <input type="text" name="name" placeholder="Masukkan nama organisasi"
                     class="bg-transparent outline-none w-full text-gray-700 placeholder-gray-400"
                     value="{{ request('name') }}">
+            </div>
+
+            <div class="custom-dropdown status-dropdown">
+
+                @php
+                    $statusMap = [
+                        'pending'  => 'Diproses',
+                        'approved' => 'Disetujui',
+                        'rejected' => 'Ditolak',
+                        'blocked'  => 'Diblokir',
+                    ];
+                @endphp
+
+                <div class="dropdown-trigger">
+                    <img src="{{ asset('assets/icons/status.png') }}" class="w-5 h-5">
+
+                    <span class="dropdown-label">
+                        {{ $statusMap[request('state')] ?? 'Status' }}
+                    </span>
+
+                    <svg class="arrow" width="16" height="16" viewBox="0 0 24 24">
+                        <path d="M19 9l-7 7-7-7" stroke="#6b7280" stroke-width="2" fill="none" />
+                    </svg>
+                </div>
+
+                <input type="hidden" id="stateInput" name="state" value="{{ request('state') }}">
+
+                <div class="dropdown-panel z-1 hidden">
+                    <button type="button" data-value="">Status</button>
+
+                    <button type="button" data-value="pending" class="{{ request('state') == 'pending' ? 'active' : '' }}">
+                        Diproses
+                    </button>
+
+                    <button type="button" data-value="approved" class="{{ request('state') == 'approved' ? 'active' : '' }}">
+                        Disetujui
+                    </button>
+
+                    <button type="button" data-value="rejected" class="{{ request('state') == 'rejected' ? 'active' : '' }}">
+                        Ditolak
+                    </button>
+
+                    <button type="button" data-value="blocked" class="{{ request('state') == 'blocked' ? 'active' : '' }}">
+                        Diblokir
+                    </button>
+                </div>
+
             </div>
 
             <!-- Kategori Dropdown -->
@@ -333,7 +380,7 @@
                                             </path>
                                         </svg>
                                     </a>
-                                    <form action="{{ route('admin.organizations.destroy', ['id' => $organization->id]) }}"
+                                    {{-- <form action="{{ route('admin.organizations.destroy', ['id' => $organization->id]) }}"
                                         method="POST" class="inline">
                                         @csrf
                                         @method('DELETE')
@@ -348,7 +395,7 @@
                                                 </path>
                                             </svg>
                                         </button>
-                                    </form>
+                                    </form> --}}
                                 </div>
                             </td>
                         </tr>
@@ -374,7 +421,7 @@
             </div>
         @endif
 
-        <div x-show="showConfirmModal" style="display: none;" x-transition:enter="ease-out duration-300"
+        {{-- <div x-show="showConfirmModal" style="display: none;" x-transition:enter="ease-out duration-300"
             x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
             x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100"
             x-transition:leave-end="opacity-0" class="fixed inset-0 z-50 flex items-center justify-center bg-white/30">
@@ -393,7 +440,7 @@
                     </button>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
     </div>
 
