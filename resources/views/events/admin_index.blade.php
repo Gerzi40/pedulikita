@@ -279,7 +279,8 @@
                         <th
                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[250px]">
                             Deskripsi</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[150px]">
+                        <th
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[150px]">
                             Kategori</th>
                         <th
                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[150px]">
@@ -312,7 +313,8 @@
                                         {{ Str::limit($event->name, 25) }}
                                     </div>
                                     <div class="flex items-center text-xs text-gray-500">
-                                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
                                             </path>
@@ -401,11 +403,24 @@
                                         Diproses
                                     </span>
                                 @elseif($event->state == 'finished')
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 border border-gray-200">
+                                    <span
+                                        class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium
+                   bg-blue-100 text-blue-800 border border-blue-200">
+                                        <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                                clip-rule="evenodd" />
+                                        </svg>
                                         Selesai
                                     </span>
                                 @elseif($event->state == 'reviewed')
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 border border-gray-200">
+                                    <span
+                                        class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium
+                   bg-purple-100 text-purple-800 border border-purple-200">
+                                        <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                            <path
+                                                d="M18 10c0 3.866-3.582 7-8 7a8.965 8.965 0 01-4-.93L2 17l1.293-3.707A6.973 6.973 0 012 10c0-3.866 3.582-7 8-7s8 3.134 8 7z" />
+                                        </svg>
                                         Diulas
                                     </span>
                                 @endif
@@ -426,7 +441,7 @@
                                             </path>
                                         </svg>
                                     </a>
-                                    {{-- @if($event->state == 'pending')
+                                    {{-- @if ($event->state == 'pending')
                                         <form action="{{ route('admin.events.destroy', ['id' => $event->id]) }}"
                                             method="POST"
                                             onsubmit="return confirm('Are you sure you want to delete this event? This action cannot be undone.')"

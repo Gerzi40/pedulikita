@@ -326,17 +326,17 @@
                                 </div>
                             @elseif($event->state == 'pending')
                                 <div
-                                    class="absolute top-2 right-2 bg-[var(--color1)] text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
+                                    class="absolute top-2 right-2 bg-yellow-500 text-black text-xs font-semibold px-3 py-1 rounded-full shadow-md">
                                     Diproses
                                 </div>
                             @elseif($event->state == 'finished')
                                 <div
-                                    class="absolute top-2 right-2 bg-[var(--color1)] text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
+                                    class="absolute top-2 right-2 bg-gray-500 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
                                     Selesai
                                 </div>
                             @elseif($event->state == 'reviewed')
                                 <div
-                                    class="absolute top-2 right-2 bg-[var(--color1)] text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
+                                    class="absolute top-2 right-2 bg-purple-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
                                     Diulas
                                 </div>
                             @else
