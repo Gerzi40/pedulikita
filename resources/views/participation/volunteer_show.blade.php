@@ -126,7 +126,7 @@
                     @csrf
                     @method('delete')
                     <button type="submit" class="bg-[#960018] hover:bg-[#7E191B] text-white font-semibold cursor-pointer py-2 px-6 rounded-lg shadow-md transition duration-300">
-                        Berhenti
+                        Berhenti Ikuti
                     </button>
                 </form>
             @else
