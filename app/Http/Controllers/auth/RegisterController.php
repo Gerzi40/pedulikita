@@ -24,7 +24,7 @@ class RegisterController extends Controller
     {
         $validated = $request->validate([
             'name' => ['required', 'string'],
-            'email' => ['required', 'lowercase', 'email', 'unique:users,email'],
+            'email' => ['required', 'lowercase', 'email', 'unique:users,email', 'regex:/^[\w\.\-]+@([\w\-]+\.)+[a-zA-Z]{2,}$/'],
             'password' => ['required', 'confirmed', Password::min(8)->letters()->mixedCase()->numbers()->symbols()],
             'gender' => ['required', Rule::in(['male', 'female'])],
             'date_of_birth' => ['required', Rule::date()->beforeOrEqual(today())]
