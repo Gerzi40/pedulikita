@@ -9,14 +9,25 @@
 
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8">
             @foreach ($organizations as $organization)
-                <a href="{{ route('volunteer.organizations.show', ['id' => $organization->id]) }}" class="flex flex-col items-center pt-6 bg-white rounded-lg shadow-lg">
-                    <div class="w-24 h-24 rounded-full">
-                        <img src="{{ Storage::disk('s3')->url($organization->user->profile_picture_url) }}" alt="Profile Picture"
-                            class="w-full h-full rounded-full object-cover">
+                <a href="{{ route('volunteer.organizations.show', ['id' => $organization->id]) }}"
+                    class="group flex flex-col items-center pt-6 bg-white rounded-lg shadow-lg
+          transition-all duration-300 ease-in-out
+          hover:-translate-y-1 hover:scale-105 hover:shadow-xl">
+
+                    <div class="w-24 h-24 rounded-full overflow-hidden">
+                        <img src="{{ Storage::disk('s3')->url($organization->user->profile_picture_url) }}"
+                            alt="Profile Picture"
+                            class="w-full h-full rounded-full object-cover
+                    transition-transform duration-300
+                    group-hover:scale-110">
                     </div>
 
                     <div class="p-3 text-center">
-                        <h2 class="font-bold text-lg">{{ strtoupper($organization->user->name) }}</h2>
+                        <h2
+                            class="font-bold text-lg transition-colors duration-300
+                   group-hover:text-[var(--color1)]">
+                            {{ strtoupper($organization->user->name) }}
+                        </h2>
                     </div>
                 </a>
             @endforeach
