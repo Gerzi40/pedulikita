@@ -74,11 +74,18 @@
 
                 $eventDateTime = Carbon::parse($event->date . ' ' . $event->end_time);
             @endphp
-            @if ($event->state != 'finished' && $event->state != 'reviewed' && Carbon::now()->greaterThan($eventDateTime))
-                <div class="flex flex-wrap gap-3">
+            <div class="flex flex-wrap gap-3">
+                @if (!in_array($event->state, ['finished', 'reviewed']))
                     <button
                         class="bg-[#1769aa] hover:bg-[#12598d] text-white px-6 py-2 rounded-md font-medium transition cursor-pointer"
-                        id="downloadExcel">Unduh Excel</button>
+                        id="downloadExcel">
+                        Unduh Excel
+                    </button>
+                @endif
+                @if (
+                    !in_array($event->state, ['finished', 'reviewed']) &&
+                    Carbon::now()->greaterThan($eventDateTime)
+                )
                     <a href="{{ route('organization.participation.edit', ['event_id' => $event->id]) }}"
                         class="inline-block bg-[#1769aa] hover:bg-[#12598d] text-white px-6 py-2 rounded-md font-medium transition cursor-pointer">Nilai</a>
                     <form action="{{ route('organization.participation.submit', ['event_id' => $event->id]) }}"
@@ -88,8 +95,8 @@
                             class="bg-[#1769aa] hover:bg-[#12598d] text-white px-6 py-2 rounded-md font-medium transition cursor-pointer">Konfirmasi
                             Penilaian</button>
                     </form>
-                </div>
-            @endif
+                @endif
+            </div>
         </div>
         <div class="overflow-x-auto">
             <table class="w-full border-separate" style="border-spacing: 0 0.75rem;">
@@ -138,128 +145,128 @@
                                 @endif
                             </td>
                         </tr>
-                        @empty
-                            {{-- EMPTY STATE --}}
-                            <tr>
-                                <td colspan="3" class="p-8 text-center">
-                                    <div class="flex flex-col items-center gap-3 text-gray-400">
-                                        <svg class="w-12 h-12" fill="none" stroke="currentColor" stroke-width="1.5"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M8 7h8M8 11h8M8 15h6M4 5h16a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V7a2 2 0 012-2z" />
-                                        </svg>
-                                        <p class="text-sm font-medium">
-                                            Belum ada relawan yang terdaftar
-                                        </p>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-        </section>
+                    @empty
+                        {{-- EMPTY STATE --}}
+                        <tr>
+                            <td colspan="3" class="p-8 text-center">
+                                <div class="flex flex-col items-center gap-3 text-gray-400">
+                                    <svg class="w-12 h-12" fill="none" stroke="currentColor" stroke-width="1.5"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M8 7h8M8 11h8M8 15h6M4 5h16a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V7a2 2 0 012-2z" />
+                                    </svg>
+                                    <p class="text-sm font-medium">
+                                        Belum ada relawan yang terdaftar
+                                    </p>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </section>
 
-        @if (session('error'))
-            <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 3000)" x-show="show"
-                x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-2"
-                x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-300"
-                x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 translate-y-2"
-                class="fixed bottom-4 right-4 z-50">
-                <div class="bg-red-500 text-white px-4 py-3 rounded-lg shadow-lg w-80">
-                    <div class="flex justify-between items-center">
-                        <h3 class="font-bold text-lg">Error</h3>
-                        <button @click="show = false" class="text-white font-bold cursor-pointer">×</button>
-                    </div>
-                    <p class="mt-1 text-sm">
-                        {{ session('error') }}
-                    </p>
+    @if (session('error'))
+        <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 3000)" x-show="show"
+            x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-2"
+            x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-300"
+            x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 translate-y-2"
+            class="fixed bottom-4 right-4 z-50">
+            <div class="bg-red-500 text-white px-4 py-3 rounded-lg shadow-lg w-80">
+                <div class="flex justify-between items-center">
+                    <h3 class="font-bold text-lg">Error</h3>
+                    <button @click="show = false" class="text-white font-bold cursor-pointer">×</button>
                 </div>
+                <p class="mt-1 text-sm">
+                    {{ session('error') }}
+                </p>
             </div>
-        @endif
+        </div>
+    @endif
 
-        <script>
-            document.getElementById('downloadExcel').addEventListener('click', async () => {
-                const volunteers = {{ Js::from($event->volunteers) }};
+    <script>
+        document.getElementById('downloadExcel').addEventListener('click', async () => {
+            const volunteers = {{ Js::from($event->volunteers) }};
 
-                const workbook = new ExcelJS.Workbook();
-                const worksheet = workbook.addWorksheet('Sheet1');
+            const workbook = new ExcelJS.Workbook();
+            const worksheet = workbook.addWorksheet('Sheet1');
 
-                // insert
-                worksheet.addRow(['Id', 'Nama', 'Kehadiran', 'Nilai']);
+            // insert
+            worksheet.addRow(['Id', 'Nama', 'Kehadiran', 'Nilai']);
 
-                for (let i = 0; i < volunteers.length; i++) {
-                    worksheet.addRow([volunteers[i].id, volunteers[i].user.name]);
+            for (let i = 0; i < volunteers.length; i++) {
+                worksheet.addRow([volunteers[i].id, volunteers[i].user.name]);
 
-                    worksheet.getCell(`C${i+2}`).dataValidation = {
-                        type: 'list',
-                        formulae: ['"Hadir,Tidak Hadir"'],
-                        allowBlank: true,
-                        showErrorMessage: true,
-                        errorTitle: 'Pilihan Tidak Sesuai',
-                        error: 'Silakan pilih dari dropdown.'
-                    };
+                worksheet.getCell(`C${i+2}`).dataValidation = {
+                    type: 'list',
+                    formulae: ['"Hadir,Tidak Hadir"'],
+                    allowBlank: true,
+                    showErrorMessage: true,
+                    errorTitle: 'Pilihan Tidak Sesuai',
+                    error: 'Silakan pilih dari dropdown.'
+                };
 
-                    worksheet.getCell(`D${i+2}`).dataValidation = {
-                        type: 'whole',
-                        operator: 'between',
-                        formulae: [0, 5],
-                        allowBlank: true,
-                        showErrorMessage: true,
-                        errorTitle: 'Nilai Tidak Sesuai',
-                        error: 'Nilai harus antara 0 sampai 5'
-                    };
+                worksheet.getCell(`D${i+2}`).dataValidation = {
+                    type: 'whole',
+                    operator: 'between',
+                    formulae: [0, 5],
+                    allowBlank: true,
+                    showErrorMessage: true,
+                    errorTitle: 'Nilai Tidak Sesuai',
+                    error: 'Nilai harus antara 0 sampai 5'
+                };
+            }
+
+            // styling
+            const fontStyle = {
+                bold: true,
+                color: {
+                    argb: 'FFFFFFFF'
                 }
+            };
+            const alignmentStyle = {
+                horizontal: 'center'
+            };
+            const backgroundStyle = {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: {
+                    argb: 'FF4472C4'
+                }
+            };
 
-                // styling
-                const fontStyle = {
-                    bold: true,
-                    color: {
-                        argb: 'FFFFFFFF'
-                    }
-                };
-                const alignmentStyle = {
-                    horizontal: 'center'
-                };
-                const backgroundStyle = {
-                    type: 'pattern',
-                    pattern: 'solid',
-                    fgColor: {
-                        argb: 'FF4472C4'
-                    }
-                };
+            worksheet.getColumn(1).hidden = true;
 
-                worksheet.getColumn(1).hidden = true;
+            worksheet.getColumn(2).width = 30;
+            worksheet.getColumn(3).width = 10;
+            worksheet.getColumn(4).width = 10;
 
-                worksheet.getColumn(2).width = 30;
-                worksheet.getColumn(3).width = 10;
-                worksheet.getColumn(4).width = 10;
+            worksheet.getCell('B1').font = fontStyle;
+            worksheet.getCell('B1').alignment = alignmentStyle;
+            worksheet.getCell('B1').fill = backgroundStyle;
 
-                worksheet.getCell('B1').font = fontStyle;
-                worksheet.getCell('B1').alignment = alignmentStyle;
-                worksheet.getCell('B1').fill = backgroundStyle;
+            worksheet.getCell('C1').font = fontStyle;
+            worksheet.getCell('C1').alignment = alignmentStyle;
+            worksheet.getCell('C1').fill = backgroundStyle;
 
-                worksheet.getCell('C1').font = fontStyle;
-                worksheet.getCell('C1').alignment = alignmentStyle;
-                worksheet.getCell('C1').fill = backgroundStyle;
+            worksheet.getCell('D1').font = fontStyle;
+            worksheet.getCell('D1').alignment = alignmentStyle;
+            worksheet.getCell('D1').fill = backgroundStyle;
 
-                worksheet.getCell('D1').font = fontStyle;
-                worksheet.getCell('D1').alignment = alignmentStyle;
-                worksheet.getCell('D1').fill = backgroundStyle;
-
-                // downloading
-                const buffer = await workbook.xlsx.writeBuffer();
-                const blob = new Blob([buffer], {
-                    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-                });
-                const url = window.URL.createObjectURL(blob);
-
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'template.xlsx';
-                a.click();
-                window.URL.revokeObjectURL(url);
+            // downloading
+            const buffer = await workbook.xlsx.writeBuffer();
+            const blob = new Blob([buffer], {
+                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
             });
-        </script>
+            const url = window.URL.createObjectURL(blob);
 
-    @endsection
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'template.xlsx';
+            a.click();
+            window.URL.revokeObjectURL(url);
+        });
+    </script>
+
+@endsection
