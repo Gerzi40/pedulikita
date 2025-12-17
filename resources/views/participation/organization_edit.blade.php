@@ -87,7 +87,7 @@
 
             {{-- Header dengan Tombol --}}
             <div class="flex flex-wrap justify-between items-center gap-4 my-6">
-                <h1 class="text-2xl font-bold text-gray-800">Partisipasi Relawan</h1>
+                <h1 class="text-2xl font-bold text-[var(--color1)]">Partisipasi Relawan</h1>
                 <div class="flex items-center gap-2">
                     <input type="file" id="excelUpload" accept=".xlsx,.xls" class="hidden" />
                     <label for="excelUpload"

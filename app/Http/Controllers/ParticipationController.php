@@ -107,7 +107,7 @@ class ParticipationController extends Controller
 
         DB::update($query);
 
-        return redirect()->route('organization.participation.index', ['event_id' => $event_id]);
+        return redirect()->route('organization.participation.index', ['event_id' => $event_id])->with('success', 'Data partisipasi relawan berhasil dimasukkan.');
     }
 
     public function submit(string $event_id)
@@ -230,6 +230,6 @@ class ParticipationController extends Controller
             throw $e;
         }
 
-        return back();
+        return back()->with('success', 'Penilaian relawan telah dikonfirmasi.');
     }
 }

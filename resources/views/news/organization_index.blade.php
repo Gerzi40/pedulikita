@@ -111,7 +111,7 @@
                                                 'bg' => 'rgba(33, 112, 184, 0.1)',
                                                 'text' => '#2170B8',
                                                 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />',
-                                                'label' => 'Direview'
+                                                'label' => 'Diulas'
                                             ],
                                             'finished' => [
                                                 'bg' => 'rgba(34, 197, 94, 0.1)',
@@ -181,7 +181,7 @@
                 </svg>
                 <div>
                     <h4 class="font-semibold text-sm mb-1" style="color: #1A5B9C;">Informasi</h4>
-                    <p class="text-sm" style="color: #2170B8;">Hanya acara dengan status <span class="font-semibold">Selesai</span> atau <span class="font-semibold">Direview</span> yang dapat dibuatkan berita.</p>
+                    <p class="text-sm" style="color: #2170B8;">Hanya acara dengan status <span class="font-semibold">Selesai</span> atau <span class="font-semibold">Diulas</span> yang dapat dibuatkan berita.</p>
                 </div>
             </div>
         </div>
