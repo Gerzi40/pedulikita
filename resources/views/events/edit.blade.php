@@ -156,7 +156,7 @@
                 <a href="{{ route('organization.events.show', ['id' => $event->id]) }}"
                     class="px-6 py-2 border text-[var(--color1)] border-[var(--color1)]  rounded-md hover:bg-[var(--color1)] transition duration-300 hover:text-white cursor-pointer font-medium">Kembali</a>
                 <button type="submit"
-                    class="px-6 py-2 border text-[var(--color1)] border-[var(--color1)]  rounded-md hover:bg-[var(--color1)] transition duration-300 hover:text-white cursor-pointer font-medium">Perbarui</button>
+                    class="px-6 py-2 border text-[var(--color1)] border-[var(--color1)]  rounded-md hover:bg-[var(--color1)] transition duration-300 hover:text-white cursor-pointer font-medium">Ubah</button>
             </div>
         </form>
     </div>

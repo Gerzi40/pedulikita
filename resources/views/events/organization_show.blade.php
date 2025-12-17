@@ -8,20 +8,14 @@
 
         {{-- BACK BUTTON --}}
         <a href="{{ route('organization.events.index') }}"
-        class="inline-flex items-center gap-2 px-4 py-2 mb-6
+            class="inline-flex items-center gap-2 px-4 py-2 mb-6
                 bg-white text-[var(--color1)] border border-[var(--color1)]
                 rounded-md shadow hover:bg-[var(--color1)] hover:text-white
                 transition duration-300 w-fit">
 
-            <svg xmlns="http://www.w3.org/2000/svg"
-                class="w-4 h-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                 stroke-width="2">
-                <path stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M15 19l-7-7 7-7"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
             </svg>
 
             <span class="text-sm font-medium">
@@ -29,7 +23,7 @@
             </span>
         </a>
 
-        <div class="grid md:grid-cols-2 gap-10 items-center" x-data="{ showConfirmModal: false }">
+        <div class="grid md:grid-cols-2 gap-10 items-center" x-data="{ showConfirmModal: false, showKirimModal: false }">
 
             {{-- Gambar --}}
             <div>
@@ -89,9 +83,11 @@
                 <div class="flex flex-wrap items-center gap-4 mt-4">
 
                     @if ($event->state == 'draft')
-                        <form action="{{ route('organization.events.confirm', ['id' => $event->id]) }}" method="POST">
+                        <form x-ref="kirimForm" action="{{ route('organization.events.confirm', ['id' => $event->id]) }}"
+                            method="POST">
                             @csrf
-                            <button type="submit" class="inline-flex px-6 py-2 bg-[var(--color1)] text-white font-semibold rounded-md shadow  border border-transparent hover:bg-white hover:text-[var(--color1)] hover:border-[var(--color1)] transition duration-300 cursor-pointer">
+                            <button type="button" @click="showKirimModal = true"
+                                class="inline-flex px-6 py-2 bg-[var(--color1)] text-white font-semibold rounded-md shadow  border border-transparent hover:bg-white hover:text-[var(--color1)] hover:border-[var(--color1)] transition duration-300 cursor-pointer">
                                 Konfirmasi Peninjauan
                             </button>
                         </form>
@@ -171,6 +167,41 @@
                     </div>
 
                 </div>
+                {{-- MODAL CONFIRM Kirim --}}
+                <div x-show="showKirimModal" x-transition.opacity
+                    class="fixed inset-0 z-50 flex items-center justify-center bg-black/50" style="display: none;">
+
+                    <div @click.away="showKirimModal = false"
+                        class="bg-white rounded-xl shadow-xl p-6 w-full max-w-md mx-4">
+
+                        <h3 class="text-xl font-bold mb-3 text-gray-800">
+                            Konfirmasi Pengiriman
+                        </h3>
+
+                        <p class="text-gray-600 mb-6">
+                            Apakah Anda yakin ingin mengirim event ini untuk diberi poin?
+                            Tindakan ini tidak dapat dibatalkan.
+                        </p>
+
+                        <div class="flex justify-end gap-4">
+
+                            <button type="button" @click="showKirimModal = false"
+                                class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg
+                       hover:bg-gray-300 transition duration-300 cursor-pointer">
+                                Batal
+                            </button>
+
+                            <button type="button" @click="$refs.kirimForm.submit()"
+                                class="px-4 py-2 bg-[var(--color1)] text-white rounded-md shadow
+                       hover:bg-white hover:text-[var(--color1)]
+                       border border-transparent hover:border-[var(--color1)]
+                       transition duration-300 cursor-pointer">
+                                Ya, Kirim
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
 
             </div>
 
@@ -208,27 +239,17 @@
 @endsection
 
 @if (session('success'))
-    <div 
-        x-data="{ show: true }"
-        x-show="show"
-        x-init="setTimeout(() => show = false, 3500)"
-
-        x-transition:enter-start="-translate-y-3 opacity-0"
-        x-transition:enter-end="translate-y-0 opacity-100"
-        x-transition:leave-start="translate-y-0 opacity-100"
-        x-transition:leave-end="-translate-y-3 opacity-0"
-        
-        class="fixed top-20 right-6 z-50"
-    >
-        <div 
+    <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 3500)"
+        x-transition:enter-start="-translate-y-3 opacity-0" x-transition:enter-end="translate-y-0 opacity-100"
+        x-transition:leave-start="translate-y-0 opacity-100" x-transition:leave-end="-translate-y-3 opacity-0"
+        class="fixed top-20 right-6 z-50">
+        <div
             class="flex items-center gap-3 bg-white border border-green-500 
-                   text-green-600 px-5 py-3 rounded-md shadow-lg"
-        >
+                   text-green-600 px-5 py-3 rounded-md shadow-lg">
             {{-- CHECK ICON --}}
             <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" stroke-width="2"
-                 viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                      d="M5 13l4 4L19 7"/>
+                viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
             </svg>
 
             <span class="font-medium text-sm">
