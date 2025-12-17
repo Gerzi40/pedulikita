@@ -8,20 +8,14 @@
 
         {{-- BACK BUTTON --}}
         <a href="{{ route('organization.events.show', ['id' => $event->id]) }}"
-        class="inline-flex items-center gap-2 px-4 py-2 mb-6
+            class="inline-flex items-center gap-2 px-4 py-2 mb-6
                 bg-white text-[var(--color1)] border border-[var(--color1)]
                 rounded-md shadow hover:bg-[var(--color1)] hover:text-white
                 transition duration-300 w-fit">
 
-            <svg xmlns="http://www.w3.org/2000/svg"
-                class="w-4 h-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                 stroke-width="2">
-                <path stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M15 19l-7-7 7-7"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
             </svg>
 
             <span class="text-sm font-medium">
@@ -74,20 +68,17 @@
 
     <section class="container mx-auto px-4 pb-4">
         <div class="flex flex-wrap justify-between items-center">
-            <h1 class="text-2xl font-semibold my-6">Partisipasi Oleh</h1>
+            <h1 class="text-2xl font-semibold my-6 text-[var(--color1)]">Partisipasi Oleh</h1>
             @php
                 use Carbon\Carbon;
 
                 $eventDateTime = Carbon::parse($event->date . ' ' . $event->end_time);
             @endphp
-            @if ($event->state != 'finished' && $event->state != 'reviewed')
+            @if ($event->state != 'finished' && $event->state != 'reviewed' && Carbon::now()->greaterThan($eventDateTime))
                 <div class="flex flex-wrap gap-3">
                     <button
                         class="bg-[#1769aa] hover:bg-[#12598d] text-white px-6 py-2 rounded-md font-medium transition cursor-pointer"
                         id="downloadExcel">Unduh Excel</button>
-                    @if ($eventDateTime->lte(now()))
-                        
-                    @endif
                     <a href="{{ route('organization.participation.edit', ['event_id' => $event->id]) }}"
                         class="inline-block bg-[#1769aa] hover:bg-[#12598d] text-white px-6 py-2 rounded-md font-medium transition cursor-pointer">Nilai</a>
                     <form action="{{ route('organization.participation.submit', ['event_id' => $event->id]) }}"
@@ -110,21 +101,25 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($event->volunteers as $volunteer)
+                    @forelse ($event->volunteers as $volunteer)
                         <tr class="rounded-lg shadow-sm">
                             <td class="p-4 rounded-l-lg {{ $loop->odd ? 'bg-white' : 'bg-gray-50' }}">
                                 <div class="flex items-center space-x-4">
-                                    <img class="h-10 w-10 rounded-full object-cover" src="{{ Storage::disk('s3')->url($volunteer->user->profile_picture_url) }}" alt="{{ $volunteer->user->name }}">
+                                    <img class="h-10 w-10 rounded-full object-cover"
+                                        src="{{ Storage::disk('s3')->url($volunteer->user->profile_picture_url) }}"
+                                        alt="{{ $volunteer->user->name }}">
                                     <span class="font-medium text-gray-800">{{ $volunteer->user->name }}</span>
                                 </div>
                             </td>
                             <td class="p-4 {{ $loop->odd ? 'bg-white' : 'bg-gray-50' }}">
                                 @if ($volunteer->pivot->is_present === true)
-                                    <span class="inline-flex items-center gap-2 bg-green-100 text-green-800 text-xs font-semibold px-3 py-1 rounded-full">
+                                    <span
+                                        class="inline-flex items-center gap-2 bg-green-100 text-green-800 text-xs font-semibold px-3 py-1 rounded-full">
                                         Hadir
                                     </span>
                                 @elseif ($volunteer->pivot->is_present === false)
-                                    <span class="inline-flex items-center gap-2 bg-red-100 text-red-800 text-xs font-semibold px-3 py-1 rounded-full">
+                                    <span
+                                        class="inline-flex items-center gap-2 bg-red-100 text-red-800 text-xs font-semibold px-3 py-1 rounded-full">
                                         Absen
                                     </span>
                                 @endif
@@ -143,112 +138,128 @@
                                 @endif
                             </td>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-    </section>
-
-    @if (session('error'))
-        <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 3000)" x-show="show"
-            x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-2"
-            x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-300"
-            x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 translate-y-2"
-            class="fixed bottom-4 right-4 z-50">
-            <div class="bg-red-500 text-white px-4 py-3 rounded-lg shadow-lg w-80">
-                <div class="flex justify-between items-center">
-                    <h3 class="font-bold text-lg">Error</h3>
-                    <button @click="show = false" class="text-white font-bold cursor-pointer">×</button>
-                </div>
-                <p class="mt-1 text-sm">
-                    {{ session('error') }}
-                </p>
+                        @empty
+                            {{-- EMPTY STATE --}}
+                            <tr>
+                                <td colspan="3" class="p-8 text-center">
+                                    <div class="flex flex-col items-center gap-3 text-gray-400">
+                                        <svg class="w-12 h-12" fill="none" stroke="currentColor" stroke-width="1.5"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M8 7h8M8 11h8M8 15h6M4 5h16a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V7a2 2 0 012-2z" />
+                                        </svg>
+                                        <p class="text-sm font-medium">
+                                            Belum ada relawan yang terdaftar
+                                        </p>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
-        </div>
-    @endif
+        </section>
 
-    <script>
-        document.getElementById('downloadExcel').addEventListener('click', async () => {
-            const volunteers = {{ Js::from($event->volunteers) }};
+        @if (session('error'))
+            <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 3000)" x-show="show"
+                x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-2"
+                x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-300"
+                x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 translate-y-2"
+                class="fixed bottom-4 right-4 z-50">
+                <div class="bg-red-500 text-white px-4 py-3 rounded-lg shadow-lg w-80">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-lg">Error</h3>
+                        <button @click="show = false" class="text-white font-bold cursor-pointer">×</button>
+                    </div>
+                    <p class="mt-1 text-sm">
+                        {{ session('error') }}
+                    </p>
+                </div>
+            </div>
+        @endif
 
-            const workbook = new ExcelJS.Workbook();
-            const worksheet = workbook.addWorksheet('Sheet1');
+        <script>
+            document.getElementById('downloadExcel').addEventListener('click', async () => {
+                const volunteers = {{ Js::from($event->volunteers) }};
 
-            // insert
-            worksheet.addRow(['Id', 'Nama', 'Kehadiran', 'Nilai']);
+                const workbook = new ExcelJS.Workbook();
+                const worksheet = workbook.addWorksheet('Sheet1');
 
-            for (let i = 0; i < volunteers.length; i++) {
-                worksheet.addRow([volunteers[i].id, volunteers[i].user.name]);
+                // insert
+                worksheet.addRow(['Id', 'Nama', 'Kehadiran', 'Nilai']);
 
-                worksheet.getCell(`C${i+2}`).dataValidation = {
-                    type: 'list',
-                    formulae: ['"Hadir,Tidak Hadir"'],
-                    allowBlank: true,
-                    showErrorMessage: true,
-                    errorTitle: 'Pilihan Tidak Sesuai',
-                    error: 'Silakan pilih dari dropdown.'
+                for (let i = 0; i < volunteers.length; i++) {
+                    worksheet.addRow([volunteers[i].id, volunteers[i].user.name]);
+
+                    worksheet.getCell(`C${i+2}`).dataValidation = {
+                        type: 'list',
+                        formulae: ['"Hadir,Tidak Hadir"'],
+                        allowBlank: true,
+                        showErrorMessage: true,
+                        errorTitle: 'Pilihan Tidak Sesuai',
+                        error: 'Silakan pilih dari dropdown.'
+                    };
+
+                    worksheet.getCell(`D${i+2}`).dataValidation = {
+                        type: 'whole',
+                        operator: 'between',
+                        formulae: [0, 5],
+                        allowBlank: true,
+                        showErrorMessage: true,
+                        errorTitle: 'Nilai Tidak Sesuai',
+                        error: 'Nilai harus antara 0 sampai 5'
+                    };
+                }
+
+                // styling
+                const fontStyle = {
+                    bold: true,
+                    color: {
+                        argb: 'FFFFFFFF'
+                    }
+                };
+                const alignmentStyle = {
+                    horizontal: 'center'
+                };
+                const backgroundStyle = {
+                    type: 'pattern',
+                    pattern: 'solid',
+                    fgColor: {
+                        argb: 'FF4472C4'
+                    }
                 };
 
-                worksheet.getCell(`D${i+2}`).dataValidation = {
-                    type: 'whole',
-                    operator: 'between',
-                    formulae: [0, 5],
-                    allowBlank: true,
-                    showErrorMessage: true,
-                    errorTitle: 'Nilai Tidak Sesuai',
-                    error: 'Nilai harus antara 0 sampai 5'
-                };
-            }
+                worksheet.getColumn(1).hidden = true;
 
-            // styling
-            const fontStyle = {
-                bold: true,
-                color: {
-                    argb: 'FFFFFFFF'
-                }
-            };
-            const alignmentStyle = {
-                horizontal: 'center'
-            };
-            const backgroundStyle = {
-                type: 'pattern',
-                pattern: 'solid',
-                fgColor: {
-                    argb: 'FF4472C4'
-                }
-            };
+                worksheet.getColumn(2).width = 30;
+                worksheet.getColumn(3).width = 10;
+                worksheet.getColumn(4).width = 10;
 
-            worksheet.getColumn(1).hidden = true;
+                worksheet.getCell('B1').font = fontStyle;
+                worksheet.getCell('B1').alignment = alignmentStyle;
+                worksheet.getCell('B1').fill = backgroundStyle;
 
-            worksheet.getColumn(2).width = 30;
-            worksheet.getColumn(3).width = 10;
-            worksheet.getColumn(4).width = 10;
+                worksheet.getCell('C1').font = fontStyle;
+                worksheet.getCell('C1').alignment = alignmentStyle;
+                worksheet.getCell('C1').fill = backgroundStyle;
 
-            worksheet.getCell('B1').font = fontStyle;
-            worksheet.getCell('B1').alignment = alignmentStyle;
-            worksheet.getCell('B1').fill = backgroundStyle;
+                worksheet.getCell('D1').font = fontStyle;
+                worksheet.getCell('D1').alignment = alignmentStyle;
+                worksheet.getCell('D1').fill = backgroundStyle;
 
-            worksheet.getCell('C1').font = fontStyle;
-            worksheet.getCell('C1').alignment = alignmentStyle;
-            worksheet.getCell('C1').fill = backgroundStyle;
+                // downloading
+                const buffer = await workbook.xlsx.writeBuffer();
+                const blob = new Blob([buffer], {
+                    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                });
+                const url = window.URL.createObjectURL(blob);
 
-            worksheet.getCell('D1').font = fontStyle;
-            worksheet.getCell('D1').alignment = alignmentStyle;
-            worksheet.getCell('D1').fill = backgroundStyle;
-
-            // downloading
-            const buffer = await workbook.xlsx.writeBuffer();
-            const blob = new Blob([buffer], {
-                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'template.xlsx';
+                a.click();
+                window.URL.revokeObjectURL(url);
             });
-            const url = window.URL.createObjectURL(blob);
+        </script>
 
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'template.xlsx';
-            a.click();
-            window.URL.revokeObjectURL(url);
-        });
-    </script>
-
-@endsection
+    @endsection
