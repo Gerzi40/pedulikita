@@ -304,7 +304,11 @@ class EventController extends Controller
 
         $user = Auth::user();
 
-        $city = City::where('name', '=', $validated['city'])->firstOrFail();
+        $city = City::where('name', '=', $validated['city'])->first();
+        if (!$city)
+        {
+            return back()->withInput()->with('error', 'Kota tidak ditemukan pada sistem');
+        }
 
         $path = Storage::disk('s3')->putFile('events', $request->file('image'));
         if (!$path) {
@@ -424,7 +428,11 @@ class EventController extends Controller
         $eventData = Arr::only($validated, ['event_category_id', 'available_slot', 'date', 'start_time', 'end_time', 'description']);
 
         if ($event->location != $validated['location']) {
-            $city = City::where('name', '=', $validated['city'])->firstOrFail();
+            $city = City::where('name', '=', $validated['city'])->first();
+            if (!$city)
+            {
+                return back()->withInput()->with('error', 'Kota tidak ditemukan pada sistem');
+            }
 
             $eventData['location'] = $validated['location'];
             $eventData['latitude'] = $validated['latitude'];
