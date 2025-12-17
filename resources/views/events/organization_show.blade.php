@@ -122,7 +122,7 @@
                     @endif
 
                     {{-- Tombol Lihat Relawan --}}
-                    @if ($event->state === 'approved' || $event->state === 'finished')
+                    @if ($event->state === 'approved' || $event->state === 'finished' || $event->state === 'reviewed')
                         <a href="{{ route('organization.participation.index', ['event_id' => $event->id]) }}"
                             class="inline-flex px-6 py-2 bg-[var(--color1)] text-white font-semibold rounded-md shadow 
                         border border-[var(--color1)] hover:bg-white hover:text-[var(--color1)]

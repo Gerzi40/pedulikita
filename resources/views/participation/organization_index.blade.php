@@ -80,7 +80,7 @@
 
                 $eventDateTime = Carbon::parse($event->date . ' ' . $event->end_time);
             @endphp
-            @if ($event->state != 'finished')
+            @if ($event->state != 'finished' && $event->state != 'reviewed')
                 <div class="flex flex-wrap gap-3">
                     <button
                         class="bg-[#1769aa] hover:bg-[#12598d] text-white px-6 py-2 rounded-md font-medium transition cursor-pointer"
