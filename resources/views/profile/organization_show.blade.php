@@ -42,7 +42,7 @@
 
     <section>
         <div class="container mx-auto">
-            <h1 class="text-3xl mx-4 font-semibold my-5">Acara dari {{ $user->name }}</h1>
+            <h1 class="text-3xl mx-4 font-semibold my-5 text-[var(--color1)]">Acara dari {{ $user->name }}</h1>
         </div>
         <div class="container mx-auto px-4 pb-10">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -115,7 +115,7 @@
     </section>
 
     <section class="container mx-auto p-4">
-        <h1 class="text-2xl font-bold mb-6">Pengikut</h1>
+        <h1 class="text-2xl font-bold mb-6 text-[var(--color1)]">Pengikut</h1>
 
         @forelse ($volunteers as $vol)
             {{-- GRID NORMAL --}}
