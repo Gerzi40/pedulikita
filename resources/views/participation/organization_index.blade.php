@@ -31,7 +31,8 @@
             </div>
 
             {{-- Informasi --}}
-            <div class="space-y-6">
+            <div class="space-y-4">
+                <h1 class="text-2xl md:text-3xl font-bold text-gray-800">{{ $event->name }}</h1>
                 <div>
                     <h3 class="text-lg font-bold text-gray-700 mb-2">Informasi</h3>
                     <div class="space-y-3 text-sm text-gray-600">
@@ -75,13 +76,13 @@
                 $eventDateTime = Carbon::parse($event->date . ' ' . $event->end_time);
             @endphp
             <div class="flex flex-wrap gap-3">
-                @if (!in_array($event->state, ['finished', 'reviewed']))
+                {{-- @if (!in_array($event->state, ['finished', 'reviewed'])) --}}
                     <button
                         class="bg-[#1769aa] hover:bg-[#12598d] text-white px-6 py-2 rounded-md font-medium transition cursor-pointer"
                         id="downloadExcel">
                         Unduh Excel
                     </button>
-                @endif
+                {{-- @endif --}}
                 @if (
                     !in_array($event->state, ['finished', 'reviewed']) &&
                     Carbon::now()->greaterThan($eventDateTime)
