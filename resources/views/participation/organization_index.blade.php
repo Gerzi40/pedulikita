@@ -76,13 +76,13 @@
                 $eventDateTime = Carbon::parse($event->date . ' ' . $event->end_time);
             @endphp
             <div class="flex flex-wrap gap-3">
-                {{-- @if (!in_array($event->state, ['finished', 'reviewed'])) --}}
+                @if (!in_array($event->state, ['finished', 'reviewed']))
                     <button
                         class="bg-[#1769aa] hover:bg-[#12598d] text-white px-6 py-2 rounded-md font-medium transition cursor-pointer"
                         id="downloadExcel">
                         Unduh Excel
                     </button>
-                {{-- @endif --}}
+                @endif
                 @if (
                     !in_array($event->state, ['finished', 'reviewed']) &&
                     Carbon::now()->greaterThan($eventDateTime)
