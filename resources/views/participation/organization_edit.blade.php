@@ -38,6 +38,7 @@
 
             {{-- Informasi --}}
             <div class="space-y-6">
+                <h1 class="text-2xl md:text-3xl font-bold text-gray-800">{{ $event->name }}</h1>
                 <div>
                     <h3 class="text-lg font-bold text-gray-700 mb-2">Informasi</h3>
                     <div class="space-y-3 text-sm text-gray-600">
