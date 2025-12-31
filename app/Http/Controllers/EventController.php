@@ -299,7 +299,7 @@ class EventController extends Controller
             'latitude' => ['required', 'numeric', 'between:-90,90'],
             'longitude' => ['required', 'numeric', 'between:-180,180'],
             'city' => ['required', 'string'],
-            'image' => ['required', 'image']
+            'image' => ['required', 'image', 'mimes:jpg,png,jpeg', 'max:2048']
         ]);
 
         $user = Auth::user();
@@ -412,7 +412,7 @@ class EventController extends Controller
             'latitude' => ['nullable', 'numeric', 'between:-90,90'],
             'longitude' => ['nullable', 'numeric', 'between:-180,180'],
             'city' => ['nullable', 'string'],
-            'image' => ['nullable', 'image'],
+            'image' => ['nullable', 'image', 'mimes:jpg,png,jpeg', 'max:2048'],
         ]);
 
         $validator->after(function ($validator) use ($request, $event) {

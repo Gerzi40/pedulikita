@@ -454,7 +454,7 @@
 
     </div>
 
-    {{ $organizations->links() }}
+    {{-- {{ $organizations->links() }} --}}
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
