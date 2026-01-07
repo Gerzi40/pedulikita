@@ -14,8 +14,21 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
                 @forelse ($events as $event)
+                    @php
+                        $isScored = in_array($event->state, ['finished', 'reviewed'])
+                                    && !is_null($event->pivot->rating)
+                                    && !is_null($event->point);
+
+                        $score = $isScored
+                            ? round(($event->pivot->rating / 5) * $event->point, 1)
+                            : 0;
+                    @endphp
                     {{-- CARD EVENT --}}
-                    <div class="bg-white shadow-md rounded-lg overflow-hidden">
+                    <div class="relative bg-white shadow-md rounded-lg overflow-hidden">
+                        <div class="absolute top-2 right-2 px-3 py-1 text-xs font-semibold rounded-md
+                            {{ $isScored ? 'bg-green-700 text-white' : 'bg-gray-600 text-white' }}">
+                            {{ $score }}
+                        </div>
                         <img src="{{ Storage::disk('s3')->url($event->image_url) }}" alt="Acara"
                             class="w-full h-40 object-cover" />
 

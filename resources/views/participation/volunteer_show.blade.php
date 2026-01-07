@@ -30,6 +30,32 @@
             </span>
         </a>
         <div class="grid md:grid-cols-2 gap-10 items-center">
+            @php
+                $rating = optional($event->pivot)->rating;
+                $maxPoint = $event->point;
+
+                if (in_array($event->state, ['draft','pending','approved'])) {
+                    $statusText = 'Acara belum atau sedang berjalan';
+                    $scoreText = null;
+                    $badgeClass = 'bg-blue-100 text-blue-700';
+                }
+                elseif ($event->state === 'finished' && is_null($rating)) {
+                    $statusText = 'Menunggu penilaian';
+                    $scoreText = null;
+                    $badgeClass = 'bg-yellow-100 text-yellow-700';
+                }
+                elseif (in_array($event->state, ['finished','reviewed']) && $rating === 0) {
+                    $statusText = null;
+                    $scoreText = "0 / {$maxPoint}";
+                    $badgeClass = 'bg-red-100 text-red-700';
+                }
+                else {
+                    $score = round(($rating / 5) * $maxPoint, 1);
+                    $statusText = null;
+                    $scoreText = "{$score} / {$maxPoint}";
+                    $badgeClass = 'bg-green-100 text-green-700';
+                }
+            @endphp
             {{-- Gambar --}}
             <div>
                 <img src="{{ Storage::disk('s3')->url($event->image_url) }}" alt="gambar event"
@@ -55,7 +81,15 @@
                         </div>
                         <div class="flex items-center gap-2">
                             <img src="{{ asset('assets/icons/point.png') }}" class="w-5 h-5" alt="">
-                            <span>{{ $event->point }} pts</span>
+                            @if ($scoreText)
+                                <div class="px-3 py-1 rounded-md {{ $badgeClass }}">
+                                    {{ $scoreText }} pts
+                                </div>
+                            @else
+                                <div class="px-3 py-1 rounded-md {{ $badgeClass }}">
+                                    {{ $statusText }}
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
