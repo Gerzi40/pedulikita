@@ -10,4 +10,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Block Rejected Organization
-        run: curl -X GET https://peduli-kita.vercel.app/cron/block-rejected-organization
+        run: curl -X GET https://pedulikita.vercel.app/cron/block-rejected-organization
