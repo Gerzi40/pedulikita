@@ -57,52 +57,52 @@ class NewsSeeder extends Seeder
         ]);
         
         // seeder for organization
-        for ($i=1; $i<=10; $i++)
-        {
-            $user = User::create([
-                'name' => 'test' . $i,
-                'email'=> 'test' . $i . '@gmail.com',
-                'email_verified_at' => Carbon::now(),
-                'password' => 'test' . $i,
-                'role' => 'organization'
-            ]);
+        // for ($i=1; $i<=10; $i++)
+        // {
+        //     $user = User::create([
+        //         'name' => 'test' . $i,
+        //         'email'=> 'test' . $i . '@gmail.com',
+        //         'email_verified_at' => Carbon::now(),
+        //         'password' => 'test' . $i,
+        //         'role' => 'organization'
+        //     ]);
     
-            $organization = Organization::create([
-                'user_id' => $user->id,
-                'organization_category_id' => 1,
-                'city_id' => 1,
-                'description' => 'Kami merupakan organisasi yang berfokus pada pengembangan komunitas berkelanjutan melalui pendekatan sosial dan lingkungan. Mereka menginisiasi berbagai program pemberdayaan masyarakat seperti pelatihan kewirausahaan sosial, edukasi berbasis komunitas, serta pembangunan ekosistem lokal yang tangguh dan inklusif. Visi mereka adalah menciptakan dunia yang lebih adil dan setara dengan melibatkan masyarakat sebagai agen perubahan.',
-                'founded_at' => '2024-01-01',
-                'instagram' => '@test' . $i,
-                'phone' => '08123456',
-                'state' => 'approved'
-            ]);
+        //     $organization = Organization::create([
+        //         'user_id' => $user->id,
+        //         'organization_category_id' => 1,
+        //         'city_id' => 1,
+        //         'description' => 'Kami merupakan organisasi yang berfokus pada pengembangan komunitas berkelanjutan melalui pendekatan sosial dan lingkungan. Mereka menginisiasi berbagai program pemberdayaan masyarakat seperti pelatihan kewirausahaan sosial, edukasi berbasis komunitas, serta pembangunan ekosistem lokal yang tangguh dan inklusif. Visi mereka adalah menciptakan dunia yang lebih adil dan setara dengan melibatkan masyarakat sebagai agen perubahan.',
+        //         'founded_at' => '2024-01-01',
+        //         'instagram' => '@test' . $i,
+        //         'phone' => '08123456',
+        //         'state' => 'approved'
+        //     ]);
 
-            $organization->volunteers()->attach(1);
-            $organization->volunteers()->attach(2);
-            $organization->volunteers()->attach(3);
+        //     $organization->volunteers()->attach(1);
+        //     $organization->volunteers()->attach(2);
+        //     $organization->volunteers()->attach(3);
     
-            $event = Event::create([
-                'organization_id' => $organization->id,
-                'event_category_id' => 1,
-                'name' => 'Membersihkan Sampah disekitar Danau Sunter',
-                'date' => Carbon::now()->subDays(3),
-                'start_time' => '08:00:00',
-                'end_time' => '10:00:00',
-                'image_url' => 'events/aksi1.jpg',
-                'description' => 'Mari bergabung dalam kegiatan Bersih-Bersih Danau Sunter yang akan diselenggarakan pada 7 Agustus 2025, pukul 08.00 hingga 10.00 pagi. Acara ini bertujuan untuk membersihkan area sekitar Danau Sunter dari sampah plastik dan limbah lainnya, sekaligus meningkatkan kesadaran masyarakat akan pentingnya menjaga kebersihan lingkungan. Kegiatan ini terbuka untuk umum dan akan melibatkan berbagai komunitas serta relawan yang peduli terhadap lingkungan. Selain aksi bersih-bersih, peserta juga akan mendapatkan edukasi singkat mengenai dampak sampah terhadap ekosistem danau. Yuk, ambil bagian dalam aksi kecil yang membawa dampak besar bagi lingkungan!',
-                'location' => 'Sunter, Jakarta Utara, Daerah Khusus Ibukota Jakarta',
-                'city_id' => 1,
-                'latitude' => -6.1190347,
-                'longitude' => 106.8962414,
-                'available_slot' => 10,
-                'point' => 7,
-                'state' => 'approved'
-            ]);
+        //     $event = Event::create([
+        //         'organization_id' => $organization->id,
+        //         'event_category_id' => 1,
+        //         'name' => 'Membersihkan Sampah disekitar Danau Sunter',
+        //         'date' => Carbon::now()->subDays(3),
+        //         'start_time' => '08:00:00',
+        //         'end_time' => '10:00:00',
+        //         'image_url' => 'events/aksi1.jpg',
+        //         'description' => 'Mari bergabung dalam kegiatan Bersih-Bersih Danau Sunter yang akan diselenggarakan pada 7 Agustus 2025, pukul 08.00 hingga 10.00 pagi. Acara ini bertujuan untuk membersihkan area sekitar Danau Sunter dari sampah plastik dan limbah lainnya, sekaligus meningkatkan kesadaran masyarakat akan pentingnya menjaga kebersihan lingkungan. Kegiatan ini terbuka untuk umum dan akan melibatkan berbagai komunitas serta relawan yang peduli terhadap lingkungan. Selain aksi bersih-bersih, peserta juga akan mendapatkan edukasi singkat mengenai dampak sampah terhadap ekosistem danau. Yuk, ambil bagian dalam aksi kecil yang membawa dampak besar bagi lingkungan!',
+        //         'location' => 'Sunter, Jakarta Utara, Daerah Khusus Ibukota Jakarta',
+        //         'city_id' => 1,
+        //         'latitude' => -6.1190347,
+        //         'longitude' => 106.8962414,
+        //         'available_slot' => 10,
+        //         'point' => 7,
+        //         'state' => 'approved'
+        //     ]);
 
-            $event->volunteers()->attach(1);
-            $event->volunteers()->attach(2);
-            $event->volunteers()->attach(3);
-        }
+        //     $event->volunteers()->attach(1);
+        //     $event->volunteers()->attach(2);
+        //     $event->volunteers()->attach(3);
+        // }
     }
 }
