@@ -69,8 +69,6 @@ class OrganizationController extends Controller
 
         try
         {
-            $user->organization->update(Arr::only($validated, ['organization_category_id', 'province_id', 'city_id', 'description', 'founded_at', 'instagram', 'phone']));
-            
             $userData = Arr::only($validated, ['name', 'email']);
             if (!empty($validated['password']))
             {
@@ -81,6 +79,9 @@ class OrganizationController extends Controller
                 $userData['profile_picture_url'] = $path;
             }
             $user->update($userData);
+
+            $user->organization->update(Arr::only($validated, ['organization_category_id', 'province_id', 'city_id', 'description', 'founded_at', 'instagram', 'phone']));
+
 
             DB::commit();
 

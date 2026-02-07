@@ -14,13 +14,21 @@ class ParticipationController extends Controller
 {
     public function volunteer_index()
     {
-        $events = Auth::user()->volunteer->events;
+        $events = Auth::user()
+        ->volunteer
+        ->events()
+        ->orderByPivot('created_at', 'desc')
+        ->get();
         return view('participation.volunteer_index', compact('events'));
     }
 
     public function volunteer_show($id)
     {
-        $event = Event::findOrFail($id);
+        $event = Auth::user()
+        ->volunteer
+        ->events()
+        ->where('events.id', $id)
+        ->firstOrFail();
         return view('participation.volunteer_show', compact('event'));
     }
 

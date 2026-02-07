@@ -12,6 +12,10 @@ class EventCategorySeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        EventCategory::create(['name' => 'Pendidikan']);
+        EventCategory::create(['name' => 'Kesehatan']);
+        EventCategory::create(['name' => 'Lingkungan']);
+        EventCategory::create(['name' => 'Infrastruktur']);
+        EventCategory::create(['name' => 'Kesejehteraan']);
     }
 }

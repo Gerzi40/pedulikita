@@ -12,6 +12,28 @@ class ProvinceSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Province::create(['name' => 'Daerah Khusus Ibukota Jakarta']);
+        Province::create(['name' => 'Jawa Barat']);
+        Province::create(['name' => 'Jawa Tengah']);
+        Province::create(['name' => 'Daerah Istimewa Yogyakarta']);
+        Province::create(['name' => 'Jawa Timur']);
+        Province::create(['name' => 'Bali']);
+        Province::create(['name' => 'Sumatera Utara']);
+        Province::create(['name' => 'Sumatera Barat']);
+        Province::create(['name' => 'Sumatera Selatan']);
+        Province::create(['name' => 'Sumatera Timur']);
+        Province::create(['name' => 'Riau']);
+        Province::create(['name' => 'Lampung']);
+        Province::create(['name' => 'Kepulauan Riau']);
+        Province::create(['name' => 'Banten']);
+        Province::create(['name' => 'Aceh']);
+        Province::create(['name' => 'Kalimantan Barat']);
+        Province::create(['name' => 'Kalimantan Timur']);
+        Province::create(['name' => 'Kalimantan Selatan']);
+        Province::create(['name' => 'Kalimantan Utara']);
+        Province::create(['name' => 'Sulawesi Selatan']);
+        Province::create(['name' => 'Sulawesi Barat']);
+        Province::create(['name' => 'Sulawesi Utara']);
+        Province::create(['name' => 'Sulawesi Tenggara']);
     }
 }

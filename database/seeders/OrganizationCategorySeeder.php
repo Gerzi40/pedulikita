@@ -12,6 +12,11 @@ class OrganizationCategorySeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        OrganizationCategory::create([
+            'name' => 'Pemerintah'
+        ]);
+        OrganizationCategory::create([
+            'name' => 'Swasta'
+        ]);
     }
 }

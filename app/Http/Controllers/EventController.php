@@ -142,21 +142,6 @@ class EventController extends Controller
         //     },
         //     ...
         // ]
-        $event_counts_by_month = DB::table('events')
-            ->selectRaw("
-                TO_CHAR(events.date, 'MM') AS month_num,
-                TO_CHAR(events.date, 'Mon') AS month_name,
-                event_categories.name as name,
-                COUNT(events.id) as events_count
-            ")
-            ->join('event_categories', 'events.event_category_id', '=', 'event_categories.id')
-            ->where('events.date', '>=', Carbon::now()->subMonths(5)->startOfMonth())
-            ->where('events.date', '<=', Carbon::now()->endOfMonth())
-            ->groupBy('month_num', 'month_name', 'event_categories.id')
-            ->orderBy('event_categories.id')
-            ->orderBy('month_num')
-            ->get();
-
         $event_counts_by_month = Cache::remember('by_month_event_counts', Carbon::now()->addHours(1), function () {
             return DB::table('events')
                 ->selectRaw("

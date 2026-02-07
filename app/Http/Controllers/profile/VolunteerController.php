@@ -53,8 +53,6 @@ class VolunteerController extends Controller
 
         try
         {
-            $user->volunteer->update(Arr::only($validated, ['gender', 'date_of_birth']));
-            
             $userData = Arr::only($validated, ['name', 'email']);
             if (!empty($validated['password']))
             {
@@ -65,6 +63,8 @@ class VolunteerController extends Controller
                 $userData['profile_picture_url'] = $path;
             }
             $user->update($userData);
+
+            $user->volunteer->update(Arr::only($validated, ['gender', 'date_of_birth']));            
 
             DB::commit();
 
