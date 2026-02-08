@@ -207,7 +207,7 @@
                    text-green-600 px-5 py-3 rounded-md shadow-lg"
         >
             {{-- CHECK ICON --}}
-            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" stroke-width="2"
+            <svg class="ext-green-500" style="width:1.25rem;height:1.25rem;" fill="none" stroke="currentColor" stroke-width="2"
                  viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round"
                       d="M5 13l4 4L19 7"/>

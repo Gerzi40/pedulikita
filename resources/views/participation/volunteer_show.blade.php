@@ -216,7 +216,7 @@
                    text-red-600 px-5 py-3 rounded-md shadow-lg"
         >
             {{-- CHECK ICON --}}
-            <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" stroke-width="2"
+            <svg class="text-red-500" style="width:1.25rem;height:1.25rem;" fill="none" stroke="currentColor" stroke-width="2"
                 viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round"
                     d="M6 18L18 6M6 6l12 12"/>
