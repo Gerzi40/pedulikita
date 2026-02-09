@@ -389,6 +389,10 @@ class OrganizationController extends Controller
 
     public function reject(Request $request, string $id)
     {
+        $validated = $request->validate([
+            'reason' => ['required']
+        ]);
+
         $organization = Organization::findOrFail($id);
 
         if ($organization->state != 'pending')
