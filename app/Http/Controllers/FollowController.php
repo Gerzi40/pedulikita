@@ -32,7 +32,7 @@ class FollowController extends Controller
             return redirect()->back()->with('error', 'Organisasi sudah diikuti');
         }
 
-        $organization->volunteers()->syncWithoutDetaching($volunteer_id);
+        $organization->volunteers()->attach($volunteer_id);
         return back();
     }
 

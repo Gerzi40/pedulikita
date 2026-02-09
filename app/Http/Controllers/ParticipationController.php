@@ -51,9 +51,14 @@ class ParticipationController extends Controller
         {
             return redirect()->back()->with('error', 'Jumlah relawan acara sudah sesuai dengan slot tersedia.');
         }
+
+        if ($event->volunteers()->where('volunteers.id', Auth::user()->volunteer->id)->first())
+        {
+            return redirect()->back()->with('error', 'Anda sudah terdaftar di acara ini');
+        }
         
         $user = Auth::user();
-        $user->volunteer->events()->syncWithoutDetaching($event_id);
+        $user->volunteer->events()->attach($event_id);
         return redirect()->route('volunteer.participation.index')->with('success', sprintf(
         'Anda telah terdaftar di acara %s',
             $event->name
